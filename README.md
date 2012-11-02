@@ -63,28 +63,19 @@ service like [Amazon S3][] is ideal.
 The recommended settings for hosting your static content with Amazon S3 is as follows:
 
 ```python
-# Use Amazon S3 for storage of uploaded media files.
-
+# Use Amazon S3 for storage for uploaded media files.
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto.S3BotoStorage"
 
-
 # Use RequireJS and Amazon S3 for static files storage.
-
 STATICFILES_STORAGE = "herokuapp.storage.OptimizedCachedS3BotoStorage"
 
-
 # Amazon S3 settings.
-
 AWS_ACCESS_KEY_ID = ""
-
 AWS_SECRET_ACCESS_KEY = ""
-
 AWS_STORAGE_BUCKET_NAME = ""
-
 AWS_HEADERS = {
     "Cache-Control": "public, max-age=86400",
 }
-
 AWS_QUERYSTRING_AUTH = False
 ```
 

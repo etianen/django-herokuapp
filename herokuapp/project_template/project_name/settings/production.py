@@ -29,7 +29,7 @@ DATABASES = {
 }
 
 
-# Use Amazon S3 for storage of uploaded media files.
+# Use Amazon S3 for storage for uploaded media files.
 
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto.S3BotoStorage"
 
