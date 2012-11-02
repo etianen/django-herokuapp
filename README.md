@@ -13,7 +13,7 @@ Features
 *   A growing documentation resource for best practices when hosting Django on Heroku.
 *   `start_herokuapp_project.py` command for initialising a new Heroku project with sensible basic settings. 
 
-[django-herokuapp]: https://github.com/etianen/django-herokuapp
+[django-require]: https://github.com/etianen/django-herokuapp
 
 
 Installation
@@ -27,12 +27,12 @@ If you're creating a new Django site for hosting on Heroku, then you can give yo
 the `start_herokuapp_project.py` script that's bundled with this package. If you installed django-herokuapp using
 `easy_install` or `pip` then it should already be on your `PATH`.
 
-django-herokuapp ships with a recommended [requirements.txt][] file for sites hosted on Heroku. You can use this as
+django-herokuapp ships with a recommended [requirements.txt][requirements_txt] file for sites hosted on Heroku. You can use this as
 the starting point for configuring your own project's dependencies. The requirements.txt file should be placed in the
 root of your repository. If you've used the `start_herokuapp_project.py` script to set up your project, then this
 will have already been taken care of for you.
 
-[requirements.txt] https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/requirements.txt
+[requirements_txt] https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/requirements.txt
 
 
 Site hosting - gunicorn
@@ -44,21 +44,21 @@ that the normal approach of using a small pool of worker threads simply won't sc
 The solution is to use a pool of async workers instead, and the [gunicorn][] project provides an excellent implementation
 of this approach. 
 
-[gunicorn][] http://gunicorn.org/
+[gunicorn] http://gunicorn.org/
 
-django-herokuapp provides a [Procile][] and [gunicorn.conf][] file for running gunicorn on your Heroku site. These
+django-herokuapp provides a [Procile][] and [gunicorn.conf][gunicorn_conf] file for running gunicorn on your Heroku site. These
 files should be tweaked as desired, and placed in the root of your repository. If you've used the `start_herokuapp_project.py`
 script to set up your project, then this will have already been taken care of for you.
 
-[Procfile][] https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/Procfile
-[gunicorn.conf][] https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/gunicorn.conf
+[Procfile] https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/Procfile
+[gunicorn_conf] https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/gunicorn.conf
 
 
 Optimizing compiled slug size
 -----------------------------
 
 The smaller the size of your compiled project, the faster it can be redeployed on Heroku servers. To this end,
-django-herokuapp provides a suggested [.slugignore][] file that should be placed in the root of your repository.
+django-herokuapp provides a suggested [.slugignore][slugignore] file that should be placed in the root of your repository.
 If you've used the `start_herokuapp_project.py` script to set up your project, then this will have already been
 taken care of for you.
 
@@ -66,7 +66,7 @@ This file excludes the test and static files used by your project. It is recomme
 to serve your static files in production, but if you intend to serve them directly out of your Heroku server,
 then you'll need to remove the `static` entry from the .slugignore file before deploying.
 
-[.slugignore] https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/.slugignore
+[slugignore] https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/.slugignore
 
 
 Support and announcements
@@ -76,12 +76,6 @@ Downloads and bug tracking can be found at the [main project website][].
 
 [main project website]: http://github.com/etianen/django-herokuapp
     "django-herokuapp on GitHub"
-
-You can keep up to date with the latest announcements by joining the
-[django-herokuapp discussion group][].
-
-[django-herokuapp discussion group]: http://groups.google.com/group/django-herokuapp
-    "django-herokuapp Google Group"
 
     
 More information
