@@ -1,0 +1,14 @@
+Django==1.4.2
+South==0.7.6
+distribute==0.6.24
+dj-database-url==0.2.1
+django-usertools==1.0.2
+gevent==0.13.7
+greenlet==0.4.0
+gunicorn==0.14.6
+psycopg2==2.4.5
+wsgiref==0.1.2
+django-storages==1.1.5
+boto==2.6.0
+psycogreen==1.0
+django-require==1.0.0
