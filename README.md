@@ -71,7 +71,7 @@ This configuration relies on the [dj-database-url][] package, which is included 
 for django-herokuapp. These settings will already be present in your django settings file if you created your project using
 the `start_herokuapp_project.py` script.
 
-Because we're using async workers to power our site, it's imporant to make sure that the PostgreSQL driver plays nicely
+Because you're using async workers to power your site, it's imporant to make sure that the PostgreSQL driver plays nicely
 and does not block an entire worker process. This is already taken care of in the default [gunicorn.conf][] file
 included with django-herokuapp, and relies on the [psycogreen][] package, which is included in the default [requirements.txt][].
 
