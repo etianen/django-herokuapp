@@ -54,6 +54,32 @@ script to set up your project, then this will have already been taken care of fo
 [gunicorn.conf]: https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/gunicorn.conf
 
 
+Database hosting - Heroku Postgres
+----------------------------------
+
+Heroku provides an excellent [Postgres Add-on][] that you can use for your site. The recommended settings for
+using Heroku Postgres are as follows:
+
+```python
+import dj_database_url
+DATABASES = {
+    "default": dj_database_url.config(default='postgres://localhost'),
+}
+```
+
+This configuration relies on the [dj-database-url][] package, which is included in the default [requirements.txt][]
+for django-herokuapp. These settings will already be present in your django settings file if you created your project using
+the `start_herokuapp_project.py` script.
+
+Because we're using async workers to power our site, it's imporant to make sure that the PostgreSQL driver plays nicely
+and does not block an entire worker process. This is already taken care of in the default [gunicorn.conf][] file
+included with django-herokuapp, and relies on the [psycogreen][] package, which is included in the default [requirements.txt][].
+
+[dj-database-url]: https://github.com/kennethreitz/dj-database-url
+[Postgres Add-on]: https://postgres.heroku.com/
+[psycogreen]: https://bitbucket.org/dvarrazzo/psycogreen 
+
+
 Static file hosting - Amazon S3
 -------------------------------
 
@@ -77,6 +103,16 @@ AWS_HEADERS = {
     "Cache-Control": "public, max-age=86400",
 }
 AWS_QUERYSTRING_AUTH = False
+
+# Cache settings.
+CACHES = {
+    # Long cache timeout for staticfiles, since this is used heavily by the optimizing storage.
+    "staticfiles": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "TIMEOUT": 60 * 60 * 24 * 365,
+        "LOCATION": "staticfiles",
+    },
+}
 ```
 
 The recommended `STATICFILES_STORAGE` setting uses the [RequireJS][] optimizer to minify your codebase before
