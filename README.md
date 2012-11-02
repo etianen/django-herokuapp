@@ -87,6 +87,28 @@ These settings will already be present in your django settings file if you creat
 the `start_herokuapp_project.py` script.
 
 [Amazon S3]: http://aws.amazon.com/s3/
+[RequireJS]: http://requirejs.org/
+
+
+Email hosting - SendGrid
+------------------------
+
+Heroku does not provide an SMTP server in it's default package. Instead, it's recommended that you use
+the [SendGrid Add-on][] to send your site's emails.
+
+```python
+# Email settings.
+EMAIL_HOST = "smtp.sendgrid.net"
+EMAIL_HOST_USER = os.environ.get("SENDGRID_USERNAME", "")
+EMAIL_HOST_PASSWORD = os.environ.get("SENDGRID_PASSWORD", "")
+EMAIL_PORT = 25
+EMAIL_USE_TLS = False
+```
+
+These settings will already be present in your django settings file if you created your project using
+the `start_herokuapp_project.py` script.
+
+[SendGrid Add-on]: https://addons.heroku.com/sendgrid
 
 
 Optimizing compiled slug size
