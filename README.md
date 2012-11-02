@@ -46,12 +46,56 @@ of this approach.
 
 [gunicorn]: http://gunicorn.org/
 
-django-herokuapp provides a [Procile][] and [gunicorn.conf][] file for running gunicorn on your Heroku site. These
+django-herokuapp provides a [Procfile][] and [gunicorn.conf][] file for running gunicorn on your Heroku site. These
 files should be tweaked as desired, and placed in the root of your repository. If you've used the `start_herokuapp_project.py`
 script to set up your project, then this will have already been taken care of for you.
 
 [Procfile]: https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/Procfile
 [gunicorn.conf]: https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/gunicorn.conf
+
+
+Static file hosting - Amazon S3
+-------------------------------
+
+A pure-python webserver like gunicorn isn't best suited to serving high volumes of static files. For this, a cloud-based
+service like [Amazon S3][] is ideal.
+
+The recommended settings for hosting your static content with Amazon S3 is as follows:
+
+```python
+# Use Amazon S3 for storage of uploaded media files.
+
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto.S3BotoStorage"
+
+
+# Use RequireJS and Amazon S3 for static files storage.
+
+STATICFILES_STORAGE = "herokuapp.storage.OptimizedCachedS3BotoStorage"
+
+
+# Amazon S3 settings.
+
+AWS_ACCESS_KEY_ID = ""
+
+AWS_SECRET_ACCESS_KEY = ""
+
+AWS_STORAGE_BUCKET_NAME = ""
+
+AWS_HEADERS = {
+    "Cache-Control": "public, max-age=86400",
+}
+
+AWS_QUERYSTRING_AUTH = False
+```
+
+The recommended `STATICFILES_STORAGE` setting uses the [RequireJS][] optimizer to minify your codebase before
+uploading to Amazon S3. For more information about using RequireJS with Django, please see the documentation
+for [django-require][].
+
+These settings will already be present in your django settings file if you created your project using
+the `start_herokuapp_project.py` script.
+
+[Amazon S3]: http://aws.amazon.com/s3/
 
 
 Optimizing compiled slug size
