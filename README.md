@@ -13,7 +13,7 @@ Features
 *   A growing documentation resource for best practices when hosting Django on Heroku.
 *   `start_herokuapp_project.py` command for initialising a new Heroku project with sensible basic settings. 
 
-[django-require]: https://github.com/etianen/django-herokuapp
+[django-require]: https://github.com/etianen/django-require
 
 
 Installation
