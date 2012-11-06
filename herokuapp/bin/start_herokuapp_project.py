@@ -6,7 +6,7 @@ from django.core import management
 from django import template
 
 
-def start_cms_project():
+def start_herokuapp_project():
     argv = list(sys.argv)
     if len(argv) != 2:
         raise management.CommandError("start_herokuapp_project accepts one argument - the name of the project to create.")
@@ -14,7 +14,7 @@ def start_cms_project():
     management.call_command("startproject",
         project_name,
         template = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "project_template")),
-        n = "py,txt,slugignore,conf",
+        n = "py,txt,slugignore,conf,gitignore",
     )
     # HACK: Modify the Procfile to contain the app name.
     procfile_path = os.path.join(os.getcwd(), project_name, "Procfile")
@@ -28,4 +28,4 @@ def start_cms_project():
 
 
 if __name__ == "__main__":
-    start_cms_project()
+    start_herokuapp_project()
