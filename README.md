@@ -79,6 +79,12 @@ included with django-herokuapp, and relies on the [psycogreen][] package, which 
 [Postgres Add-on]: https://postgres.heroku.com/
 [psycogreen]: https://bitbucket.org/dvarrazzo/psycogreen 
 
+You can provision a starter package with Heroku Postgres using the following Heroku command:
+
+```
+$ heroku addons:add heroku-postgresql:dev
+```
+
 
 Static file hosting - Amazon S3
 -------------------------------
@@ -148,6 +154,12 @@ These settings will already be present in your django settings file if you creat
 the `start_herokuapp_project.py` script.
 
 [SendGrid Add-on]: https://addons.heroku.com/sendgrid
+
+You can provision a starter package with SendGrid using the following Heroku command:
+
+```
+$ heroku addons:add sendgrid:starter
+```
 
 
 Optimizing compiled slug size
