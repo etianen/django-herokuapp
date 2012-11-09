@@ -57,6 +57,8 @@ AWS_S3_SECURE_URLS = False
 
 AWS_REDUCED_REDUNDANCY = True
 
+AWS_IS_GZIPPED = True
+
 
 # Email settings.
 
