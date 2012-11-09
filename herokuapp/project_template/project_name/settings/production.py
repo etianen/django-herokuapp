@@ -55,6 +55,8 @@ AWS_QUERYSTRING_AUTH = False
 
 AWS_S3_SECURE_URLS = False
 
+AWS_REDUCED_REDUNDANCY = True
+
 
 # Email settings.
 
