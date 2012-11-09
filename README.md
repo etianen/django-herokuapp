@@ -103,6 +103,7 @@ AWS_HEADERS = {
     "Cache-Control": "public, max-age=86400",
 }
 AWS_QUERYSTRING_AUTH = False
+AWS_S3_SECURE_URLS = False
 
 # Cache settings.
 CACHES = {

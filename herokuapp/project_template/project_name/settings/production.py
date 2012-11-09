@@ -53,6 +53,8 @@ AWS_HEADERS = {
 
 AWS_QUERYSTRING_AUTH = False
 
+AWS_S3_SECURE_URLS = False
+
 
 # Email settings.
 
