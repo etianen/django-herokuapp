@@ -13,7 +13,7 @@ import os
 import dj_database_url
 
 
-# The name of this site.  Used for branding in the online admin area.
+# The name and domain of this site.
 
 SITE_NAME = "Example"
 
