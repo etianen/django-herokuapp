@@ -2,6 +2,18 @@ django-herokuapp changelog
 ==========================
 
 
+0.9.3 - 28/11/2012
+------------------
+
+* Updating requirements.txt for latest versions of 3rd party packages.
+
+
+0.9.2 - 09/11/2012
+------------------
+
+* Updating requirements.txt for latest versions of 3rd party packages.
+
+
 0.9.1 - 02/11/2012
 ------------------
 
