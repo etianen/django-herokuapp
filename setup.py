@@ -14,7 +14,6 @@ setup(
     author = "Dave Hall",
     author_email = "dave@etianen.com",
     url = "https://github.com/etianen/django-herokuapp",
-    download_url = "https://github.com/downloads/etianen/django-herokuapp/django-herokuapp-{}.tar.gz".format(version_str),
     packages = [
         "herokuapp",
         "herokuapp.bin",
