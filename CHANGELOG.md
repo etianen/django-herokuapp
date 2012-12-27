@@ -2,6 +2,12 @@ django-herokuapp changelog
 ==========================
 
 
+0.9.6 - 27/12/2012
+------------------
+
+* Bugfix for gzipped Amazon S3 static files.
+
+
 0.9.5 - 26/12/2012
 ------------------
 
