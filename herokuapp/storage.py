@@ -15,9 +15,10 @@ class GzipFixS3BotoStorageMixin(object):
         file = super(GzipFixS3BotoStorageMixin, self)._open(name, mode)
         if self.gzip:
             file = GzipFile(mode=mode, compresslevel=9, fileobj=file)
-            file.size = len(file.read())
+            file_size = len(file.read())
             file.seek(0)
             file = File(file, name=name)
+            file.size = file_size
         return file
     
     # Patch for bug in django-storages with compressed content.
