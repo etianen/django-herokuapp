@@ -14,7 +14,7 @@ class GzipFixS3BotoStorageMixin(object):
     def _open(self, name, mode="rb"):
         file = super(GzipFixS3BotoStorageMixin, self)._open(name, mode)
         if self.gzip:
-            file = GzipFile(mode=mode, compresslevel=6, fileobj=file)
+            file = GzipFile(mode=mode, compresslevel=9, fileobj=file)
             file.size = len(file.read())
             file.seek(0)
             file = File(file, name=name)
@@ -24,7 +24,7 @@ class GzipFixS3BotoStorageMixin(object):
     def _compress_content(self, content):
         """Gzip a given string."""
         zbuf = StringIO()
-        zfile = GzipFile(mode='wb', compresslevel=6, fileobj=zbuf)
+        zfile = GzipFile(mode='wb', compresslevel=9, fileobj=zbuf)
         zfile.write(content.read())
         zfile.close()
         zbuf.seek(0) # i was missing!
