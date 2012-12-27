@@ -11,9 +11,11 @@ from require.storage import OptimizedFilesMixin
 
 class GzipFixS3BotoStorageMixin(object):
     
+    # Decompresses previously compressed content, essential for correct hash calculation.
     def _open(self, name, mode="rb"):
+        """Opens the given file."""
         file = super(GzipFixS3BotoStorageMixin, self)._open(name, mode)
-        if self.gzip:
+        if file.key.content_encoding == "gzip":
             file = GzipFile(mode=mode, compresslevel=9, fileobj=file)
             file_size = len(file.read())
             file.seek(0)
