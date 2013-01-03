@@ -102,9 +102,9 @@ DEFAULT_FILE_STORAGE = "storages.backends.s3boto.S3BotoStorage"
 STATICFILES_STORAGE = "herokuapp.storage.OptimizedCachedS3BotoStorage"
 
 # Amazon S3 settings.
-AWS_ACCESS_KEY_ID = ""
-AWS_SECRET_ACCESS_KEY = ""
-AWS_STORAGE_BUCKET_NAME = ""
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
+AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME", "")
 AWS_HEADERS = {
     "Cache-Control": "public, max-age=86400",
 }
@@ -122,6 +122,14 @@ CACHES = {
         "LOCATION": "staticfiles",
     },
 }
+```
+
+You can then set your AWS account details by running the following commands:
+
+```
+$ heroku config:set AWS_ACCESS_KEY_ID=your_key_id
+$ heroku config:set AWS_SECRET_ACCESS_KEY=your_secret_access_key
+$ heroku config:set AWS_STORAGE_BUCKET_NAME=your_bucket_name
 ```
 
 The recommended `STATICFILES_STORAGE` setting uses the [RequireJS][] optimizer to minify your codebase before
