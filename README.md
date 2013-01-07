@@ -124,7 +124,7 @@ CACHES = {
 }
 ```
 
-You can then set your AWS account details by running the following commands:
+You can then set your AWS account details by running the following command:
 
 ```
 $ heroku config:set AWS_ACCESS_KEY_ID=your_key_id
