@@ -11,3 +11,4 @@ dist
 build
 MANIFEST
 venv
+.env
