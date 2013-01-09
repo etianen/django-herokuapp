@@ -15,6 +15,7 @@ def start_herokuapp_project():
         template = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "project_template")),
         e = "py,txt,slugignore,conf,gitignore",
         files = ("Procfile",),
+        app_name = project_name.replace("_", "-"),
     )
 
 

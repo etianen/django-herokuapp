@@ -13,15 +13,16 @@ import os
 import dj_database_url
 
 
+# The name of the app on the Heroku platform.
+
+HEROKU_APP_NAME = "{{ app_name }}"
+
+
 # The name and domain of this site.
 
 SITE_NAME = "Example"
 
-APP_NAME = "test_app"
-
-SITE_DOMAIN = "{app_name}.herokuapp.com".format(
-    app_name = APP_NAME,
-)
+SITE_DOMAIN = "{{ app_name }}.herokuapp.com"
 
 PREPEND_WWW = False
 
