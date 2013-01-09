@@ -17,9 +17,13 @@ import dj_database_url
 
 SITE_NAME = "Example"
 
-SITE_DOMAIN = "example.com"
+APP_NAME = "test_app"
 
-PREPEND_WWW = True
+SITE_DOMAIN = "{app_name}.herokuapp.com".format(
+    app_name = APP_NAME,
+)
+
+PREPEND_WWW = False
 
 
 # Database settings.
