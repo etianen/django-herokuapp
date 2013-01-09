@@ -51,7 +51,7 @@ class Command(NoArgsCommand):
             self.stdout.write("Deploying database...\n")
             commands.call("run", "python", "manage.py", "syncdb", _sub_shell=True)
             commands.call("run", "python", "manage.py", "migrate", _sub_shell=True)
-        if kwargs["deploy_staticfiles"] or kwargs["deploy_database"]:
+        if (kwargs["deploy_staticfiles"] and not kwargs["deploy_app"]) or kwargs["deploy_database"]:
             commands.call("restart", _sub_shell=True)
         # Exit maintenance mode, if required.
         if kwargs["deploy_database"]:
