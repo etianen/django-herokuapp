@@ -16,4 +16,5 @@ HEROKU_CONFIG_BLACKLIST = getattr(settings, "HEROKU_CONFIG_BLACKLIST", (
     "PYTHONHOME",
     "PYTHONPATH",
     "PYTHONUNBUFFERED",
+    "DATABASE_URL",  # Remote connection to postgres is not allowed.
 ))
