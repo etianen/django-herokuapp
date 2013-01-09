@@ -13,7 +13,7 @@ def start_herokuapp_project():
     management.call_command("startproject",
         project_name,
         template = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "project_template")),
-        e = "py,txt,slugignore,conf,gitignore",
+        extensions = ("py", "txt", "slugignore", "conf", "gitignore,sh",),
         files = ("Procfile",),
         app_name = project_name.replace("_", "-"),
         user = getpass.getuser(),
