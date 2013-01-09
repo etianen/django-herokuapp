@@ -11,8 +11,13 @@ class HerokuCommandException(Exception):
 
 
 def call(*args, **kwargs):
-    process_args = [u"heroku"]
+    sub_shell = kwargs.pop("_sub_shell", False)
+    process_kwargs = {}
+    if not sub_shell:
+        process_kwargs["stdout"] = subprocess.PIPE
+        process_kwargs["stderr"] = subprocess.PIPE
     # Add in the args.
+    process_args = [u"heroku"]
     process_args.extend(args)
     # Add in the kwargs.
     if HEROKU_APP_NAME:
@@ -26,7 +31,7 @@ def call(*args, **kwargs):
         in kwargs.items()
     )
     # Call the command.
-    process = subprocess.Popen(process_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.Popen(process_args, **process_kwargs)
     result, err_result = process.communicate()
     if process.returncode != 0:
         HerokuCommandException(u"Error when running {command}: {err_result}".format(
