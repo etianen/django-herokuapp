@@ -18,3 +18,6 @@ HEROKU_CONFIG_BLACKLIST = getattr(settings, "HEROKU_CONFIG_BLACKLIST", (
     "PYTHONUNBUFFERED",
     "DATABASE_URL",  # Remote connection to postgres is not allowed.
 ))
+
+# The canonical site domain.
+SITE_DOMAIN = getattr(settings, "SITE_DOMAIN", None)

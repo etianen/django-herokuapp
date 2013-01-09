@@ -142,6 +142,7 @@ STATICFILES_DIRS = (
 MIDDLEWARE_CLASSES = (
     "django.middleware.gzip.GZipMiddleware",
     "django.middleware.transaction.TransactionMiddleware",
+    "herokuapp.middleware.CanonicalDomainMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
