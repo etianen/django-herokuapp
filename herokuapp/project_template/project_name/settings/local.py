@@ -50,8 +50,3 @@ DATABASES["default"]["NAME"] = "{{ project_name }}"
 DATABASES["default"]["USER"] = "{{ user }}"
 
 DATABASES["default"]["PASSWORD"] = ""
-
-
-# Optional console-based email backend.
-
-#EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
