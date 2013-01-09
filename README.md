@@ -135,7 +135,7 @@ $ heroku config:set AWS_STORAGE_BUCKET_NAME=your_bucket_name
 You can sync your static files to Amazon S3 at any time by running the following commands:
 
 ```
-$ DJANGO_SETTINGS_MODULE=your_app.settings.production AWS_ACCESS_KEY_ID=`heroku config:get AWS_ACCESS_KEY_ID` AWS_SECRET_ACCESS_KEY=`heroku config:get AWS_SECRET_ACCESS_KEY` AWS_STORAGE_BUCKET_NAME=`heroku config:get AWS_STORAGE_BUCKET_NAME` ./manage.py collectstatic --noinput
+$ DJANGO_SETTINGS_MODULE=your_app.settings.production ./manage.py herokuapp collectstatic --noinput
 ```
 
 The recommended `STATICFILES_STORAGE` setting uses the [RequireJS][] optimizer to minify your codebase before
