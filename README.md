@@ -191,6 +191,47 @@ then you'll need to remove the `static` entry from the .slugignore file before d
 [.slugignore]: https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/.slugignore
 
 
+Running your site in the Heroku environment
+-------------------------------------------
+
+Because your site is configured to take much of it's configuration from environmental variables stored on
+Heroku, running a development server can be tricky. In order to run the development server with full
+access to the Heroku configuration, simply use the following command:
+
+```
+$ ./manage.py herokuapp runserver
+```
+
+This will allow your local development server to store files on Amazon S3 and send emails via SendGrid. Accessing
+the Heroko Postgres database is, sadly, impossible, but you can run a local PostgreSQL server instead. If you're
+on OSX, then the excellent [Postgres.app][] will make this very easy.
+
+You can also run any other Django management command with the Heroku configuration by using the herokuapp subcommand.
+For example, you can run a Django shell with the Heroku configuration like this:
+
+```
+$ ./manage.py herokuapp shell
+```
+
+[Postgres.app]: http://postgresapp.com/
+
+
+Deploying (and redeploying) your site to Heroku
+-----------------------------------------------
+
+When your site is configured and ready to roll, you can deploy it to Heroku using the following command:
+
+```
+$ DJANGO_SETTINGS_MODULE=your_app.settings.production ./manage.py herokuapp heroku_deploy
+```
+
+This will carry out the following actions:
+
+* Sync static files to Amazon S3 (disable with the --no-staticfiles switch).
+* Upload your app to the Heroku platform (disable with the --no-app switch).
+* Run `syncdb` and `migrate` for your live database (disable with the --no-db switch).
+
+
 Support and announcements
 -------------------------
 
