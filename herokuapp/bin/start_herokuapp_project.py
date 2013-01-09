@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys, os.path
+import sys, os.path, getpass
 
 from django.core import management
 
@@ -16,6 +16,7 @@ def start_herokuapp_project():
         e = "py,txt,slugignore,conf,gitignore",
         files = ("Procfile",),
         app_name = project_name.replace("_", "-"),
+        user = getpass.getuser(),
     )
 
 

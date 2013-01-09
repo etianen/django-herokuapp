@@ -43,13 +43,13 @@ TEMPLATE_LOADERS = (
 )
 
 
-# Optional separate database settings
+# Local database settings. These should work well with http://postgresapp.com/.
 
-#DATABASES["default"]["NAME"] = ""
+DATABASES["default"]["NAME"] = "{{ project_name }}"
 
-#DATABASES["default"]["USER"] = ""
+DATABASES["default"]["USER"] = "{{ user }}"
 
-#DATABASES["default"]["PASSWORD"] = ""
+DATABASES["default"]["PASSWORD"] = ""
 
 
 # Optional console-based email backend.
