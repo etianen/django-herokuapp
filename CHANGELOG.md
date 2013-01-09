@@ -2,6 +2,13 @@ django-herokuapp changelog
 ==========================
 
 
+0.9.7 - 09/01/2012
+------------------
+
+* Adding in `herokuapp` subcommand and `heroku_deploy` command.
+* Adding in `CanonicalDomainMiddleware`.
+
+
 0.9.6 - 27/12/2012
 ------------------
 
