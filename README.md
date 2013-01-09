@@ -194,9 +194,9 @@ then you'll need to remove the `static` entry from the .slugignore file before d
 Running your site in the Heroku environment
 -------------------------------------------
 
-Because your site is configured to take much of it's configuration from environmental variables stored on
-Heroku, running a development server can be tricky. In order to run the development server with full
-access to the Heroku configuration, simply use the following command:
+Because your site is configured to some of it's configuration from environmental variables stored on
+Heroku, running a development server can be tricky. In order to run the development server using
+the Heroku configuration, simply use the following command:
 
 ```
 $ ./manage.py herokuapp runserver
@@ -206,8 +206,8 @@ This will allow your local development server to store files on Amazon S3 and se
 the Heroku Postgres database is, sadly, impossible, but you can run a local PostgreSQL server instead. If you're
 on OSX, then the excellent [Postgres.app][] will make this very easy.
 
-You can also run any other Django management command with the Heroku configuration by using the herokuapp subcommand.
-For example, you can run a Django shell with the Heroku configuration like this:
+You can run any other Django management command using the Heroku configuration by using the `herokuapp` subcommand.
+For example, you can run a Django shell using the Heroku configuration like this:
 
 ```
 $ ./manage.py herokuapp shell
