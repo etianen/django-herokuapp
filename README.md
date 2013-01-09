@@ -203,7 +203,7 @@ $ ./manage.py herokuapp runserver
 ```
 
 This will allow your local development server to store files on Amazon S3 and send emails via SendGrid. Accessing
-the Heroko Postgres database is, sadly, impossible, but you can run a local PostgreSQL server instead. If you're
+the Heroku Postgres database is, sadly, impossible, but you can run a local PostgreSQL server instead. If you're
 on OSX, then the excellent [Postgres.app][] will make this very easy.
 
 You can also run any other Django management command with the Heroku configuration by using the herokuapp subcommand.
