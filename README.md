@@ -227,9 +227,13 @@ $ DJANGO_SETTINGS_MODULE=your_app.settings.production ./manage.py herokuapp hero
 
 This will carry out the following actions:
 
-* Sync static files to Amazon S3 (disable with the --no-staticfiles switch).
-* Upload your app to the Heroku platform (disable with the --no-app switch).
-* Run `syncdb` and `migrate` for your live database (disable with the --no-db switch).
+* Sync static files to Amazon S3 (disable with the `--no-staticfiles` switch).
+* Upload your app to the Heroku platform (disable with the `--no-app` switch).
+* Run `syncdb` and `migrate` for your live database (disable with the `--no-db` switch).
+
+This command can be run whenever you need to redeploy your app. For faster redeploys, and to minimise
+downtime, it's a good idea to disable static file syncing and/or database syncing when they're not
+required. 
 
 
 Support and announcements
