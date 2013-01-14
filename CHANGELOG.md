@@ -2,6 +2,13 @@ django-herokuapp changelog
 ==========================
 
 
+0.9.8 - 14/01/2012
+------------------
+
+* Updating packages, notably django-storages.
+* Removing hacked S3 storage, now that django-storages has fixed gzipping.
+
+
 0.9.7 - 09/01/2012
 ------------------
 
