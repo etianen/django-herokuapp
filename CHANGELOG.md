@@ -2,6 +2,12 @@ django-herokuapp changelog
 ==========================
 
 
+0.9.9 - 15/01/2012
+------------------
+
+* Fixing hash generation for gzipped content.
+
+
 0.9.8 - 14/01/2012
 ------------------
 
