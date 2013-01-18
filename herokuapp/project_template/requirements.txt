@@ -12,4 +12,4 @@ django-storages==1.1.6
 boto==2.7.0
 psycogreen==1.0
 django-require==1.0.1
-django-herokuapp==0.9.9
+django-herokuapp==0.9.10
