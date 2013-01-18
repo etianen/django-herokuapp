@@ -17,6 +17,8 @@ setup(
     packages = [
         "herokuapp",
         "herokuapp.bin",
+        "herokuapp.management",
+        "herokuapp.management.commands",
     ],
     package_data = {
         "herokuapp": [
