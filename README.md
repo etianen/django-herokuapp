@@ -108,6 +108,7 @@ AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME", "")
 AWS_HEADERS = {
     "Cache-Control": "public, max-age=86400",
 }
+AWS_S3_FILE_OVERWRITE = False
 AWS_QUERYSTRING_AUTH = False
 AWS_S3_SECURE_URLS = False
 AWS_REDUCED_REDUNDANCY = False
