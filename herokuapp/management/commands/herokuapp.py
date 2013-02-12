@@ -6,8 +6,8 @@ from optparse import OptionParser
 
 from django.core.management.base import BaseCommand
 
-from herokuapp import commands
 from herokuapp.settings import HEROKU_CONFIG_BLACKLIST
+from herokuapp.management.commands.base import HerokuCommandMixin
 
 
 class PermissiveOptionParser(OptionParser):
@@ -16,9 +16,11 @@ class PermissiveOptionParser(OptionParser):
         pass
 
 
-class Command(BaseCommand):
+class Command(HerokuCommandMixin, BaseCommand):
     
     help = "Runs the given management command in the Heroku app environment."
+    
+    option_list = BaseCommand.option_list + HerokuCommandMixin.option_list
     
     def create_parser(self, prog_name, subcommand):
         return PermissiveOptionParser(
@@ -29,6 +31,7 @@ class Command(BaseCommand):
         )    
     
     def handle(self, *args, **kwargs):
+        self.app = kwargs["app"]
         # Strip the herokuapp command.
         process_args = [
             arg
@@ -43,7 +46,7 @@ class Command(BaseCommand):
                 value = value,
             )
             for name, value
-            in commands.call_shell_params("config").items()
+            in self.call_heroku_shell_params_command("config").items()
             if not name in HEROKU_CONFIG_BLACKLIST
         ] + process_args
         # Run the subprocess.
