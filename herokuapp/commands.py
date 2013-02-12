@@ -40,3 +40,10 @@ def call(*args, **kwargs):
         ))
     # Return the result.
     return result
+
+
+def call_shell_params(*args, **kwargs):
+    if not "--shell" in args:
+        args += ("--shell",)
+    config_str = call(*args, **kwargs).decode("utf-8")
+    return dict(line.split("=", 1) for line in config_str.splitlines())

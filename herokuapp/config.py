@@ -15,8 +15,7 @@ class HerokuConfig(Mapping):
     @cached_property
     def _unsafe(self):
         """All Heroku config params, included blacklisted ones."""
-        config_str = commands.call("config", "--shell").decode("utf-8")
-        return dict(line.split("=", 1) for line in config_str.splitlines())
+        return commands.call_shell_params("config")
         
     @cached_property
     def _safe(self):

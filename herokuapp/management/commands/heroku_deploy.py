@@ -46,7 +46,7 @@ class Command(NoArgsCommand):
             command_kwargs.setdefault("_sub_shell", True)
             if kwargs["app"]:
                 command_kwargs.setdefault("app", kwargs["app"])
-            commands.call(*command_args, **command_kwargs)
+            return command_kwargs.pop("_call", commands.call)(*command_args, **command_kwargs)
         # Deploy static asssets.
         if kwargs["deploy_staticfiles"]:
             self.stdout.write("Deploying static files...\n")
@@ -57,7 +57,12 @@ class Command(NoArgsCommand):
         # Deploy app code.
         if kwargs["deploy_app"]:
             self.stdout.write("Pushing latest version of app to Heroku...\n")
-            subprocess.call(("git", "push", "heroku", "master",))
+            # Load app info.
+            app_info = call_heroku_command("apps:info", _call=commands.call_shell_params, _sub_shell=False)
+            # Look up local branch.
+            (current_branch, _) = subprocess.Popen(("git rev-parse --abbrev-ref HEAD",), shell=True, stdout=subprocess.PIPE).communicate()
+            # Run the git push.
+            subprocess.call(("git", "push", app_info.get("git_url", "heroku"), "{current_branch}:master".format(current_branch=current_branch.strip()),))
         # Deploy migrations.
         if kwargs["deploy_database"]:
             self.stdout.write("Deploying database...\n")
