@@ -23,7 +23,7 @@ class HerokuCommandMixin(object):
     def call_heroku_command(self, *args, **kwargs):
         kwargs.setdefault("_sub_shell", True)
         self._configure_heroku_command_kwargs(kwargs)
-        return commands.cal(*args, **kwargs)
+        return commands.call(*args, **kwargs)
     
     def call_heroku_shell_params_command(self, *args, **kwargs):
         self._configure_heroku_command_kwargs(kwargs)
