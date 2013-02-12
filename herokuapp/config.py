@@ -1,6 +1,5 @@
 """Access to the heroku config."""
 
-import re
 from collections import Mapping
 
 from django.utils.functional import cached_property
@@ -16,12 +15,8 @@ class HerokuConfig(Mapping):
     @cached_property
     def _unsafe(self):
         """All Heroku config params, included blacklisted ones."""
-        config_str = commands.call("config").decode("utf-8")
-        return dict(re.findall(
-            u"^\s*(\w+)\s*:\s*(.*?)\s*^",
-            config_str,
-            re.MULTILINE | re.IGNORECASE,
-        ))
+        config_str = commands.call("config", "--shell").decode("utf-8")
+        return dict(line.split("=", 1) for line in config_str.splitlines())
         
     @cached_property
     def _safe(self):
