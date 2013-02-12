@@ -7,6 +7,7 @@ from django.core.management.base import NoArgsCommand, BaseCommand
 from django.core.management import call_command
 
 from herokuapp import commands
+from herokuapp.settings import HEROKU_APP_NAME
 
 
 class Command(NoArgsCommand):
@@ -32,16 +33,27 @@ class Command(NoArgsCommand):
             dest = "deploy_database",
             help = "If specified, then running database migrations will be skipped.",
         ),
+        make_option("-a",  "--app",
+            default = HEROKU_APP_NAME,
+            dest = "app",
+            help = "The name of the Heroku app to push to. Defaults to HEROKU_APP_NAME.",
+        ),
     )
     
     def handle(self, **kwargs):
+        # Runs the given Heroku command.
+        def call_heroku_command(*command_args, **command_kwargs):
+            command_kwargs.setdefault("_sub_shell", True)
+            if kwargs["app"]:
+                command_kwargs.setdefault("app", kwargs["app"])
+            commands.call(*command_args, **command_kwargs)
         # Deploy static asssets.
         if kwargs["deploy_staticfiles"]:
             self.stdout.write("Deploying static files...\n")
             call_command("collectstatic", interactive=False)
         # Enter maintenance mode, if required.
         if kwargs["deploy_database"]:
-            commands.call("maintenance:on", _sub_shell=True)
+            call_heroku_command("maintenance:on")
         # Deploy app code.
         if kwargs["deploy_app"]:
             self.stdout.write("Pushing latest version of app to Heroku...\n")
@@ -49,10 +61,10 @@ class Command(NoArgsCommand):
         # Deploy migrations.
         if kwargs["deploy_database"]:
             self.stdout.write("Deploying database...\n")
-            commands.call("run", "python", "manage.py", "syncdb", _sub_shell=True)
-            commands.call("run", "python", "manage.py", "migrate", _sub_shell=True)
+            call_heroku_command("run", "python", "manage.py", "syncdb")
+            call_heroku_command("run", "python", "manage.py", "migrate")
         if (kwargs["deploy_staticfiles"] and not kwargs["deploy_app"]) or kwargs["deploy_database"]:
-            commands.call("restart", _sub_shell=True)
+            call_heroku_command("restart")
         # Exit maintenance mode, if required.
         if kwargs["deploy_database"]:
-            commands.call("maintenance:off", _sub_shell=True)
+            call_heroku_command("maintenance:off")
