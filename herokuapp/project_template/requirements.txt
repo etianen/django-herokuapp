@@ -10,3 +10,4 @@ boto==2.8.0
 django-require==1.0.1
 django-herokuapp==0.9.11
 waitress==0.8.2
+pytz==2012j
