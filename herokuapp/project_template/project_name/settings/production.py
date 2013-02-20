@@ -27,6 +27,11 @@ SITE_DOMAIN = "{{ app_name }}.herokuapp.com"
 PREPEND_WWW = False
 
 
+# HTTPS settings.
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+
 # Database settings.
 
 DATABASES = {
