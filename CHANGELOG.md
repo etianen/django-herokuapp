@@ -8,6 +8,8 @@ django-herokuapp changelog
 * Adding an --app parameter to the herokuapp and heroku_deploy management commands.
 * Updating Django version for new security release.
 * Package updates for all base requirements.
+* Changing default HTTP server to waitress.
+* Adding default settings for HTTPS proxy headers and allowed hosts.
 
 
 0.9.9 - 15/01/2012
