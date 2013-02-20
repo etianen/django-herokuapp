@@ -34,6 +34,8 @@ SITE_DOMAIN = "localhost:8000"
 
 PREPEND_WWW = False
 
+ALLOWED_HOSTS = ("*",)
+
 
 # Disable the template cache for development.
 
