@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os
 
 from waitress import serve
