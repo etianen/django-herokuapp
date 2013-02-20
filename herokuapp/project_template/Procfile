@@ -1,1 +1,1 @@
-web: gunicorn {{ project_name }}.wsgi:application -c gunicorn.conf
+web: python web.py

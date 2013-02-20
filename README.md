@@ -35,23 +35,23 @@ will have already been taken care of for you.
 [requirements.txt]: https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/requirements.txt
 
 
-Site hosting - gunicorn
+Site hosting - waitress
 -----------------------
 
-A site hosted on Heroku has to handle traffic without the benefit of a caching reverse proxy like nginx, which means
+A site hosted on Heroku has to handle traffic without the benefit of a buffering reverse proxy like nginx, which means
 that the normal approach of using a small pool of worker threads simply won't scale in production.
 
-The solution is to use a pool of async workers instead, and the [gunicorn][] project provides an excellent implementation
-of this approach. 
+The solution is to use a buffering async master thread with sync workers instead, and the [waitress][] project provides 
+an excellent implementation of this approach. 
 
-[gunicorn]: http://gunicorn.org/
+[waitress]: https://pypi.python.org/pypi/waitress/
 
-django-herokuapp provides a [Procfile][] and [gunicorn.conf][] file for running gunicorn on your Heroku site. These
-files should be tweaked as desired, and placed in the root of your repository. If you've used the `start_herokuapp_project.py`
-script to set up your project, then this will have already been taken care of for you.
+django-herokuapp provides a [Procfile][] and [web.py][] file for running waitress on your Heroku site. These
+files should be tweaked as desired, and placed in the root of your repository. If you've used the `
+start_herokuapp_project.py` script to set up your project, then this will have already been taken care of for you.
 
 [Procfile]: https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/Procfile
-[gunicorn.conf]: https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/gunicorn.conf
+[web.py]: https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/web.py
 
 
 Database hosting - Heroku Postgres
@@ -68,16 +68,11 @@ DATABASES = {
 ```
 
 This configuration relies on the [dj-database-url][] package, which is included in the default [requirements.txt][]
-for django-herokuapp. These settings will already be present in your django settings file if you created your project using
-the `start_herokuapp_project.py` script.
-
-Because you're using async workers to power your site, it's imporant to make sure that the PostgreSQL driver plays nicely
-and does not block an entire worker process. This is already taken care of in the default [gunicorn.conf][] file
-included with django-herokuapp, and relies on the [psycogreen][] package, which is included in the default [requirements.txt][].
+for django-herokuapp. These settings will already be present in your django settings file if you created your project 
+using the `start_herokuapp_project.py` script.
 
 [dj-database-url]: https://github.com/kennethreitz/dj-database-url
 [Postgres Add-on]: https://postgres.heroku.com/
-[psycogreen]: https://bitbucket.org/dvarrazzo/psycogreen 
 
 You can provision a starter package with Heroku Postgres using the following Heroku command:
 
@@ -89,7 +84,7 @@ $ heroku addons:add heroku-postgresql:dev
 Static file hosting - Amazon S3
 -------------------------------
 
-A pure-python webserver like gunicorn isn't best suited to serving high volumes of static files. For this, a cloud-based
+A pure-python webserver like waitress isn't best suited to serving high volumes of static files. For this, a cloud-based
 service like [Amazon S3][] is ideal.
 
 The recommended settings for hosting your static content with Amazon S3 is as follows:
