@@ -1,4 +1,4 @@
-Django==1.4.4
+Django==1.5
 South==0.7.6
 distribute==0.6.35
 dj-database-url==0.2.1
