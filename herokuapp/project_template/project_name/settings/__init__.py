@@ -6,10 +6,10 @@ settings.
 """
 
 # Import production settings.
-from production import *
+from {{ project_name }}.settings.production import *
 
 # Import optional local settings.
 try:
-    from local import *
+    from {{ project_name }}.settings.local import *
 except ImportError:
     pass
