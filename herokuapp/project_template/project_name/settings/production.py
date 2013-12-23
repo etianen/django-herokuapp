@@ -1,16 +1,20 @@
 """
-Production settings for {{ project_name }} project.
+Django settings for bar project.
 
-For an explanation of these settings, please see the Django documentation at:
+For more information on this file, see
+https://docs.djangoproject.com/en/1.6/topics/settings/
 
-<http://docs.djangoproject.com/en/dev/>
-
-While many of these settings assume sensible defaults, you must provide values
-for the site, database, media and email sections below.
+For the full list of settings and their values, see
+https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
 import os
 import dj_database_url
+
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 
 # The name of the app on the Heroku platform.
@@ -53,7 +57,7 @@ DEFAULT_FILE_STORAGE = "storages.backends.s3boto.S3BotoStorage"
 
 # Use RequireJS and Amazon S3 for static files storage.
 
-STATICFILES_STORAGE = "herokuapp.storage.OptimizedCachedS3BotoStorage"
+STATICFILES_STORAGE = "require_s3.storage.OptimizedCachedStaticFilesStorage"
 
 
 # Amazon S3 settings.
@@ -112,20 +116,15 @@ SEND_BROKEN_LINK_EMAILS = False
 
 # Locale settings.
 
-TIME_ZONE = "Europe/London"
+TIME_ZONE = "UTC"
 
 LANGUAGE_CODE = "en-gb"
 
-USE_I18N = False
+USE_I18N = True
 
 USE_L10N = True
 
 USE_TZ = True
-
-
-# Auto-discovery of project location.
-
-SITE_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 
 # A list of additional installed applications.
@@ -138,16 +137,13 @@ INSTALLED_APPS = (
     "django.contrib.staticfiles",
     "django.contrib.admin",
     "herokuapp",
-    "require",
-    "usertools",
-    "south",
 )
 
 
 # Additional static file locations.
 
 STATICFILES_DIRS = (
-    os.path.join(SITE_ROOT, "static"),
+    os.path.join(BASE_DIR, "static"),
 )
 
 
@@ -155,13 +151,13 @@ STATICFILES_DIRS = (
 
 MIDDLEWARE_CLASSES = (
     "django.middleware.gzip.GZipMiddleware",
-    "django.middleware.transaction.TransactionMiddleware",
     "herokuapp.middleware.CanonicalDomainMiddleware",
-    "django.middleware.common.CommonMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 )
 
 ROOT_URLCONF = "{{ project_name }}.urls"
@@ -178,7 +174,7 @@ SITE_ID = 1
 # Absolute path to the directory where templates are stored.
 
 TEMPLATE_DIRS = (
-    os.path.join(SITE_ROOT, "templates"),
+    os.path.join(BASE_DIR, "templates"),
 )
 
 TEMPLATE_LOADERS = (
@@ -219,30 +215,3 @@ CACHES = {
 # A secret key used for cryptographic algorithms.
 
 SECRET_KEY = "{{ secret_key }}"
-
-
-# Logging configuration.
-
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "filters": {
-        "require_debug_false": {
-            "()": "django.utils.log.RequireDebugFalse"
-        }
-    },
-    "handlers": {
-        "mail_admins": {
-            "level": "ERROR",
-            "filters": ["require_debug_false"],
-            "class": "django.utils.log.AdminEmailHandler"
-        }
-    },
-    "loggers": {
-        "django.request": {
-            "handlers": ["mail_admins"],
-            "level": "ERROR",
-            "propagate": True,
-        },
-    }
-}

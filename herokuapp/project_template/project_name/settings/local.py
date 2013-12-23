@@ -9,7 +9,7 @@ This file should be excluded from version control to keep the settings local.
 
 import os.path
 
-from production import DATABASES
+from production import DATABASES, BASE_DIR
 
 
 # Run in debug mode.
@@ -21,11 +21,11 @@ TEMPLATE_DEBUG = DEBUG
 
 # Serve staticfiles locally for development.
 
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+STATICFILES_STORAGE = "require.storage.OptimizedStaticFilesStorage"
 
 STATIC_URL = "/static/"
 
-STATIC_ROOT = os.path.expanduser("~/Sites/{{ project_name }}/static")
+STATIC_ROOT = os.path.join(BASE_DIR, "..", "static")
 
 
 # Use local server.
@@ -46,6 +46,8 @@ TEMPLATE_LOADERS = (
 
 
 # Local database settings. These should work well with http://postgresapp.com/.
+
+DATABASES["default"]["HOST"] = ""
 
 DATABASES["default"]["NAME"] = "{{ project_name }}"
 

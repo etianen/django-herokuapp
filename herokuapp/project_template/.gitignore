@@ -7,8 +7,10 @@
 .bzr
 .bzrignore
 Thumbs.db
-dist
-build
-MANIFEST
-venv
-.env
+/dist
+/build
+/MANIFEST
+/venv
+/.env
+/static
+/media
