@@ -9,9 +9,8 @@ django-herokuapp
 Features
 --------
 
-*   Storage backend for serving optimized assets using [django-require][] via Amazon S3.
-*   A growing documentation resource for best practices when hosting Django on Heroku.
 *   `start_herokuapp_project.py` command for initialising a new Heroku project with sensible basic settings. 
+*   A growing documentation resource for best practices when hosting Django on Heroku.
 
 [django-require]: https://github.com/etianen/django-require
 
