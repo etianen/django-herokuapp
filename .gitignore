@@ -10,3 +10,5 @@ Thumbs.db
 dist
 build
 MANIFEST
+/venv
+/*.egg-info/

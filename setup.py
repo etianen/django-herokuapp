@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 
 from herokuapp import __version__
 
