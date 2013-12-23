@@ -14,6 +14,11 @@ setup(
     author = "Dave Hall",
     author_email = "dave@etianen.com",
     url = "https://github.com/etianen/django-herokuapp",
+    entry_points = {
+        "console_scripts": [
+            "start_herokuapp_project = herokuapp.bin.start_herokuapp_project:main",
+        ],
+    },
     packages = [
         "herokuapp",
         "herokuapp.bin",
