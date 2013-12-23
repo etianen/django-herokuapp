@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 from herokuapp import __version__
 
@@ -19,12 +19,7 @@ setup(
             "start_herokuapp_project = herokuapp.bin.start_herokuapp_project:main",
         ],
     },
-    packages = [
-        "herokuapp",
-        "herokuapp.bin",
-        "herokuapp.management",
-        "herokuapp.management.commands",
-    ],
+    packages = find_packages(),
     package_data = {
         "herokuapp": [
             "project_template/*.py",
