@@ -34,6 +34,24 @@ setup(
             "project_template/project_name/static/*.py",
         ],
     },
+    install_requires = [
+        "django",
+        "pytz",
+        "waitress",
+    ],
+    extras_require = {
+        "postgres": [
+            "dj-database-url",
+            "psycopg2",
+        ],
+        "s3": [
+            "django-storages",
+            "boto",
+        ],
+        "requirejs": [
+            "django-require-s3",
+        ],
+    },
     classifiers = [
         "Development Status :: 4 - Beta",
         "Environment :: Web Environment",
