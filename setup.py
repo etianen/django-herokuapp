@@ -43,20 +43,11 @@ setup(
         "django",
         "pytz",
         "waitress",
+        "dj-database-url",
+        "psycopg2",
+        "django-storages",
+        "boto",
     ],
-    extras_require = {
-        "postgres": [
-            "dj-database-url",
-            "psycopg2",
-        ],
-        "s3": [
-            "django-storages",
-            "boto",
-        ],
-        "requirejs": [
-            "django-require-s3",
-        ],
-    },
     classifiers = [
         "Development Status :: 4 - Beta",
         "Environment :: Web Environment",
