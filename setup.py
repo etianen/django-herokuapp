@@ -23,8 +23,6 @@ setup(
     package_data = {
         "herokuapp": [
             "project_template/*.py",
-            "project_template/*.conf",
-            "project_template/*.txt",
             "project_template/Procfile",
             "project_template/project_name/*.py",
             "project_template/project_name/templates/.gitignore",
