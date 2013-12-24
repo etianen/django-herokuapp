@@ -20,14 +20,7 @@ setup(
         ],
     },
     packages = find_packages(),
-    package_data = {
-        "": [
-            ".gitignore",
-            ".slugignore",
-            "*.py",
-            "Procfile",
-        ],
-    },
+    include_package_data = True,
     install_requires = [
         "django",
         "pytz",
