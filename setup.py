@@ -21,18 +21,11 @@ setup(
     },
     packages = find_packages(),
     package_data = {
-        "herokuapp": [
-            "project_template/.gitignore",
-            "project_template/.slugignore",
-            "project_template/*.py",
-            "project_template/Procfile",
-            "project_template/project_name/*.py",
-            "project_template/project_name/templates/.gitignore",
-            "project_template/project_name/static/js/.gitignore",
-            "project_template/project_name/apps/*.py",
-            "project_template/project_name/settings/*.py",
-            "project_template/project_name/settings/.gitignore",
-            "project_template/project_name/static/*.py",
+        "": [
+            ".gitignore",
+            ".slugignore",
+            "*.py",
+            "Procfile",
         ],
     },
     install_requires = [
