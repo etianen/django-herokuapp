@@ -215,3 +215,40 @@ CACHES = {
 # A secret key used for cryptographic algorithms.
 
 SECRET_KEY = "{{ secret_key }}"
+
+
+# Logging configuration.
+
+LOGGING = {
+    "version": 1,
+    # Don't throw away default loggers.
+    "disable_existing_loggers": False,
+    "filters": {
+        "require_debug_false": {
+            "()": "django.utils.log.RequireDebugFalse",
+        },
+        "require_debug_true": {
+            "()": "django.utils.log.RequireDebugTrue",
+        },
+    },
+    "handlers": {
+        # Debug console handler, copied from Django default loggers.
+        "console": {
+            "level": "INFO",
+            "filters": ["require_debug_true"],
+            "class": "logging.StreamHandler",
+        },
+        # Production error logging on Heroku logplex.
+        "heroku": {
+            "level": "ERROR",
+            "filters": ["require_debug_false"],
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        # Redefine django logger to include heroku error logging.
+        "django": {
+            "handlers": ["console", "heroku"],
+        }
+    }
+}
