@@ -55,8 +55,8 @@ class Command(HerokuCommandMixin, NoArgsCommand):
         # Deploy migrations.
         if kwargs["deploy_database"]:
             self.stdout.write("Deploying database...\n")
-            self.call_heroku_command("run", "python", "manage.py", "syncdb")
-            self.call_heroku_command("run", "python", "manage.py", "migrate")
+            self.call_heroku_command("run", "python", "manage.py", "syncdb", "--noinput")
+            self.call_heroku_command("run", "python", "manage.py", "migrate", "--noinput")
         if (kwargs["deploy_staticfiles"] and not kwargs["deploy_app"]) or kwargs["deploy_database"]:
             self.call_heroku_command("restart")
         # Exit maintenance mode, if required.

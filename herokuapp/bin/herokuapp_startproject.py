@@ -69,7 +69,7 @@ def main():
     }
     # Prompt for AWS access details.
     env["AWS_ACCESS_KEY_ID"] = read_string("AWS access key", os.environ.get("AWS_ACCESS_KEY_ID"))
-    env["AWS_ACCESS_KEY_ID"] = read_string("AWS access secret", os.environ.get("AWS_SECRET_ACCESS_KEY"))
+    env["AWS_SECRET_ACCESS_KEY"] = read_string("AWS access secret", os.environ.get("AWS_SECRET_ACCESS_KEY"))
     env["AWS_STORAGE_BUCKET_NAME"] = read_string("S3 bucket name", app_name)
     # Push Heroku config.
     heroku_config_sync = heroku_app_created and read_boolean("Sync configuration with Heroku?")
@@ -81,9 +81,8 @@ def main():
             )
             for key, value
             in env.items()
-        ])
+        ], stdout=subprocess.PIPE)  # Don't leak config vars in CI scripts.
     # Create the project.
-    heroku_config_sync = False
     if read_boolean("Create project template?"):
         management.call_command("startproject",
             project_name,

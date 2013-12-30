@@ -36,7 +36,7 @@ cleanup() {
     cd $CWD
     rm -rf /tmp/django_herokuapp_test
 }
-trap cleanup EXIT
+#trap cleanup EXIT
 
 # Install django-herokuapp from local filesystem.
 pip install $CWD
@@ -60,5 +60,5 @@ y
 EOF
 
 # Run herokuapp tests.
-foreman run python manage.py test herokuapp
+foreman run python manage.py test herokuapp --noinput
 
