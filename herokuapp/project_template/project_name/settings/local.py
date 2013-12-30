@@ -21,7 +21,7 @@ TEMPLATE_DEBUG = DEBUG
 
 # Serve staticfiles locally for development.
 
-STATICFILES_STORAGE = "require.storage.OptimizedStaticFilesStorage"
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 STATIC_URL = "/static/"
 

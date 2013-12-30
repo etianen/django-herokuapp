@@ -16,7 +16,8 @@ setup(
     url = "https://github.com/etianen/django-herokuapp",
     entry_points = {
         "console_scripts": [
-            "start_herokuapp_project = herokuapp.bin.start_herokuapp_project:main",
+            "herokuapp_startproject = herokuapp.bin.herokuapp_startproject:main",
+            "herokuapp_test = herokuapp.bin.herokuapp_test:main",
         ],
     },
     packages = find_packages(),
