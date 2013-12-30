@@ -30,6 +30,11 @@ def main():
     def exit(message):
         print message
         sys.exit(1)
+    # Runs the given command, exiting if it fails.
+    def run(*args, **kwargs):
+        return_code = subprocess.call(args, **kwargs)
+        if return_code != 0:
+            sys.exit(return_code)
     # Require that an executable exists, and quit if it does not.
     def require_executable(name, message):
         if not find_executable(name):
@@ -46,14 +51,14 @@ def main():
     git_repo_exists = os.path.exists(".git")
     if not git_repo_exists:
         if read_boolean("Initialize git repository?"):
-            subprocess.call(["git", "init"])
+            run("git", "init")
             git_repo_exists = True
     # Offer to create heroku app.
     heroku_app_created = read_boolean("Create app '{app_name}' on Heroku?".format(
         app_name = app_name,
     ))
     if heroku_app_created:
-        subprocess.call(["heroku", "apps:create", app_name])
+        run("heroku", "apps:create", app_name)
     # Prompt for AWS access details.
     aws_access_key = read_string("AWS access key", os.environ.get("AWS_ACCESS_KEY_ID"))
     aws_access_secret = read_string("AWS access secret", os.environ.get("AWS_SECRET_ACCESS_KEY"))
@@ -76,27 +81,27 @@ def main():
         # Push Heroku config.
         heroku_config_sync = heroku_app_created and read_boolean("Push configuration to Heroku?")
         if heroku_config_sync:
-            subprocess.call(["heroku", "plugins:install", "git://github.com/ddollar/heroku-config.git"])
-            subprocess.call(["heroku", "config:push"])
+            run("heroku", "plugins:install", "git://github.com/ddollar/heroku-config.git")
+            run("heroku", "config:push")
     # Freeze project requirements.
     if read_boolean("Freeze pip requirements?"):
         with open("requirements.txt", "wb") as requirements_handle:
-            subprocess.call(["pip", "freeze"], stdout=requirements_handle)
+            run("pip", "freeze", stdout=requirements_handle)
     # Provision SendGrid.
     if heroku_app_created and read_boolean("Provision SendGrid starter addon (free)?"):
-        subprocess.call(["heroku", "addons:add", "sendgrid:starter"])
+        run("heroku", "addons:add", "sendgrid:starter")
         if heroku_config_sync:
-            subprocess.call(["heroku", "config:pull"])
+            run("heroku", "config:pull")
     # Provision Heroku postgres.
     if heroku_app_created and read_boolean("Provision Heroku Postgres dev addon (free)?"):
-        subprocess.call(["heroku", "addons:add", "heroku-postgresql"])
+        run("heroku", "addons:add", "heroku-postgresql")
     # Commit app.
     if git_repo_exists and read_boolean("Commit changes?"):
-        subprocess.call(["git", "add", ".", "-A"])
-        subprocess.call(["git", "commit", "-a", "-m", "Initializing Heroku app"])
+        run("git", "add", ".", "-A")
+        run("git", "commit", "-a", "-m", "Initializing Heroku app")
         # Push app.
         if heroku_app_created and read_boolean("Deploy Heroku app?"):
-            subprocess.call(["foreman", "run", "python", "manage.py", "heroku_deploy"])
+            run("foreman", "run", "python", "manage.py", "heroku_deploy")
     # Give some help to the user.
     print "Heroku project started."
     print "Run your local server with `foreman run python manage.py runserver`"
