@@ -42,8 +42,6 @@ source venv/bin/activate
 
 # Register cleanup commands.
 cleanup() {
-    heroku addons:remove sendgrid:starter --confirm django-herokuapp-example
-    heroku addons:remove heroku-postgresql --confirm django-herokuapp-example
     heroku apps:delete django-herokuapp-test --confirm django-herokuapp-test
     heroku keys:remove travis
     deactivate
