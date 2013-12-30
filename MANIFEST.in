@@ -1,7 +1,4 @@
 include LICENSE
 include README.rst
 include .gitignore
-include .slugignore
-include *.py
-include *.sh
-include Procfile
+recursive-include herokuapp .gitignore .slugignore *.py *.sh Procfile

@@ -1,0 +1,14 @@
+language: python
+python:
+- 2.7
+- 2.6
+env:
+  global:
+  - secure: Cq8PKfG8malw+smIZtQdjHP95XRQipN6WTGaXYE0ZVsaWaNYRuISlvXa402N9SdwAc1b5LdtsR/ROaxjMIzJFRQoHVaUePPKQb17IIf2LruIoHqdWA1yALfDmiOBIAG8dP/d4cdZfTiNbnfnaU36e/r1mCeqmAG5lb/4KxayeNg=
+  - secure: N7mvxM8Bb8FG4G9Ae9/gsKw2d1KxqmDBXH1uT+XWslEGkUGbOmraYhEcNSgmrMK0b9ESggkznSkbr04U0RLHkk/nofJz80RmWlY3rBvG/a30qIKgcs/4aG5bycl/oJ8btgvxeMQ61LgKYryhhVfawNcEtnzjG/xlh33ZQcy2KQk=
+  - secure: DEjCcAD8RznurFmYC4rj1WYtzF6ekWA5yfQ3QpPUXXV16CIA1qdSJgQEtOhWNNx0znXyzgFCUSXfl8wnNGGhFBzMswnjxOKQeN2cyW7V7H8YDQGz0M2BT59RQJsrRu6ocSc39albI2wUyJzJl+x5S10l7qw7do2uy28vhuIbiRE=
+  - secure: hMN5iD6oXwqjvD+6oOKdGdhbqZc+UT3EPk6Ij7mfEWupfEXx49dIZ05ZknBmLmrfEzU1KA4AVD5bRHb9COuAgfyQfzfPRUOTSw+RuVFPANsiE3wcVH3/8dd2b38xR1bB+3EUMNDhgnTCtjZ49ft64nAGIVSTi+790uSlmTww/4s=
+script:
+- herokuapp/bin/herokuapp_test.sh
+notifications:
+  email: false
