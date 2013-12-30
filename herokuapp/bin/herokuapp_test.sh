@@ -19,14 +19,14 @@ password $HEROKU_API_KEY
 EOF
 chmod 0600 ~/.netrc
 # Create throwaway SSH key.
-ssh-keygen -t rsa -N "" -C travis -f ~/disposable_key
+ssh-keygen -t rsa -N "" -C travis -f $HOME/disposable_key
 # Create SSH wrapper script.
-cat >> ~/ssh_wrapper << EOF
+cat >> $HOME/ssh_wrapper << EOF
 #!/bin/sh
-exec ssh -o StrictHostKeychecking=no -o CheckHostIP=no -o UserKnownHostsFile=/dev/null -i ~/disposable_key -- "$@"
+exec ssh -o StrictHostKeychecking=no -o CheckHostIP=no -o UserKnownHostsFile=/dev/null -i $HOME/disposable_key -- "$@"
 EOF
 chmod +x ~/ssh_wrapper
-export GIT_SSH=~/ssh_wrapper
+export GIT_SSH=$HOME/ssh_wrapper
 # Register temporary key.
 heroku keys:add ~/disposable_key.pub
 fi
