@@ -6,16 +6,29 @@ CWD=`pwd`
 # Install Heroku toolbelt.
 if [[ "$CI" == "true" ]]
 then
+# Install Heroku toolbelt.
 wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
+# Set Heroku access details.
 cat >> ~/.netrc << EOF
-  machine api.heroku.com
-  login $HEROKU_USER
-  password $HEROKU_API_KEY
-  machine api.heroku.com
-  login $HEROKU_USER
-  password $HEROKU_API_KEY
+machine api.heroku.com
+login $HEROKU_USER
+password $HEROKU_API_KEY
+machine api.heroku.com
+login $HEROKU_USER
+password $HEROKU_API_KEY
 EOF
 chmod 0600 ~/.netrc
+# Create throwaway SSH key.
+ssh-keygen -t rsa -N "" -C travis -f ~/disposable_key
+# Create SSH wrapper script.
+cat >> ~/ssh_wrapper << EOF
+#!/bin/sh
+exec ssh -o StrictHostKeychecking=no -o CheckHostIP=no -o UserKnownHostsFile=/dev/null -i ~/disposable_key -- "$@"
+EOF
+chmod +x ~/ssh_wrapper
+export GIT_SSH=~/ssh_wrapper
+# Register temporary key.
+heroku keys:add ~/disposable_key.pub
 fi
 
 # Create a test area.
@@ -32,6 +45,7 @@ cleanup() {
     heroku addons:remove sendgrid:starter --confirm django-herokuapp-example
     heroku addons:remove heroku-postgresql --confirm django-herokuapp-example
     heroku apps:delete django-herokuapp-test --confirm django-herokuapp-test
+    heroku keys:remove travis
     deactivate
     cd $CWD
     rm -rf /tmp/django_herokuapp_test
