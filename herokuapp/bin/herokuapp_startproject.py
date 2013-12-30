@@ -4,6 +4,7 @@ import subprocess
 from distutils.spawn import find_executable
 
 from django.core import management
+from django.utils.crypto import get_random_string
 
 
 def main():
@@ -59,10 +60,28 @@ def main():
     ))
     if heroku_app_created:
         run("heroku", "apps:create", app_name)
+    # Generate a secret key.
+    secret_key = get_random_string(50, "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)")
+    # Generate the Heroku environment.
+    env = {
+        "SECRET_KEY": secret_key,
+        "PYTHONHASHSEED": "random",
+    }
     # Prompt for AWS access details.
-    aws_access_key = read_string("AWS access key", os.environ.get("AWS_ACCESS_KEY_ID"))
-    aws_access_secret = read_string("AWS access secret", os.environ.get("AWS_SECRET_ACCESS_KEY"))
-    s3_bucket_name = read_string("S3 bucket name", app_name)
+    env["AWS_ACCESS_KEY_ID"] = read_string("AWS access key", os.environ.get("AWS_ACCESS_KEY_ID"))
+    env["AWS_ACCESS_KEY_ID"] = read_string("AWS access secret", os.environ.get("AWS_SECRET_ACCESS_KEY"))
+    env["AWS_STORAGE_BUCKET_NAME"] = read_string("S3 bucket name", app_name)
+    # Push Heroku config.
+    heroku_config_sync = heroku_app_created and read_boolean("Sync configuration with Heroku?")
+    if heroku_config_sync:
+        run("heroku", "config:set", *[
+            "{key}={value}".format(
+                key = key,
+                value = value,
+            )
+            for key, value
+            in env.items()
+        ])
     # Create the project.
     heroku_config_sync = False
     if read_boolean("Create project template?"):
@@ -70,19 +89,11 @@ def main():
             project_name,
             ".",
             template = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "project_template")),
-            extensions = ("py", "txt", "slugignore", "conf", "gitignore", "env", "sh",),
+            extensions = ("py", "txt", "slugignore", "conf", "gitignore", "sh",),
             files = ("Procfile",),
             app_name = app_name,
             user = getpass.getuser(),
-            aws_access_key = aws_access_key,
-            aws_access_secret = aws_access_secret,
-            s3_bucket_name = s3_bucket_name,
         )
-        # Push Heroku config.
-        heroku_config_sync = heroku_app_created and read_boolean("Push configuration to Heroku?")
-        if heroku_config_sync:
-            run("heroku", "plugins:install", "git://github.com/ddollar/heroku-config.git")
-            run("heroku", "config:push")
     # Freeze project requirements.
     if read_boolean("Freeze pip requirements?"):
         with open("requirements.txt", "wb") as requirements_handle:
@@ -90,8 +101,10 @@ def main():
     # Provision SendGrid.
     if heroku_app_created and read_boolean("Provision SendGrid starter addon (free)?"):
         run("heroku", "addons:add", "sendgrid:starter")
-        if heroku_config_sync:
-            run("heroku", "config:pull")
+    # Write the environment file.
+    if heroku_config_sync:
+        with open(".env", "wb") as env_handle:
+            run("heroku", "config", "--shell", stdout=env_handle)
     # Provision Heroku postgres.
     if heroku_app_created and read_boolean("Provision Heroku Postgres dev addon (free)?"):
         run("heroku", "addons:add", "heroku-postgresql")

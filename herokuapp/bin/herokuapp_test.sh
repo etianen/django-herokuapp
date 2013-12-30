@@ -3,7 +3,7 @@
 
 CWD=`pwd`
 
-# Setup Heroku.
+# Install Heroku toolbelt.
 if [[ "$CI" == "true" ]]
 then
 wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh

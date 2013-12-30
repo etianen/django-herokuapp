@@ -2,7 +2,6 @@ include LICENSE
 include README.rst
 include .gitignore
 include .slugignore
-include .env
 include *.py
+include *.sh
 include Procfile
-
