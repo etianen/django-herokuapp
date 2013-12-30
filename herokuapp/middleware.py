@@ -10,8 +10,8 @@ class CanonicalDomainMiddleware(object):
     """Middleware that redirects to a canonical domain."""
     
     def __init__(self):
-        if settings.DEBUG:
-            raise MiddlewareNotUsed("CanonicalDomainMiddleware is not used when settings.DEBUG is True.")
+        if settings.DEBUG or not SITE_DOMAIN:
+            raise MiddlewareNotUsed
     
     def process_request(self, request):
         """If the request domain is not the canonical domain, redirect."""
