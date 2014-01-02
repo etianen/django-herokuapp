@@ -16,7 +16,7 @@ before_script:
 - printf "$HEROKU_USER\n$HEROKU_PASSWORD" | heroku login 
 - psql -c "create database django_herokuapp_test with owner $USER;" -U postgres
 script:
-- herokuapp_startproject django_herokuapp_test herokuapp_test --noinput
+- herokuapp_startproject.py django_herokuapp_test herokuapp_test --noinput
 - herokuapp_test/manage.sh test herokuapp --noinput
 - herokuapp_test/deploy.sh
 - curl --fail http://django-herokuapp-test.herokuapp.com/
