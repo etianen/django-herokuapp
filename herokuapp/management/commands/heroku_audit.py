@@ -13,7 +13,7 @@ from herokuapp.management.commands.base import HerokuCommandMixin
 
 class Command(HerokuCommandMixin, NoArgsCommand):
     
-    help = "Deploys this app to the Heroku platform."
+    help = "Tests this app for common Heroku deployment issues."
     
     option_list = BaseCommand.option_list + (
         make_option("--noinput",
@@ -70,7 +70,7 @@ class Command(HerokuCommandMixin, NoArgsCommand):
         ], _out=None)
 
     def heroku_config_get(self, name):
-        return self.heroku_config_get(name, _out=None)
+        return self.heroku("config:get", name, _out=None)
 
     def heroku_database_url(self):
         for line in self.heroku("config", shell=True, _out=None):

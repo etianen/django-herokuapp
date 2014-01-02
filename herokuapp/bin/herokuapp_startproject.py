@@ -1,20 +1,39 @@
-import os, os.path, getpass, sys, subprocess
+import os, os.path, getpass, subprocess, argparse
 
 from django.core import management
 
 
+parser = argparse.ArgumentParser(
+    description = "Start a new herokuapp Django project.",
+)
+parser.add_argument("project_name",
+    help = "The name of the project to create.",
+)
+parser.add_argument("dest_dir",
+    default = ".",
+    nargs = "?",
+    help = "The destination dir for the created project.",
+)
+parser.add_argument("--noinput", 
+    action = "store_false",
+    default = True,
+    dest = "interactive",
+    help = "Tells Django to NOT prompt the user for input of any kind.",
+)
+
+
 def main():
-    if len(sys.argv) < 2:
-        sys.stderr.write("herokuapp_startproject.py at least one argument (the project name).\n")
-        sys.exit(1)
-    # Prompt for project name.
-    project_name = sys.argv[1]
+    args = parser.parse_args()
     # Generate Heroku app name.
-    app_name = project_name.replace("_", "-")
+    app_name = args.project_name.replace("_", "-")
     # Create the project.
+    try:
+        os.makedirs(args.dest_dir)
+    except OSError:
+        pass
     management.call_command("startproject",
-        project_name,
-        ".",
+        args.project_name,
+        args.dest_dir,
         template = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "project_template")),
         extensions = ("py", "txt", "slugignore", "conf", "gitignore", "sh",),
         files = ("Procfile",),
@@ -22,7 +41,10 @@ def main():
         user = getpass.getuser(),
     )
     # Audit and configure the project for Heroku.
-    subprocess.call(["./manage.sh", "heroku_audit", "--fix"] + sys.argv[2:])
+    audit_args = [os.path.join(args.dest_dir, "manage.sh"), "heroku_audit", "--fix"]
+    if not args.interactive:
+        audit_args.append("--noinput")
+    subprocess.call(audit_args)
     # Give some help to the user.
     print "Heroku project created."
     print "Run Django management commands using `./manage.sh command_name`"

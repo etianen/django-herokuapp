@@ -3,23 +3,6 @@
 
 CWD=`pwd`
 
-# Install Heroku toolbelt.
-if [[ "$CI" == "true" ]]
-then
-# Install Heroku toolbelt.
-wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
-# Set Heroku access details.
-cat >> $HOME/.netrc << EOF
-machine api.heroku.com
-login $HEROKU_USER
-password $HEROKU_API_KEY
-machine api.heroku.com
-login $HEROKU_USER
-password $HEROKU_API_KEY
-EOF
-chmod 0600 $HOME/.netrc
-fi
-
 # Create a test area.
 cd /tmp
 mkdir django_herokuapp_test
