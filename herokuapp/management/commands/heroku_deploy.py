@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 
-import subprocess
 from optparse import make_option
 
 from django.core.management.base import NoArgsCommand, BaseCommand
@@ -42,23 +41,21 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             call_command("collectstatic", interactive=False)
         # Enter maintenance mode, if required.
         if kwargs["deploy_database"]:
-            self.call_heroku_command("maintenance:on")
+            self.heroku("maintenance:on")
         # Deploy app code.
         if kwargs["deploy_app"]:
-            self.stdout.write("Pushing latest version of app to Heroku...\n")
-            # Load app info.
-            app_info = self.call_heroku_shell_params_command("apps:info")
-            # Look up local branch.
-            (current_branch, _) = subprocess.Popen(("git rev-parse --abbrev-ref HEAD",), shell=True, stdout=subprocess.PIPE).communicate()
-            # Run the git push.
-            subprocess.call(("git", "push", app_info.get("git_url", "heroku"), "{current_branch}:master".format(current_branch=current_branch.strip()),))
+            self.stdout.write("Deploying latest version of app to Heroku...\n")
+            # Install the anvil plugin.
+            self.heroku("plugins:install", "https://github.com/ddollar/heroku-anvil")
+            # Deploy app.
+            self.heroku("build", release=True)
         # Deploy migrations.
         if kwargs["deploy_database"]:
             self.stdout.write("Deploying database...\n")
-            self.call_heroku_command("run", "python", "manage.py", "syncdb", "--noinput")
-            self.call_heroku_command("run", "python", "manage.py", "migrate", "--noinput")
+            self.heroku("run", "python", "manage.py", "syncdb", noinput=True)
+            self.heroku("run", "python", "manage.py", "migrate", noinput=True)
         if (kwargs["deploy_staticfiles"] and not kwargs["deploy_app"]) or kwargs["deploy_database"]:
-            self.call_heroku_command("restart")
+            self.heroku("restart")
         # Exit maintenance mode, if required.
         if kwargs["deploy_database"]:
-            self.call_heroku_command("maintenance:off")
+            self.heroku("maintenance:off")

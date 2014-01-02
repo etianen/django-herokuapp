@@ -1,8 +1,11 @@
 from __future__ import absolute_import
 
+import sh
 from optparse import make_option
+from functools import partial
 
-from herokuapp import commands
+from django.utils.functional import cached_property
+
 from herokuapp.settings import HEROKU_APP_NAME
 
 
@@ -16,15 +19,6 @@ class HerokuCommandMixin(object):
         ),
     )
     
-    def _configure_heroku_command_kwargs(self, kwargs):
-        if self.app:
-            kwargs.setdefault("app", self.app)
-    
-    def call_heroku_command(self, *args, **kwargs):
-        kwargs.setdefault("_sub_shell", True)
-        self._configure_heroku_command_kwargs(kwargs)
-        return commands.call(*args, **kwargs)
-    
-    def call_heroku_shell_params_command(self, *args, **kwargs):
-        self._configure_heroku_command_kwargs(kwargs)
-        return commands.call_shell_params(*args, **kwargs)
+    @cached_property
+    def heroku(self):
+        return partial(sh.heroku, app=self.app, _out=self.stdout)  # Not using bake(), as it gets the command order wrong.

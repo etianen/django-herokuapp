@@ -9,7 +9,7 @@ then
 # Install Heroku toolbelt.
 wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
 # Set Heroku access details.
-cat >> ~/.netrc << EOF
+cat >> $HOME/.netrc << EOF
 machine api.heroku.com
 login $HEROKU_USER
 password $HEROKU_API_KEY
@@ -17,18 +17,7 @@ machine api.heroku.com
 login $HEROKU_USER
 password $HEROKU_API_KEY
 EOF
-chmod 0600 ~/.netrc
-# Create throwaway SSH key.
-ssh-keygen -t rsa -N "" -C travis -f $HOME/disposable_key
-# Create SSH wrapper script.
-cat >> $HOME/ssh_wrapper << EOF
-#!/bin/sh
-exec ssh -o StrictHostKeychecking=no -o CheckHostIP=no -o UserKnownHostsFile=/dev/null -i $HOME/disposable_key -- "$@"
-EOF
-chmod +x ~/ssh_wrapper
-export GIT_SSH=$HOME/ssh_wrapper
-# Register temporary key.
-heroku keys:add ~/disposable_key.pub
+chmod 0600 $HOME/.netrc
 fi
 
 # Create a test area.
@@ -43,12 +32,11 @@ source venv/bin/activate
 # Register cleanup commands.
 cleanup() {
     heroku apps:delete django-herokuapp-test --confirm django-herokuapp-test
-    heroku keys:remove travis
     deactivate
     cd $CWD
     rm -rf /tmp/django_herokuapp_test
 }
-trap cleanup EXIT
+#trap cleanup EXIT
 
 # Install django-herokuapp from local filesystem.
 pip install $CWD
@@ -57,7 +45,6 @@ pip install $CWD
 herokuapp_startproject << EOF
 django_herokuapp_test
 
-y
 y
 
 
@@ -74,3 +61,5 @@ EOF
 # Run herokuapp tests.
 foreman run python manage.py test herokuapp --noinput
 
+# Deploy to heroku.
+DJANGO_SETTINGS_MODULE=django_herokuapp_test.settings.production foreman run python manage.py heroku_deploy

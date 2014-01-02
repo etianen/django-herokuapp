@@ -29,7 +29,9 @@ setup(
         "dj-database-url",
         "psycopg2",
         "django-storages",
+        "south",
         "boto",
+        "sh",
     ],
     classifiers = [
         "Development Status :: 4 - Beta",
