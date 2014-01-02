@@ -11,7 +11,7 @@ env:
   - secure: YRxxq4eh6/lMYTMkfsyXvDtLHQrf4C9HuJPieWHBEWUDYlCM/xqK1V4trk3vPlX4v5H8JPuRBq5WWO+gJQtaYXjUMqoVj6ne9E9yuxGS8hGPs3gbvnncwdqgUgMMp6DtZ2Xcqyh547e21Sw3a3Hl8TYKzKA6jUqfmiEF09BCqGk=
 install:
 - wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
-- python setup.py -q install --use-mirrors
+- pip install . --use-mirrors
 before_script:
 - printf "$HEROKU_USER\n$HEROKU_PASSWORD" | heroku login 
 - psql -c "create database django_herokuapp_test with owner $USER;" -U postgres
