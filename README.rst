@@ -8,7 +8,7 @@ Django sites on `Heroku <http://www.heroku.com/>`_.
 Features
 --------
 
-- ``start_herokuapp_project.py.py`` command for initialising a new Heroku project with sensible basic settings. 
+- ``start_herokuapp_project.py`` command for initialising a new Heroku project with sensible basic settings. 
 - ``./manage.py heroku_audit`` command for testing an app for common Heroku issues, and offering fixes.
 - ``./manage.py heroku_deploy`` command for deploying an app to Heroku, compatible with headless CI environments.
 - A growing documentation resource for best practices when hosting Django on Heroku.
@@ -22,7 +22,7 @@ Installation
 3. Read the rest of this README for pointers on setting up your Heroku site.  
 
 If you're creating a new Django site for hosting on Heroku, then you can give youself a headstart by running
-the ``start_herokuapp_project.py.py`` script that's bundled with this package.
+the ``start_herokuapp_project.py`` script that's bundled with this package.
 
 
 Site hosting - waitress
