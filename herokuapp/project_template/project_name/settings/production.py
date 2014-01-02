@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 import os
 import dj_database_url
+from django.utils.crypto import get_random_string
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -46,7 +47,7 @@ ALLOWED_HOSTS = (
 # Database settings.
 
 DATABASES = {
-    "default": dj_database_url.config(),
+    "default": dj_database_url.config(default="postgresql://"),
 }
 
 
@@ -62,11 +63,11 @@ STATICFILES_STORAGE = "require_s3.storage.OptimizedCachedStaticFilesStorage"
 
 # Amazon S3 settings.
 
-AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 
-AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 
-AWS_STORAGE_BUCKET_NAME = os.environ["AWS_STORAGE_BUCKET_NAME"]
+AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
 
 AWS_HEADERS = {
     "Cache-Control": "public, max-age=86400",
@@ -87,9 +88,9 @@ AWS_IS_GZIPPED = False
 
 EMAIL_HOST = "smtp.sendgrid.net"
 
-EMAIL_HOST_USER = os.environ["SENDGRID_USERNAME"]
+EMAIL_HOST_USER = os.environ.get("SENDGRID_USERNAME")
 
-EMAIL_HOST_PASSWORD = os.environ["SENDGRID_PASSWORD"]
+EMAIL_HOST_PASSWORD = os.environ.get("SENDGRID_PASSWORD")
 
 EMAIL_PORT = 25
 
@@ -216,7 +217,7 @@ CACHES = {
 
 # A secret key used for cryptographic algorithms.
 
-SECRET_KEY = os.environ["SECRET_KEY"]
+SECRET_KEY = os.environ.get("SECRET_KEY", get_random_string(50, "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"))
 
 
 # Logging configuration.

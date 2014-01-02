@@ -4,4 +4,5 @@
 # Runs a Django management command using the Heroku environment.
 ##
 
-foreman run python manage.py "$@"
+source .env 2>&1 /dev/null
+python manage.py $@

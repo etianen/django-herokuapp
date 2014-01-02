@@ -39,27 +39,13 @@ cleanup() {
 trap cleanup EXIT
 
 # Install django-herokuapp from local filesystem.
-pip install $CWD
+pip install $CWD --use-mirrors
 
 # Run the herokuapp_startproject command.
-herokuapp_startproject.py << EOF
-django_herokuapp_test
-
-y
-
-
-
-y
-y
-y
-y
-y
-y
-y
-EOF
+herokuapp_startproject.py django_herokuapp_test
 
 # Run herokuapp tests.
-foreman run python manage.py test herokuapp --noinput
+./manage.sh test herokuapp --noinput
 
 # Deploy to heroku.
-DJANGO_SETTINGS_MODULE=django_herokuapp_test.settings.production foreman run python manage.py heroku_deploy
+./deploy.sh
