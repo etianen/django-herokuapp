@@ -4,6 +4,7 @@
 # Deploys the app to Heroku.
 ##
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # CI specific configuration.
 #
@@ -23,12 +24,16 @@ if [[ "$HEROKU_USER" != "" ]] && [[ "$HEROKU_PASSWORD" != "" ]]
 then
     printf "$HEROKU_USER\n$HEROKU_PASSWORD" | heroku login
 fi
+# Download the Heroku config, if no .env file is present.
+if [ ! -f $DIR/.env ]
+heroku config --shell > $DIR/.env
+fi
 fi
 
 # Run tests.
-./manage.sh test --noinput
+$DIR/manage.sh test --noinput
 
 # Deploy code.
 DJANGO_SETTINGS_MODULE={{ project_name }}.settings.production
-./manage.sh audit --noinput
-./manage.sh heroku_deploy
+$DIR/manage.sh audit --noinput
+$DIR/manage.sh heroku_deploy
