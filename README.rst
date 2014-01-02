@@ -31,14 +31,14 @@ the ``herokuapp_startproject.py`` script that's bundled with this package from w
     $ virtualenv venv
     $ source venv/bin/activate
     $ pip install django-herokuapp
-    $ herokuapp_startproject.py your_project_name
+    $ herokuapp_startproject.py <your_project_name>
 
 
 Site hosting - waitress
 -----------------------
 
 A site hosted on Heroku has to handle traffic without the benefit of a buffering reverse proxy like nginx, which means
-that the normal approach of using a small pool of worker threads simply won't scale in production, particularly if
+that the normal approach of using a small pool of worker threads won't scale in production, particularly if
 serving clients over a slow connection.
 
 The solution is to use a buffering async master thread with sync workers instead, and the
@@ -48,7 +48,7 @@ Simply create a file called ``Profile`` in the root of your project, and add the
 
 ::
 
-    web: waitress-serve --port=$PORT your_project_name.wsgi:application
+    web: waitress-serve --port=$PORT <your_project_name>.wsgi:application
 
 
 Database hosting - Heroku Postgres
@@ -71,7 +71,7 @@ You can provision a starter package with Heroku Postgres using the following Her
 
 ::
 
-    $ heroku addons:add heroku-postgresql:dev -a your-app-name
+    $ heroku addons:add heroku-postgresql:dev -a <your-app-name>
 
 
 Static file hosting - Amazon S3
@@ -115,15 +115,17 @@ The recommended settings for hosting your static content with Amazon S3 is as fo
     }
 
 This configuration relies on the `django-require-s3 <https://github.com/etianen/django-require-s3>`_ package, which
-is included in the dependencies for django-herokuapp.
+is included in the dependencies for django-herokuapp. In particular, the use of `django-require <https://github.com/etianen/django-require`_
+to compress and serve your assets is recommended, since it allows assets to be precompiled during the project's
+build step, rather than on-the-fly as the site is running.
 
-You can then set your AWS account details by running the following command:
+You can set your AWS account details by running the following command:
 
 ::
 
     $ heroku config:set AWS_ACCESS_KEY_ID=your_key_id \
-      AWS_SECRET_ACCESS_KEY=your_secret_access_key
-      AWS_STORAGE_BUCKET_NAME=your_bucket_name -a your-app-name
+      AWS_SECRET_ACCESS_KEY=your_secret_access_key \
+      AWS_STORAGE_BUCKET_NAME=your_bucket_name -a <your-app-name>
 
 These settings will already be present in your django settings file if you created your project using
 the ``herokuapp_startproject.py`` script.
@@ -151,7 +153,7 @@ You can provision a starter package with SendGrid using the following Heroku com
 
 ::
 
-    $ heroku addons:add sendgrid:starter -a your-app-name
+    $ heroku addons:add sendgrid:starter -a <your-app-name>
 
 
 Optimizing compiled slug size
@@ -178,13 +180,13 @@ You can then generate a secret key in your Heroku config with the following comm
 
 ::
 
-    $ heroku config:set SECRET_KEY=`openssl rand -base64 32` -a your-app-name
+    $ heroku config:set SECRET_KEY=`openssl rand -base64 32` -a <your-app-name>
 
 It's also recommended that you configure Python to generate a new random seed every time it boots.
 
 ::
 
-    $ heroku config:set PYTHONHASHSEED=random -a your-app-name
+    $ heroku config:set PYTHONHASHSEED=random -a <your-app-name>
 
 
 Running your site in the Heroku environment
@@ -196,7 +198,7 @@ the Heroku configuration, you must first mirror your Heroku environment to a loc
 
 ::
 
-    $ heroku config --shell -a your-app-name > .env
+    $ heroku config --shell -a <your-app-name> > .env
 
 You can then run Django management commands using the Heroku ``foreman`` utility. For example, to start a local
 development server, simply run:
