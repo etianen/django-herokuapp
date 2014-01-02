@@ -1,6 +1,7 @@
 django-herokuapp changelog
 ==========================
 
+
 0.9.12 - MASTER
 ---------------
 

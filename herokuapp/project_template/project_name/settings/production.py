@@ -69,6 +69,8 @@ AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 
 AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
 
+AWS_AUTO_CREATE_BUCKET = True
+
 AWS_HEADERS = {
     "Cache-Control": "public, max-age=86400",
 }

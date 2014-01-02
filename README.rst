@@ -84,6 +84,7 @@ The recommended settings for hosting your static content with Amazon S3 is as fo
     AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "")
     AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
     AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME", "")
+    AWS_AUTO_CREATE_BUCKET = True
     AWS_HEADERS = {
         "Cache-Control": "public, max-age=86400",
     }
@@ -149,6 +150,30 @@ The smaller the size of your compiled project, the faster it can be redeployed o
 django-herokuapp provides a suggested `.slugignore <https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/.slugignore>`_
 file that should be placed in the root of your repository. If you've used the ``start_herokuapp_project.py`` script
 to set up your project, then this will have already been taken care of for you.
+
+
+Improving site security
+-----------------------
+
+Ideally, you should not store your site's ``SECRET_KEY`` setting in version control. Instead, it should be read
+from the Heroku config.
+
+::
+
+    from django.utils.crypto import get_random_string
+    SECRET_KEY = os.environ.get("SECRET_KEY", get_random_string(50, "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"))
+
+You can then generate a secret key in your Heroku config with the following command.
+
+::
+
+    $ heroku config:set SECRET_KEY=`openssl rand -base64 32`
+
+It's also recommended that you configure Python to generate a new random seed every time it boots.
+
+::
+
+    $ heroku config:set PYTHONHASHSEED=random
 
 
 Running your site in the Heroku environment
