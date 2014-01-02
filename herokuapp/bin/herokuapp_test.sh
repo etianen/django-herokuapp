@@ -42,7 +42,7 @@ trap cleanup EXIT
 pip install $CWD --use-mirrors
 
 # Run the herokuapp_startproject command.
-herokuapp_startproject.py django_herokuapp_test
+herokuapp_startproject.py django_herokuapp_test --noinput
 
 # Run herokuapp tests.
 ./manage.sh test herokuapp --noinput

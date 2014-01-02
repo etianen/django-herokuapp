@@ -4,5 +4,9 @@
 # Runs a Django management command using the Heroku environment.
 ##
 
-source .env 2>&1 /dev/null
+if [ -f .env ];
+then
+    export `cat .env`
+fi
+
 python manage.py $@

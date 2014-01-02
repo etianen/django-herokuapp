@@ -4,8 +4,8 @@ from django.core import management
 
 
 def main():
-    if len(sys.argv) != 2:
-        sys.stderr.write("herokuapp_startproject.py exactly one argument (the project name).\n")
+    if len(sys.argv) < 2:
+        sys.stderr.write("herokuapp_startproject.py at least one argument (the project name).\n")
         sys.exit(1)
     # Prompt for project name.
     project_name = sys.argv[1]
@@ -22,7 +22,7 @@ def main():
         user = getpass.getuser(),
     )
     # Audit and configure the project for Heroku.
-    subprocess.call(["./manage.sh", "heroku_audit", "--fix", "--noinput"])
+    subprocess.call(["./manage.sh", "heroku_audit", "--fix"] + sys.argv[2:])
     # Give some help to the user.
     print "Heroku project created."
     print "Run Django management commands using `./manage.sh command_name`"
