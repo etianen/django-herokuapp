@@ -208,10 +208,30 @@ template project settings directory <https://github.com/etianen/django-herokuapp
 If you've used the ``start_herokuapp_project.py`` script to set up your project, then this will have already been taken care of for you.
 
 
+Validating your Heroku setup
+----------------------------
+
+Once you've completed the above steps, and are confident that your site is suitable to deploy to Heroku,
+you can validate against common errors by running the ``manage.sh heroku_audit`` command (using the
+`./manage.sh wrapper script <https://github.com/etianen/django-herokuapp/blob/master/herokuapp/project_template/manage.sh>`_
+for brevity):
+
+::
+
+    $ ./manage.sh heroku_audit
+
+Many of the issues detected by ``heroku_audit`` have simple fixes. For a guided walkthrough of solutions, try
+running:
+
+::
+
+    $ ./manage.sh heroku_audit --fix
+
+
 Deploying (and redeploying) your site to Heroku
 -----------------------------------------------
 
-When your site is configured and ready to roll, you can deploy it to Heroku using the following command (uses the
+When your site is configured and ready to roll, you can deploy it to Heroku using the following command (using the
 `./manage.sh wrapper script <https://github.com/etianen/django-herokuapp/blob/master/herokuapp/project_template/manage.sh>`_
 for brevity):
 
