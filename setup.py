@@ -16,8 +16,7 @@ setup(
     url = "https://github.com/etianen/django-herokuapp",
     entry_points = {
         "console_scripts": [
-            "herokuapp_startproject = herokuapp.bin.herokuapp_startproject:main",
-            "herokuapp_test = herokuapp.bin.herokuapp_test:main",
+            "herokuapp_startproject.py = herokuapp.bin.herokuapp_startproject:main",
         ],
     },
     packages = find_packages(),
@@ -28,6 +27,7 @@ setup(
         "waitress",
         "dj-database-url",
         "psycopg2",
+        "south",
         "django-require-s3",
         "boto",
         "sh",

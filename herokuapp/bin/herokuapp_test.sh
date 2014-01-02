@@ -42,7 +42,7 @@ trap cleanup EXIT
 pip install $CWD
 
 # Run the herokuapp_startproject command.
-herokuapp_startproject << EOF
+herokuapp_startproject.py << EOF
 django_herokuapp_test
 
 y
