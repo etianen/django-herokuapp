@@ -4,6 +4,8 @@
 # Deploys the app to Heroku.
 ##
 
+set -e
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # CI specific configuration.

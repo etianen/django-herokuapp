@@ -4,6 +4,8 @@
 # Runs a Django management command using the Heroku environment.
 ##
 
+set -e
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [ -f .env ];
