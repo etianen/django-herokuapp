@@ -31,18 +31,22 @@ class Command(HerokuCommandMixin, NoArgsCommand):
     ) + HerokuCommandMixin.option_list
     
     def prompt_for_fix(self, error, message):
-        self.stderr.write(error)
-        if self.interactive and self.fix:
-            answer = ""
-            while not answer in ("y", "n"):
-                answer = raw_input("{message} (y/n) > ".format(
-                    message = message,
-                )).lower().strip()
-            answer_bool = answer == "y"
-        else:
-            answer_bool = self.fix
+        if self.fix:
+            self.stdout.write(error + "\n")
+            if self.interactive:
+                # Ask to fix the issue.
+                answer = ""
+                while not answer in ("y", "n"):
+                    answer = raw_input("{message} (y/n) > ".format(
+                        message = message,
+                    )).lower().strip()
+                answer_bool = answer == "y"
+            elif self.fix:
+                # Attempt to auto-fix the issue.
+                answer_bool = True
+        # Exit if no fix provided.
         if not answer_bool:
-            self.stderr.write("Heroku audit aborted.")
+            self.stderr.write("Heroku audit aborted.\n")
             sys.exit(1)
 
     def read_string(self, message, default):
