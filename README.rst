@@ -8,8 +8,9 @@ Django sites on `Heroku <http://www.heroku.com/>`_.
 Features
 --------
 
-- ``start_herokuapp_project`` command for initialising a new Heroku project with sensible basic settings. 
-- ``./manage.py herokuapp`` subcommand for running Django commands in a Heroku environment.
+- ``start_herokuapp_project.py.py`` command for initialising a new Heroku project with sensible basic settings. 
+- ``./manage.py heroku_audit`` command for testing an app for common Heroku issues, and offering fixes.
+- ``./manage.py heroku_deploy`` command for deploying an app to Heroku, compatible with headless CI environments.
 - A growing documentation resource for best practices when hosting Django on Heroku.
 
 
@@ -21,7 +22,7 @@ Installation
 3. Read the rest of this README for pointers on setting up your Heroku site.  
 
 If you're creating a new Django site for hosting on Heroku, then you can give youself a headstart by running
-the ``start_herokuapp_project`` script that's bundled with this package.
+the ``start_herokuapp_project.py.py`` script that's bundled with this package.
 
 
 Site hosting - waitress
@@ -36,7 +37,7 @@ The solution is to use a buffering async master thread with sync workers instead
 
 django-herokuapp provides a `Procfile <https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/Procfile>`_
 for running waitress on your Heroku site. This file should be tweaked as desired, and placed in the root of your repository.
-If you've used the ``start_herokuapp_project`` script to set up your project, then this will have already been taken
+If you've used the ``start_herokuapp_project.py`` script to set up your project, then this will have already been taken
 care of for you.
 
 
@@ -113,7 +114,7 @@ You can then set your AWS account details by running the following command:
 Your static files will be automatically synced with Amazon S3 whenever you push to Heroku.
 
 These settings will already be present in your django settings file if you created your project using
-the ``start_herokuapp_project`` script.
+the ``start_herokuapp_project.py`` script.
 
 
 Email hosting - SendGrid
@@ -132,7 +133,7 @@ the `SendGrid Add-on <https://addons.heroku.com/sendgrid>`_ to send your site's 
     EMAIL_USE_TLS = False
 
 These settings will already be present in your django settings file if you created your project using
-the ``start_herokuapp_project`` script.
+the ``start_herokuapp_project.py`` script.
 
 You can provision a starter package with SendGrid using the following Heroku command:
 
@@ -146,7 +147,7 @@ Optimizing compiled slug size
 
 The smaller the size of your compiled project, the faster it can be redeployed on Heroku servers. To this end,
 django-herokuapp provides a suggested `.slugignore <https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/.slugignore>`_
-file that should be placed in the root of your repository. If you've used the ``start_herokuapp_project`` script
+file that should be placed in the root of your repository. If you've used the ``start_herokuapp_project.py`` script
 to set up your project, then this will have already been taken care of for you.
 
 
@@ -155,32 +156,43 @@ Running your site in the Heroku environment
 
 Because your site is configured to some of it's configuration from environmental variables stored on
 Heroku, running a development server can be tricky. In order to run the development server using
-the Heroku configuration, simply use the following command:
+the Heroku configuration, simply use the following command, you must first mirror your Heroku environment
+to a local ``.env`` file.
 
 ::
 
-    $ ./manage.py herokuapp runserver
+    $ heroku config --shell > .env
 
-This will allow your local development server to store files on Amazon S3 and send emails via SendGrid. Accessing
-the Heroku Postgres database is impossible, but you can run a local PostgreSQL server instead. If you're
+You can then run Django management commands using the Heroku ``foreman`` utility. For example, to start a local
+development server, simply run:
+
+::
+
+    $ foreman run python manage.py runserver
+
+django-herokuapp provides a useful `./manage.sh wrapper script <https://github.com/etianen/django-herokuapp/blob/master/herokuapp/project_template/manage.sh>`_
+that you can place in the root of your project. If you've used the ``start_herokuapp_project.py`` script
+to set up your project, then this will have already been taken care of for you.
+
+Accessing the live Heroku Postgres database is a bad idea. Instead, you should provide a local settings file,
+exclude it from version control, and connect to a local PostgreSQL server. If you're
 on OSX, then the excellent `Postgres.app <http://postgresapp.com/>`_ will make this very easy.
 
-You can run any other Django management command using the Heroku configuration by using the ``herokuapp`` subcommand.
-For example, you can run a Django shell using the Heroku configuration like this:
-
-::
-
-    $ ./manage.py herokuapp shell
+A suggested settings file layout, including the appropriate local settings, can be found in the `django-herokuapp
+template project settings directory <https://github.com/etianen/django-herokuapp/tree/master/herokuapp/project_template/project_name/settings>`_.
+If you've used the ``start_herokuapp_project.py`` script to set up your project, then this will have already been taken care of for you.
 
 
 Deploying (and redeploying) your site to Heroku
 -----------------------------------------------
 
-When your site is configured and ready to roll, you can deploy it to Heroku using the following command:
+When your site is configured and ready to roll, you can deploy it to Heroku using the following command (uses the
+`./manage.sh wrapper script <https://github.com/etianen/django-herokuapp/blob/master/herokuapp/project_template/manage.sh>`_
+for brevity):
 
 ::
 
-    $ DJANGO_SETTINGS_MODULE=your_app.settings.production ./manage.py herokuapp heroku_deploy
+    $ DJANGO_SETTINGS_MODULE=your_app.settings.production ./manage.sh heroku_deploy
 
 This will carry out the following actions:
 
@@ -190,7 +202,12 @@ This will carry out the following actions:
 
 This command can be run whenever you need to redeploy your app. For faster redeploys, and to minimise
 downtime, it's a good idea to disable static file syncing and/or database syncing when they're not
-required. 
+required.
+
+For a simple one-liner deploy that works in a headless CI environment (such as `Travis CI <http://travis-ci.org/>`_ or
+`Drone.io <http://drone.io/>`_), django-herokuapp provides a useful `deploy.sh script <https://github.com/etianen/django-herokuapp/blob/master/herokuapp/project_template/deploy.sh>`_
+that can be copied to the root of your project. If you've used the ``start_herokuapp_project.py`` script to set up your project,
+then this will have already been taken care of for you.
 
 
 Support and announcements

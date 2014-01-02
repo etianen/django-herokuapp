@@ -1,6 +1,14 @@
 django-herokuapp changelog
 ==========================
 
+0.9.12 - MASTER
+---------------
+
+- Adding in Heroku-compatible logging configuration to project template settings.
+- Updated project template to match Django 1.6 default settings.
+- Added heroku_audit command.
+- Removing herokuapp subcommand. Using a local .env file is preferred.
+
 
 0.9.11 - 20/02/2013
 -------------------
