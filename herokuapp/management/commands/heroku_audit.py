@@ -59,7 +59,7 @@ class Command(HerokuCommandMixin, NoArgsCommand):
         else:
             return default
 
-    def heroku_config(self, **kwargs):
+    def heroku_config_set(self, **kwargs):
         self.heroku("config:set", *[
             "{key}={value}".format(
                 key = key,
@@ -68,6 +68,9 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             for key, value
             in kwargs.items()
         ], _out=None)
+
+    def heroku_config_get(self, name):
+        return self.heroku_config_get(name, _out=None)
 
     def heroku_database_url(self):
         for line in self.heroku("config", shell=True, _out=None):
@@ -87,17 +90,17 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             self.heroku("apps:create", self.app)
             self.stdout.write("Heroku app created.")
         # Check for AWS access details.
-        if not self.heroku("config:get", "AWS_ACCESS_KEY_ID"):
+        if not self.heroku_config_get("AWS_ACCESS_KEY_ID"):
             self.prompt_for_fix("Amazon S3 access details missing from Heroku config.", "Setup now?")
             aws_env = {}
             aws_env["AWS_ACCESS_KEY_ID"] = self.read_string("AWS access key", os.environ.get("AWS_ACCESS_KEY_ID"))
             aws_env["AWS_SECRET_ACCESS_KEY"] = self.read_string("AWS access secret", os.environ.get("AWS_SECRET_ACCESS_KEY"))
             aws_env["AWS_STORAGE_BUCKET_NAME"] = self.read_string("S3 bucket name", self.app)
             # Save Heroku config.
-            self.heroku_config(**aws_env)
+            self.heroku_config_set(**aws_env)
             self.stdout.write("Amazon S3 config written to Heroku config.")
         # Check for SendGrid settings.
-        if not self.heroku("config:get", "SENDGRID_USERNAME"):
+        if not self.heroku_config_get("SENDGRID_USERNAME"):
             self.prompt_for_fix("SendGrid addon missing.", "Provision SendGrid starter addon (free)?")
             self.heroku("addons:add", "sendgrid:starter")
             self.stdout.write("SendGrid addon provisioned.")
@@ -108,20 +111,20 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             self.heroku("pg:wait")
             self.stdout.write("Heroku Postgres addon provisioned.")
         # Check for promoted database URL.
-        if not self.heroku("config:get", "DATABASE_URL"):
+        if not self.heroku_config_get("DATABASE_URL"):
             database_url = self.heroku_database_url()
             self.prompt_for_fix("No primary database URL set.", "Promote {database_url}?".format(database_url=database_url))
             self.heroku("pg:promote", database_url)
             self.stdout.write("Heroku primary database URL set.")
         # Check for secret key.
-        if not self.heroku("config:get", "SECRET_KEY"):
+        if not self.heroku_config_get("SECRET_KEY"):
             self.prompt_for_fix("Secret key missing from Heroku config.", "Generate now?")
-            self.heroku_config(SECRET_KEY=get_random_string(50, "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"))
+            self.heroku_config_set(SECRET_KEY=get_random_string(50, "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"))
             self.stdout.write("Secret key written to Heroku config.")
         # Check for Python hash seed.
-        if not self.heroku("config:get", "PYTHONHASHSEED"):
+        if not self.heroku_config_get("PYTHONHASHSEED"):
             self.prompt_for_fix("Python hash seed missing from Heroku config.", "Set now?")
-            self.heroku_config(PYTHONHASHSEED="random")
+            self.heroku_config_set(PYTHONHASHSEED="random")
             self.stdout.write("Secret key written to Heroku config.")
         # Check for Procfile.
         if not os.path.exists("Procfile"):
