@@ -94,5 +94,6 @@ def main():
         heroku("config", shell=True, _out=".env")
     # Give some help to the user.
     print "Heroku project started."
-    print "Run your local server with `foreman run python manage.py runserver`"
-    print "Deploy to Heroku with `foreman run python manage.py heroku_deploy`"
+    print "Run Django management commands using `./manage.sh command_name`"
+    print "Run your local server with `./manage.sh runserver`"
+    print "Deploy to Heroku with `./deploy.sh`"
