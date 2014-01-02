@@ -132,20 +132,21 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             self.heroku_config_set(PYTHONHASHSEED="random")
             self.stdout.write("Secret key written to Heroku config.")
         # Check for Procfile.
-        if not os.path.exists("Procfile"):
+        procfile_path = os.path.join(settings.BASE_DIR, "..", "Procfile")
+        if not os.path.exists(procfile_path):
             self.prompt_for_fix("Missing Procfile.", "Create now?")
-            with open("Procfile", "wb") as procfile_handle:
+            with open(procfile_path, "wb") as procfile_handle:
                 procfile_handle.write("web: waitress-serve --port=$PORT {project_name}.wsgi:application\n".format(
                     project_name = os.environ["DJANGO_SETTINGS_MODULE"].split(".", 1)[0],
                 ))
         # Check for requirements.txt.
-        requirements_path = os.path.join(settings.BASE_DIR, "requirements.txt")
+        requirements_path = os.path.join(settings.BASE_DIR, "..", "requirements.txt")
         if not os.path.exists(requirements_path):
             self.prompt_for_fix("Missing requirements.txt file.", "Create now?")
             sh.pip.freeze(_out=requirements_path)
             self.stdout.write("Dependencies frozen to requirements.txt.")
         # Check for .env file.
-        env_path = os.path.join(settings.BASE_DIR, ".env")
+        env_path = os.path.join(settings.BASE_DIR, "..", ".env")
         if not os.path.exists(env_path):
             self.prompt_for_fix("Missing .env file.", "Create now?")
             self.heroku("config", shell=True, _out=env_path)
