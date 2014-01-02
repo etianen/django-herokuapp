@@ -8,10 +8,10 @@ Django sites on `Heroku <http://www.heroku.com/>`_.
 Features
 --------
 
-- ``start_herokuapp_project.py`` command for initialising a new Heroku project with sensible basic settings. 
+- ``herokuapp_startproject.py`` command for initialising a new Heroku project with sensible basic settings. 
 - ``./manage.py heroku_audit`` command for testing an app for common Heroku issues, and offering fixes.
-- ``./manage.py heroku_deploy`` command for deploying an app to Heroku, compatible with headless CI environments (such as `Travis CI <http://travis-ci.org/>`_ or
-`Drone.io <http://drone.io/>`_).
+- ``./manage.py heroku_deploy`` command for deploying an app to Heroku, compatible with headless CI environments
+  (such as `Travis CI <http://travis-ci.org/>`_ or `Drone.io <http://drone.io/>`_).
 - A growing documentation resource for best practices when hosting Django on Heroku.
 
 
@@ -23,7 +23,7 @@ Installation
 3. Read the rest of this README for pointers on setting up your Heroku site.  
 
 If you're creating a new Django site for hosting on Heroku, then you can give youself a headstart by running
-the ``start_herokuapp_project.py`` script that's bundled with this package from within a fresh virtual environment.
+the ``herokuapp_startproject.py`` script that's bundled with this package from within a fresh virtual environment.
 
 ::
 
@@ -31,7 +31,7 @@ the ``start_herokuapp_project.py`` script that's bundled with this package from 
     $ virtualenv venv
     $ source venv/bin/activate
     $ pip install django-herokuapp
-    $ start_herokuapp_project.py your_project_name
+    $ herokuapp_startproject.py your_project_name
 
 
 Site hosting - waitress
@@ -125,7 +125,7 @@ You can then set your AWS account details by running the following command:
 Your static files will be automatically synced with Amazon S3 whenever you push to Heroku.
 
 These settings will already be present in your django settings file if you created your project using
-the ``start_herokuapp_project.py`` script.
+the ``herokuapp_startproject.py`` script.
 
 
 Email hosting - SendGrid
@@ -144,7 +144,7 @@ the `SendGrid Add-on <https://addons.heroku.com/sendgrid>`_ to send your site's 
     EMAIL_USE_TLS = False
 
 These settings will already be present in your django settings file if you created your project using
-the ``start_herokuapp_project.py`` script.
+the ``herokuapp_startproject.py`` script.
 
 You can provision a starter package with SendGrid using the following Heroku command:
 
@@ -158,7 +158,7 @@ Optimizing compiled slug size
 
 The smaller the size of your compiled project, the faster it can be redeployed on Heroku servers. To this end,
 django-herokuapp provides a suggested `.slugignore <https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/.slugignore>`_
-file that should be placed in the root of your project. If you've used the ``start_herokuapp_project.py`` script
+file that should be placed in the root of your project. If you've used the ``herokuapp_startproject.py`` script
 to set up your project, then this will have already been taken care of for you.
 
 
@@ -206,7 +206,7 @@ development server, simply run:
     $ foreman run python manage.py runserver
 
 django-herokuapp provides a useful `./manage.sh wrapper script <https://github.com/etianen/django-herokuapp/blob/master/herokuapp/project_template/manage.sh>`_
-that you can place in the root of your project. If you've used the ``start_herokuapp_project.py`` script
+that you can place in the root of your project. If you've used the ``herokuapp_startproject.py`` script
 to set up your project, then this will have already been taken care of for you.
 
 Accessing the live Heroku Postgres database is a bad idea. Instead, you should provide a local settings file,
@@ -215,7 +215,7 @@ on OSX, then the excellent `Postgres.app <http://postgresapp.com/>`_ will make t
 
 A suggested settings file layout, including the appropriate local settings, can be found in the `django-herokuapp
 template project settings directory <https://github.com/etianen/django-herokuapp/tree/master/herokuapp/project_template/project_name/settings>`_.
-If you've used the ``start_herokuapp_project.py`` script to set up your project, then this will have already been taken care of for you.
+If you've used the ``herokuapp_startproject.py`` script to set up your project, then this will have already been taken care of for you.
 
 
 Validating your Heroku setup
@@ -261,7 +261,7 @@ required.
 
 For a simple one-liner deploy that works in a headless CI environments (such as `Travis CI <http://travis-ci.org/>`_ or
 `Drone.io <http://drone.io/>`_), django-herokuapp provides a useful `deploy.sh script <https://github.com/etianen/django-herokuapp/blob/master/herokuapp/project_template/deploy.sh>`_
-that can be copied to the root of your project. If you've used the ``start_herokuapp_project.py`` script to set up your project,
+that can be copied to the root of your project. If you've used the ``herokuapp_startproject.py`` script to set up your project,
 then this will have already been taken care of for you.
 
 
