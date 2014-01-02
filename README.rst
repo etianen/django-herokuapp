@@ -65,13 +65,13 @@ The recommended settings for using Heroku Postgres are as follows:
     }
 
 This configuration relies on the `dj-database-url <https://github.com/kennethreitz/dj-database-url>`_ package, which
-is included in the optional ``postgres`` dependencies for django-herokuapp.
+is included in the dependencies for django-herokuapp.
 
 You can provision a starter package with Heroku Postgres using the following Heroku command:
 
 ::
 
-    $ heroku addons:add heroku-postgresql:dev
+    $ heroku addons:add heroku-postgresql:dev -a your-app-name
 
 
 Static file hosting - Amazon S3
@@ -88,7 +88,7 @@ The recommended settings for hosting your static content with Amazon S3 is as fo
     DEFAULT_FILE_STORAGE = "storages.backends.s3boto.S3BotoStorage"
 
     # Use Amazon S3 for static files storage.
-    STATICFILES_STORAGE = "storages.backends.s3boto.S3BotoStorage"
+    STATICFILES_STORAGE = "require_s3.storage.OptimizedCachedStaticFilesStorage"
 
     # Amazon S3 settings.
     AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "")
@@ -114,15 +114,16 @@ The recommended settings for hosting your static content with Amazon S3 is as fo
         },
     }
 
+This configuration relies on the `django-require-s3 <https://github.com/etianen/django-require-s3>`_ package, which
+is included in the dependencies for django-herokuapp.
+
 You can then set your AWS account details by running the following command:
 
 ::
 
-    $ heroku config:set AWS_ACCESS_KEY_ID=your_key_id
-    $ heroku config:set AWS_SECRET_ACCESS_KEY=your_secret_access_key
-    $ heroku config:set AWS_STORAGE_BUCKET_NAME=your_bucket_name
-
-Your static files will be automatically synced with Amazon S3 whenever you push to Heroku.
+    $ heroku config:set AWS_ACCESS_KEY_ID=your_key_id \
+      AWS_SECRET_ACCESS_KEY=your_secret_access_key
+      AWS_STORAGE_BUCKET_NAME=your_bucket_name -a your-app-name
 
 These settings will already be present in your django settings file if you created your project using
 the ``herokuapp_startproject.py`` script.
@@ -150,7 +151,7 @@ You can provision a starter package with SendGrid using the following Heroku com
 
 ::
 
-    $ heroku addons:add sendgrid:starter
+    $ heroku addons:add sendgrid:starter -a your-app-name
 
 
 Optimizing compiled slug size
@@ -177,13 +178,13 @@ You can then generate a secret key in your Heroku config with the following comm
 
 ::
 
-    $ heroku config:set SECRET_KEY=`openssl rand -base64 32`
+    $ heroku config:set SECRET_KEY=`openssl rand -base64 32` -a your-app-name
 
 It's also recommended that you configure Python to generate a new random seed every time it boots.
 
 ::
 
-    $ heroku config:set PYTHONHASHSEED=random
+    $ heroku config:set PYTHONHASHSEED=random -a your-app-name
 
 
 Running your site in the Heroku environment
@@ -191,12 +192,11 @@ Running your site in the Heroku environment
 
 Because your site is configured to some of it's configuration from environmental variables stored on
 Heroku, running a development server can be tricky. In order to run the development server using
-the Heroku configuration, simply use the following command, you must first mirror your Heroku environment
-to a local ``.env`` file.
+the Heroku configuration, you must first mirror your Heroku environment to a local ``.env`` file.
 
 ::
 
-    $ heroku config --shell > .env
+    $ heroku config --shell -a your-app-name > .env
 
 You can then run Django management commands using the Heroku ``foreman`` utility. For example, to start a local
 development server, simply run:
@@ -207,7 +207,12 @@ development server, simply run:
 
 django-herokuapp provides a useful `./manage.sh wrapper script <https://github.com/etianen/django-herokuapp/blob/master/herokuapp/project_template/manage.sh>`_
 that you can place in the root of your project. If you've used the ``herokuapp_startproject.py`` script
-to set up your project, then this will have already been taken care of for you.
+to set up your project, then this will have already been taken care of for you. Running Django management commands
+then becomes as simple as:
+
+::
+
+    $ ./manage.sh runserver
 
 Accessing the live Heroku Postgres database is a bad idea. Instead, you should provide a local settings file,
 exclude it from version control, and connect to a local PostgreSQL server. If you're

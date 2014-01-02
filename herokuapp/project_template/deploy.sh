@@ -27,7 +27,7 @@ fi
 # Download the Heroku config, if no .env file is present.
 if [ ! -f $DIR/.env ]
 then
-heroku config --shell > $DIR/.env
+heroku config --shell -a {{ app_name }} > $DIR/.env
 fi
 fi
 
