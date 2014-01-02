@@ -115,7 +115,7 @@ The recommended settings for hosting your static content with Amazon S3 is as fo
     }
 
 This configuration relies on the `django-require-s3 <https://github.com/etianen/django-require-s3>`_ package, which
-is included in the dependencies for django-herokuapp. In particular, the use of `django-require <https://github.com/etianen/django-require`_
+is included in the dependencies for django-herokuapp. In particular, the use of `django-require <https://github.com/etianen/django-require>`_
 to compress and serve your assets is recommended, since it allows assets to be precompiled during the project's
 build step, rather than on-the-fly as the site is running.
 
@@ -229,9 +229,7 @@ Validating your Heroku setup
 ----------------------------
 
 Once you've completed the above steps, and are confident that your site is suitable to deploy to Heroku,
-you can validate against common errors by running the ``manage.sh heroku_audit`` command (using the
-`./manage.sh wrapper script <https://github.com/etianen/django-herokuapp/blob/master/herokuapp/project_template/manage.sh>`_
-for brevity):
+you can validate against common errors by running the ``./manage.sh heroku_audit`` command.
 
 ::
 
@@ -248,9 +246,7 @@ running:
 Deploying (and redeploying) your site to Heroku
 -----------------------------------------------
 
-When your site is configured and ready to roll, you can deploy it to Heroku using the following command (using the
-`./manage.sh wrapper script <https://github.com/etianen/django-herokuapp/blob/master/herokuapp/project_template/manage.sh>`_
-for brevity):
+When your site is configured and ready to roll, you can deploy it to Heroku using the following command.
 
 ::
 
