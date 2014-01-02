@@ -55,9 +55,9 @@ DATABASES = {
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto.S3BotoStorage"
 
 
-# Use Amazon S3 for static files storage.
+# Use Amazon S3 and RequireJS for static files storage.
 
-STATICFILES_STORAGE = "storages.backends.s3boto.S3BotoStorage"
+STATICFILES_STORAGE = "require_s3.storage.OptimizedCachedStaticFilesStorage"
 
 
 # Amazon S3 settings.
