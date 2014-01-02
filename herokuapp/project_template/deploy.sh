@@ -26,6 +26,7 @@ then
 fi
 # Download the Heroku config, if no .env file is present.
 if [ ! -f $DIR/.env ]
+then
 heroku config --shell > $DIR/.env
 fi
 fi
