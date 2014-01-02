@@ -267,7 +267,11 @@ required.
 For a simple one-liner deploy that works in a headless CI environments (such as `Travis CI <http://travis-ci.org/>`_ or
 `Drone.io <http://drone.io/>`_), django-herokuapp provides a useful `deploy.sh script <https://github.com/etianen/django-herokuapp/blob/master/herokuapp/project_template/deploy.sh>`_
 that can be copied to the root of your project. If you've used the ``herokuapp_startproject.py`` script to set up your project,
-then this will have already been taken care of for you.
+then this will have already been taken care of for you. Deploying then simply becomes:
+
+::
+
+    $ ./deploy.sh
 
 
 Support and announcements
