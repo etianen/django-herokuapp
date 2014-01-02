@@ -10,7 +10,8 @@ Features
 
 - ``start_herokuapp_project.py`` command for initialising a new Heroku project with sensible basic settings. 
 - ``./manage.py heroku_audit`` command for testing an app for common Heroku issues, and offering fixes.
-- ``./manage.py heroku_deploy`` command for deploying an app to Heroku, compatible with headless CI environments.
+- ``./manage.py heroku_deploy`` command for deploying an app to Heroku, compatible with headless CI environments (such as `Travis CI <http://travis-ci.org/>`_ or
+`Drone.io <http://drone.io/>`_).
 - A growing documentation resource for best practices when hosting Django on Heroku.
 
 
@@ -22,7 +23,15 @@ Installation
 3. Read the rest of this README for pointers on setting up your Heroku site.  
 
 If you're creating a new Django site for hosting on Heroku, then you can give youself a headstart by running
-the ``start_herokuapp_project.py`` script that's bundled with this package.
+the ``start_herokuapp_project.py`` script that's bundled with this package from within a fresh virtual environment.
+
+::
+
+    $ mkdir your/project/location
+    $ virtualenv venv
+    $ source venv/bin/activate
+    $ pip install django-herokuapp
+    $ start_herokuapp_project.py your_project_name
 
 
 Site hosting - waitress
@@ -35,10 +44,11 @@ serving clients over a slow connection.
 The solution is to use a buffering async master thread with sync workers instead, and the
 `waitress <https://pypi.python.org/pypi/waitress/>`_ project provides an excellent implementation of this approach. 
 
-django-herokuapp provides a `Procfile <https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/Procfile>`_
-for running waitress on your Heroku site. This file should be tweaked as desired, and placed in the root of your repository.
-If you've used the ``start_herokuapp_project.py`` script to set up your project, then this will have already been taken
-care of for you.
+Simply create a file called ``Profile`` in the root of your project, and add the following line to it:
+
+::
+
+    web: waitress-serve --port=$PORT your_project_name.wsgi:application
 
 
 Database hosting - Heroku Postgres
@@ -148,7 +158,7 @@ Optimizing compiled slug size
 
 The smaller the size of your compiled project, the faster it can be redeployed on Heroku servers. To this end,
 django-herokuapp provides a suggested `.slugignore <https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/.slugignore>`_
-file that should be placed in the root of your repository. If you've used the ``start_herokuapp_project.py`` script
+file that should be placed in the root of your project. If you've used the ``start_herokuapp_project.py`` script
 to set up your project, then this will have already been taken care of for you.
 
 
@@ -242,14 +252,14 @@ for brevity):
 This will carry out the following actions:
 
 - Sync static files to Amazon S3 (disable with the ``--no-staticfiles`` switch).
-- Upload your app to the Heroku platform (disable with the ``--no-app`` switch).
+- Deploy your app to the Heroku platform using `anvil <https://github.com/ddollar/heroku-anvil>`_ (disable with the ``--no-app`` switch).
 - Run ``syncdb`` and ``migrate`` for your live database (disable with the ``--no-db`` switch).
 
 This command can be run whenever you need to redeploy your app. For faster redeploys, and to minimise
 downtime, it's a good idea to disable static file syncing and/or database syncing when they're not
 required.
 
-For a simple one-liner deploy that works in a headless CI environment (such as `Travis CI <http://travis-ci.org/>`_ or
+For a simple one-liner deploy that works in a headless CI environments (such as `Travis CI <http://travis-ci.org/>`_ or
 `Drone.io <http://drone.io/>`_), django-herokuapp provides a useful `deploy.sh script <https://github.com/etianen/django-herokuapp/blob/master/herokuapp/project_template/deploy.sh>`_
 that can be copied to the root of your project. If you've used the ``start_herokuapp_project.py`` script to set up your project,
 then this will have already been taken care of for you.

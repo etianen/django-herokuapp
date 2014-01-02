@@ -36,7 +36,6 @@ def main():
         args.dest_dir,
         template = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "project_template")),
         extensions = ("py", "txt", "slugignore", "conf", "gitignore", "sh",),
-        files = ("Procfile",),
         app_name = app_name,
         user = getpass.getuser(),
     )
