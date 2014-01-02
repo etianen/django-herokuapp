@@ -28,6 +28,8 @@ the ``herokuapp_startproject.py`` script that's bundled with this package from w
 ::
 
     $ mkdir your/project/location
+    $ cd your/project/location
+    $ git init
     $ virtualenv venv
     $ source venv/bin/activate
     $ pip install django-herokuapp

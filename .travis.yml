@@ -20,7 +20,7 @@ script:
 - rm herokuapp_test/requirements.txt
 - herokuapp_test/manage.sh test herokuapp --noinput
 - herokuapp_test/deploy.sh
-- curl --fail http://django-herokuapp-test.herokuapp.com/
+- curl --output /dev/null --silent --head --fail http://django-herokuapp-test.herokuapp.com/admin/
 after_script:
 - heroku apps:delete django-herokuapp-test --confirm django-herokuapp-test
 notifications:
