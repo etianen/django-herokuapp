@@ -42,9 +42,11 @@ class Command(HerokuCommandMixin, NoArgsCommand):
                         message = message,
                     )).lower().strip()
                 answer_bool = answer == "y"
-            elif self.fix:
+            else:
                 # Attempt to auto-fix the issue.
                 answer_bool = True
+        else:
+            answer_bool = False
         # Exit if no fix provided.
         if not answer_bool:
             self.stderr.write("Heroku audit aborted.\n")
