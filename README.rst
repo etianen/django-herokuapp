@@ -73,7 +73,7 @@ You can provision a starter package with Heroku Postgres using the following Her
 
 ::
 
-    $ heroku addons:add heroku-postgresql:dev -a <your-app-name>
+    $ heroku addons:add heroku-postgresql:dev
 
 
 Static file hosting - Amazon S3
@@ -127,7 +127,7 @@ You can set your AWS account details by running the following command:
 
     $ heroku config:set AWS_ACCESS_KEY_ID=your_key_id \
       AWS_SECRET_ACCESS_KEY=your_secret_access_key \
-      AWS_STORAGE_BUCKET_NAME=your_bucket_name -a <your-app-name>
+      AWS_STORAGE_BUCKET_NAME=your_bucket_name
 
 These settings will already be present in your django settings file if you created your project using
 the ``herokuapp_startproject.py`` script.
@@ -155,7 +155,7 @@ You can provision a starter package with SendGrid using the following Heroku com
 
 ::
 
-    $ heroku addons:add sendgrid:starter -a <your-app-name>
+    $ heroku addons:add sendgrid:starter
 
 
 Optimizing compiled slug size
@@ -182,13 +182,13 @@ You can then generate a secret key in your Heroku config with the following comm
 
 ::
 
-    $ heroku config:set SECRET_KEY=`openssl rand -base64 32` -a <your-app-name>
+    $ heroku config:set SECRET_KEY=`openssl rand -base64 32`
 
 It's also recommended that you configure Python to generate a new random seed every time it boots.
 
 ::
 
-    $ heroku config:set PYTHONHASHSEED=random -a <your-app-name>
+    $ heroku config:set PYTHONHASHSEED=random
 
 
 Running your site in the Heroku environment
@@ -200,7 +200,7 @@ the Heroku configuration, you must first mirror your Heroku environment to a loc
 
 ::
 
-    $ heroku config --shell -a <your-app-name> > .env
+    $ heroku config --shell > .env
 
 You can then run Django management commands using the Heroku ``foreman`` utility. For example, to start a local
 development server, simply run:
