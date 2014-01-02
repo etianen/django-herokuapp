@@ -5,6 +5,7 @@ from optparse import make_option
 
 import sh
 
+from django.conf import settings
 from django.core.management.base import NoArgsCommand, BaseCommand
 from django.utils.crypto import get_random_string
 
@@ -138,13 +139,15 @@ class Command(HerokuCommandMixin, NoArgsCommand):
                     project_name = os.environ["DJANGO_SETTINGS_MODULE"].split(".", 1)[0],
                 ))
         # Check for requirements.txt.
-        if not os.path.exists("requirements.txt"):
+        requirements_path = os.path.join(settings.BASE_DIR, "requirements.txt")
+        if not os.path.exists(requirements_path):
             self.prompt_for_fix("Missing requirements.txt file.", "Create now?")
-            sh.pip.freeze(_out="requirements.txt")
+            sh.pip.freeze(_out=requirements_path)
             self.stdout.write("Dependencies frozen to requirements.txt.")
         # Check for .env file.
-        if not os.path.exists(".env"):
+        env_path = os.path.join(settings.BASE_DIR, ".env")
+        if not os.path.exists(env_path):
             self.prompt_for_fix("Missing .env file.", "Create now?")
-            self.heroku("config", shell=True, _out=".env")
+            self.heroku("config", shell=True, _out=env_path)
             self.stdout.write("Local Heroku environment saved.")
 
