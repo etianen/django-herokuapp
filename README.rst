@@ -8,8 +8,8 @@ Django sites on `Heroku <http://www.heroku.com/>`_.
 Why not just use Heroku's Django guide?
 ---------------------------------------
 
-Heroku provides a guide called `Getting Started with Django on Heroku <https://devcenter.heroku.com/articles/getting-started-with-django>`_,
-that offers a reasonable Django project setup. The django-herokuapp project suggests a more advanced setup,
+Heroku provides `a guide <https://devcenter.heroku.com/articles/getting-started-with-django>`_
+that describes a reasonable Django project setup. The django-herokuapp project suggests a more advanced setup,
 with the following benefits:
 
 - `waitress <https://pypi.python.org/pypi/waitress/>`_ is used as an app server instead of
@@ -18,18 +18,14 @@ with the following benefits:
 - Amazon S3 is used to serve static files instead of `django-static <https://github.com/kennethreitz/dj-static>`_.
   Django `does not recommend <https://docs.djangoproject.com/en/dev/howto/static-files/#deployment>`_
   serving static files using a Python app server.
-- Uses `anvil <https://github.com/ddollar/heroku-anvil>`_ for deployments instead of git. This allows the build to
+- `anvil <https://github.com/ddollar/heroku-anvil>`_ is used for deployments instead of git. This allows the build to
   be carried out easily on a headless CI server (such as `Travis CI <http://travis-ci.org/>`_ or
   `Drone.io <http://drone.io/>`_), as well as reducing downtime during by performing slug compilation
   outside of the normal Heroku deployment cycle.
 
 
-Installation
-------------
-
-1. Install django-herokuapp using pip ``pip install django-herokuapp``.
-2. Add ``'herokuapp'`` to your ``INSTALLED_APPS`` setting.
-3. Read the rest of this README for pointers on setting up your Heroku site.  
+Starting from scratch
+---------------------
 
 If you're creating a new Django site for hosting on Heroku, then you can give youself a headstart by running
 the ``herokuapp_startproject.py`` script that's bundled with this package from within a fresh virtual environment.
@@ -43,6 +39,19 @@ the ``herokuapp_startproject.py`` script that's bundled with this package from w
     $ source venv/bin/activate
     $ pip install django-herokuapp
     $ herokuapp_startproject.py <your_project_name>
+
+
+The rest of this guide describes the process of adapting an existing Django site to run on Heroku. Even if
+you've started from scratch using ``herokuapp_startproject.py``, it's still worth reading, as it will
+give you a better understanding of the way your site has been configured.
+
+
+Installation in an existing Django project
+------------------------------------------
+
+1. Install django-herokuapp using pip ``pip install django-herokuapp``.
+2. Add ``'herokuapp'`` to your ``INSTALLED_APPS`` setting.
+3. Read the rest of this README for pointers on setting up your Heroku site.  
 
 
 Site hosting - waitress
