@@ -5,14 +5,23 @@ django-herokuapp
 Django sites on `Heroku <http://www.heroku.com/>`_.
 
 
-Features
---------
+Why not just use Heroku's Django guide?
+---------------------------------------
 
-- ``herokuapp_startproject.py`` command for initialising a new Heroku project with sensible basic settings. 
-- ``./manage.py heroku_audit`` command for testing an app for common Heroku issues, and offering fixes.
-- ``./manage.py heroku_deploy`` command for deploying an app to Heroku, compatible with headless CI environments
-  (such as `Travis CI <http://travis-ci.org/>`_ or `Drone.io <http://drone.io/>`_).
-- A growing documentation resource for best practices when hosting Django on Heroku.
+Heroku provides a guide called `Getting Started with Django on Heroku <https://devcenter.heroku.com/articles/getting-started-with-django>`_,
+that differs slightly in the advice offered here. As a basic guide to developing with Django and Heroku, it's a
+good place to learn the ropes.
+
+The django-herokuapp project provides a more advanced setup with the following benefits:
+
+- Uses `waitress <https://pypi.python.org/pypi/waitress/>`_ as an app server instead of
+  `gunicorn <http://gunicorn.org/>`_. (Gunicorn is not recommended for use as a public-facing server,
+  whereas waitress is hardened for production use.)
+- Uses Amazon S3 to serve static files. (Django `does not recommend <https://docs.djangoproject.com/en/dev/howto/static-files/#deployment>`_
+  serving static files using a Python app server.)
+- Uses `anvil <https://github.com/ddollar/heroku-anvil>`_ for deployments. This allows the build to
+  be carried out easily on headless CI servers, as well as reducing downtime during by performing
+  slug compilation outside of the normal Heroku deployment cycle.
 
 
 Installation
@@ -46,7 +55,7 @@ serving clients over a slow connection.
 The solution is to use a buffering async master thread with sync workers instead, and the
 `waitress <https://pypi.python.org/pypi/waitress/>`_ project provides an excellent implementation of this approach. 
 
-Simply create a file called ``Profile`` in the root of your project, and add the following line to it:
+Simply create a file called ``Procfile`` in the root of your project, and add the following line to it:
 
 ::
 
@@ -227,7 +236,7 @@ Validating your Heroku setup
 ----------------------------
 
 Once you've completed the above steps, and are confident that your site is suitable to deploy to Heroku,
-you can validate against common errors by running the ``./manage.py heroku_audit`` command.
+you can validate against common errors by running the ``heroku_audit`` management command.
 
 ::
 
