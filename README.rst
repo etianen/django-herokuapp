@@ -55,7 +55,7 @@ Installing in an existing project
 
 
 Site hosting - waitress
------------------------
+^^^^^^^^^^^^^^^^^^^^^^^
 
 A site hosted on Heroku has to handle traffic without the benefit of a buffering reverse proxy like nginx, which means
 that the normal approach of using a small pool of worker threads won't scale in production, particularly if
@@ -72,7 +72,7 @@ Simply create a file called ``Procfile`` in the root of your project, and add th
 
 
 Database hosting - Heroku Postgres
-----------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Heroku provides an excellent `Postgres Add-on <https://postgres.heroku.com/>`_ that you can use for your site.
 The recommended settings for using Heroku Postgres are as follows:
@@ -95,7 +95,7 @@ You can provision a starter package with Heroku Postgres using the following Her
 
 
 Static file hosting - Amazon S3
--------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A pure-python webserver like waitress isn't best suited to serving high volumes of static files. For this, a cloud-based
 service like `Amazon S3 <http://aws.amazon.com/s3/>`_ is ideal.
@@ -149,7 +149,7 @@ You can set your AWS account details by running the following command:
 
 
 Email hosting - SendGrid
-------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 Heroku does not provide an SMTP server in it's default package. Instead, it's recommended that you use
 the `SendGrid Add-on <https://addons.heroku.com/sendgrid>`_ to send your site's emails.
@@ -171,7 +171,7 @@ You can provision a starter package with SendGrid using the following Heroku com
 
 
 Optimizing compiled slug size
------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The smaller the size of your compiled project, the faster it can be redeployed on Heroku servers. To this end,
 django-herokuapp provides a suggested `.slugignore <https://raw.github.com/etianen/django-herokuapp/master/herokuapp/project_template/.slugignore>`_
@@ -180,7 +180,7 @@ to set up your project, then this will have already been taken care of for you.
 
 
 Improving site security
------------------------
+^^^^^^^^^^^^^^^^^^^^^^^
 
 Ideally, you should not store your site's ``SECRET_KEY`` setting in version control. Instead, it should be read
 from the Heroku config as follows:
@@ -204,7 +204,7 @@ It's also recommended that you configure Python to generate a new random seed ev
 
 
 Running your site in the Heroku environment
--------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Because your site is setup to read some of it's configuration from environmental variables stored on
 Heroku, running a development server can be tricky. django-herokuapp provides a configuration utility
