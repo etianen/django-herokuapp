@@ -11,6 +11,9 @@ def load_env(entrypoint, app=None):
         cwd = os.path.dirname(entrypoint),
     )
     try:
-        os.environ.update(heroku.config_get())
+        heroku_config = heroku.config_get()
     except sh.ErrorReturnCode:
         pass
+    else:
+        for key, value in heroku_config.items():
+            os.environ.setdefault(key, value)
