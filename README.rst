@@ -22,6 +22,7 @@ with the following benefits:
   be carried out easily on a headless CI server (such as `Travis CI <http://travis-ci.org/>`_ or
   `Drone.io <http://drone.io/>`_), as well as reducing downtime during by performing slug compilation
   outside of the normal Heroku deployment cycle.
+- Various minor security and logging improvements.
 
 
 Starting from scratch
@@ -201,6 +202,32 @@ It's also recommended that you configure Python to generate a new random seed ev
 ::
 
     $ heroku config:set PYTHONHASHSEED=random
+
+
+Outputting logs to Heroku logplex
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+By default, Django does not log errors to STDERR in production, which is the correct behaviour for most WSGI
+apps. Heroku, however, provides an excellent logging service that expects to receive error messages on STDERR.
+You can take advantage of this by updating your logging configuration to the following:
+
+::
+
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "handlers": {
+            "console": {
+                "level": "INFO",
+                "class": "logging.StreamHandler",
+            },
+        },
+        "loggers": {
+            "django": {
+                "handlers": ["console"],
+            }
+        }
+    }
 
 
 Running your site in the Heroku environment
