@@ -101,7 +101,7 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             self.stdout.write("Heroku Postgres addon provisioned.")
         # Check for promoted database URL.
         if not self.heroku.config_get("DATABASE_URL"):
-            database_url = self.heroku_database_url()
+            database_url = self.heroku.postgres_url()
             self.prompt_for_fix("No primary database URL set.", "Promote {database_url}?".format(database_url=database_url))
             self.heroku("pg:promote", database_url)
             self.stdout.write("Heroku primary database URL set.")
