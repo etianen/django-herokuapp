@@ -2,6 +2,7 @@ from __future__ import absolute_import
 
 import re
 from collections import Counter
+from itertools import repeat
 from optparse import make_option
 
 from django.core.management.base import NoArgsCommand, BaseCommand
@@ -43,6 +44,16 @@ class Command(HerokuCommandMixin, NoArgsCommand):
                 counter[match.group(1)] += 1
         return counter
 
+    def heroku_scale(self, **kwargs):
+        self.heroku("ps:scale", *[
+            "{name}={count}".format(
+                name = name,
+                count = count,
+            )
+            for name, count
+            in kwargs.items()
+        ])
+
     def handle(self, **kwargs):
         self.app = kwargs["app"]
         # Build app code.
@@ -56,25 +67,32 @@ class Command(HerokuCommandMixin, NoArgsCommand):
         if kwargs["deploy_staticfiles"]:
             self.stdout.write("Deploying static files...\n")
             call_command("collectstatic", interactive=False)
+        # Store a snapshot of the running processes.
+        heroku_ps = self.heroku_ps()
         # Enter maintenance mode, if required.
         if kwargs["deploy_database"]:
             self.heroku("maintenance:on")
+            # Turn off all dynos.
+            if heroku_ps:
+                self.heroku_scale(**dict(zip(heroku_ps.keys(), repeat(0))))
         # Deploy app code.
         if kwargs["deploy_app"]:
             self.stdout.write("Deploying latest version of app to Heroku...\n")
             # Deploy app.
             self.heroku("release", app_slug)
-        # Scale to at least one web worker.
-        if self.heroku_ps().get("web", 0) == 0:
-            self.heroku("scale", "web=1")
         # Deploy migrations.
         if kwargs["deploy_database"]:
             self.stdout.write("Deploying database...\n")
             call_command("syncdb", interactive=False)
             call_command("migrate", interactive=False)
         # Restart the app if required.
-        if (kwargs["deploy_staticfiles"] and not kwargs["deploy_app"]) or kwargs["deploy_database"]:
+        if (kwargs["deploy_staticfiles"] and not kwargs["deploy_app"]):
             self.heroku("restart")
+        # Ensure at least one web dyno will be started.
+        heroku_ps.setdefault("web", 1)
+        # Restore running dyno state.
+        self.heroku_scale(**heroku_ps)
         # Exit maintenance mode, if required.
         if kwargs["deploy_database"]:
+            # Disable maintenance mode.
             self.heroku("maintenance:off")

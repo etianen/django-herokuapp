@@ -51,16 +51,19 @@ class StartProjectTest(unittest.TestCase):
 
     def test_start_project_no_app(self):
         self.start_project()
+        # Deploy the site.
         self.sh(os.path.join(self.dir, "deploy.sh"))()
-        time.sleep(10)  # Wait to app to initialize.
+        # Wait to app to initialize.
+        time.sleep(10)
+        # Ensure that the app is running.
         self.assert_app_running()
 
     def tearDown(self):
         pass
-        # # Delete the app, if it exists.
-        # try:
-        #     self.heroku("apps:delete", self.app, confirm=self.app)
-        # except sh.ErrorReturnCode:
-        #     pass
-        # # Remove the temp dir.
-        # shutil.rmtree(self.dir)
+        # Delete the app, if it exists.
+        try:
+            self.heroku("apps:delete", self.app, confirm=self.app)
+        except sh.ErrorReturnCode:
+            pass
+        # Remove the temp dir.
+        shutil.rmtree(self.dir)
