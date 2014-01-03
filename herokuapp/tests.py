@@ -6,6 +6,8 @@ import sh
 
 from django.utils.crypto import get_random_string
 
+from herokuapp.commands import HerokuCommand
+
 
 class HerokuappTest(unittest.TestCase):
 
@@ -29,13 +31,20 @@ class HerokuappTest(unittest.TestCase):
                 "boto",
                 "sh",
             ]))
+        # Create the test project.
+        self.start_project()
 
     def sh(self, name):
         return partial(getattr(sh, name), _cwd=self.dir, _out=sys.stdout, _err=sys.stderr)
 
     @property
     def heroku(self):
-        return partial(self.sh("heroku"), app=self.app)
+        return HerokuCommand(
+            app = self.app,
+            cwd = self.dir,
+            stdout = sys.stdout,
+            stderr = sys.stderr,
+        )
 
     @property
     def start_project(self):
@@ -50,8 +59,16 @@ class HerokuappTest(unittest.TestCase):
             response.read()
             self.assertEqual(response.status, 200)
 
-    def test_start_project_no_app(self):
-        self.start_project()
+    def test_config_commands(self):
+        self.heroku.config_set(FOO="BAR")
+        self.assertEqual(self.heroku.config_get("FOO"), "BAR")
+        self.heroku.config_set(FOO="BAR2")
+        self.assertEqual(self.heroku.config_get("FOO"), "BAR2")
+
+    def test_postgres_command(self):
+        self.assertTrue(self.heroku.postgres_url())
+
+    def test_deploy(self):
         # Deploy the site.
         self.sh(os.path.join(self.dir, "deploy.sh"))()
         # Ensure that the app is running.

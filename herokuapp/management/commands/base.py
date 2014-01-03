@@ -2,13 +2,11 @@ from __future__ import absolute_import
 
 import os.path
 from optparse import make_option
-from functools import partial
-
-import sh
 
 from django.utils.functional import cached_property
 from django.conf import settings
 
+from herokuapp.commands import HerokuCommand
 from herokuapp.settings import HEROKU_APP_NAME
 
 
@@ -24,9 +22,9 @@ class HerokuCommandMixin(object):
     
     @cached_property
     def heroku(self):
-        return partial(sh.heroku,
+        return HerokuCommand(
             app = self.app,
-            _out = self.stdout,
-            _err = self.stderr,
-            _cwd = os.path.join(settings.BASE_DIR, ".."),
-        )  # Not using bake(), as it gets the command order wrong.
+            cwd = os.path.join(settings.BASE_DIR, ".."),
+            stdout = self.stdout,
+            stderr = self.stderr,
+        )

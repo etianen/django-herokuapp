@@ -1,7 +1,5 @@
 from __future__ import absolute_import
 
-import re
-from collections import Counter
 from itertools import repeat
 from optparse import make_option
 
@@ -36,24 +34,6 @@ class Command(HerokuCommandMixin, NoArgsCommand):
         ),
     ) + HerokuCommandMixin.option_list
 
-    def heroku_ps(self):
-        counter = Counter()
-        for line in self.heroku("ps", _out=None, _iter=True):
-            match = re.match("^(\w+)\.", line)
-            if match:
-                counter[match.group(1)] += 1
-        return counter
-
-    def heroku_scale(self, **kwargs):
-        self.heroku("ps:scale", *[
-            "{name}={count}".format(
-                name = name,
-                count = count,
-            )
-            for name, count
-            in kwargs.items()
-        ])
-
     def handle(self, **kwargs):
         self.app = kwargs["app"]
         # Build app code.
@@ -68,13 +48,13 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             self.stdout.write("Deploying static files...\n")
             call_command("collectstatic", interactive=False)
         # Store a snapshot of the running processes.
-        heroku_ps = self.heroku_ps()
+        heroku_ps = self.heroku.ps()
         # Enter maintenance mode, if required.
         if kwargs["deploy_database"]:
             self.heroku("maintenance:on")
             # Turn off all dynos.
             if heroku_ps:
-                self.heroku_scale(**dict(zip(heroku_ps.keys(), repeat(0))))
+                self.heroku.scale(**dict(zip(heroku_ps.keys(), repeat(0))))
         # Deploy app code.
         if kwargs["deploy_app"]:
             self.stdout.write("Deploying latest version of app to Heroku...\n")
@@ -91,7 +71,7 @@ class Command(HerokuCommandMixin, NoArgsCommand):
         # Ensure at least one web dyno will be started.
         heroku_ps.setdefault("web", 1)
         # Restore running dyno state.
-        self.heroku_scale(**heroku_ps)
+        self.heroku.scale(**heroku_ps)
         # Exit maintenance mode, if required.
         if kwargs["deploy_database"]:
             # Disable maintenance mode.

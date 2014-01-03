@@ -67,25 +67,6 @@ class Command(HerokuCommandMixin, NoArgsCommand):
         else:
             return default
 
-    def heroku_config_set(self, **kwargs):
-        self.heroku("config:set", *[
-            "{key}={value}".format(
-                key = key,
-                value = value,
-            )
-            for key, value
-            in kwargs.items()
-        ], _out=None)
-
-    def heroku_config_get(self, name):
-        return self.heroku("config:get", name, _out=None)
-
-    def heroku_database_url(self):
-        for line in self.heroku("config", shell=True, _out=None):
-            key = line.split("=", 1)[0]
-            if re.match("^HEROKU_POSTGRESQL_\w+?_URL$", key):
-                return key
-
     def handle(self, **kwargs):
         self.app = kwargs["app"]
         self.interactive = kwargs["interactive"]
@@ -98,41 +79,41 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             self.heroku("apps:create", self.app)
             self.stdout.write("Heroku app created.")
         # Check for AWS access details.
-        if not self.heroku_config_get("AWS_ACCESS_KEY_ID"):
+        if not self.heroku.config_get("AWS_ACCESS_KEY_ID"):
             self.prompt_for_fix("Amazon S3 access details missing from Heroku config.", "Setup now?")
             aws_env = {}
             aws_env["AWS_ACCESS_KEY_ID"] = self.read_string("AWS access key", os.environ.get("AWS_ACCESS_KEY_ID"))
             aws_env["AWS_SECRET_ACCESS_KEY"] = self.read_string("AWS access secret", os.environ.get("AWS_SECRET_ACCESS_KEY"))
             aws_env["AWS_STORAGE_BUCKET_NAME"] = self.read_string("S3 bucket name", self.app)
             # Save Heroku config.
-            self.heroku_config_set(**aws_env)
+            self.heroku.config_set(**aws_env)
             self.stdout.write("Amazon S3 config written to Heroku config.")
         # Check for SendGrid settings.
-        if not self.heroku_config_get("SENDGRID_USERNAME"):
+        if not self.heroku.config_get("SENDGRID_USERNAME"):
             self.prompt_for_fix("SendGrid addon missing.", "Provision SendGrid starter addon (free)?")
             self.heroku("addons:add", "sendgrid:starter")
             self.stdout.write("SendGrid addon provisioned.")
         # Check for Heroku postgres.
-        if not self.heroku_database_url():
+        if not self.heroku.postgres_url():
             self.prompt_for_fix("Heroku Postgres addon missing.", "Provision Heroku Postgres dev addon (free)?")
             self.heroku("addons:add", "heroku-postgresql")
             self.heroku("pg:wait")
             self.stdout.write("Heroku Postgres addon provisioned.")
         # Check for promoted database URL.
-        if not self.heroku_config_get("DATABASE_URL"):
+        if not self.heroku.config_get("DATABASE_URL"):
             database_url = self.heroku_database_url()
             self.prompt_for_fix("No primary database URL set.", "Promote {database_url}?".format(database_url=database_url))
             self.heroku("pg:promote", database_url)
             self.stdout.write("Heroku primary database URL set.")
         # Check for secret key.
-        if not self.heroku_config_get("SECRET_KEY"):
+        if not self.heroku.config_get("SECRET_KEY"):
             self.prompt_for_fix("Secret key missing from Heroku config.", "Generate now?")
-            self.heroku_config_set(SECRET_KEY=get_random_string(50, "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"))
+            self.heroku.config_set(SECRET_KEY=get_random_string(50, "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"))
             self.stdout.write("Secret key written to Heroku config.")
         # Check for Python hash seed.
-        if not self.heroku_config_get("PYTHONHASHSEED"):
+        if not self.heroku.config_get("PYTHONHASHSEED"):
             self.prompt_for_fix("Python hash seed missing from Heroku config.", "Set now?")
-            self.heroku_config_set(PYTHONHASHSEED="random")
+            self.heroku.config_set(PYTHONHASHSEED="random")
             self.stdout.write("Secret key written to Heroku config.")
         # Check for Procfile.
         procfile_path = os.path.join(settings.BASE_DIR, "..", "Procfile")
