@@ -80,7 +80,7 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             self.stdout.write("Heroku app created.")
         # Check for AWS access details.
         if not self.heroku.config_get("AWS_ACCESS_KEY_ID"):
-            self.prompt_for_fix("Amazon S3 access details missing from Heroku config.", "Setup now?")
+            self.prompt_for_fix("Amazon S3 access details not present in Heroku config.", "Setup now?")
             aws_env = {}
             aws_env["AWS_ACCESS_KEY_ID"] = self.read_string("AWS access key", os.environ.get("AWS_ACCESS_KEY_ID"))
             aws_env["AWS_SECRET_ACCESS_KEY"] = self.read_string("AWS access secret", os.environ.get("AWS_SECRET_ACCESS_KEY"))
@@ -90,49 +90,45 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             self.stdout.write("Amazon S3 config written to Heroku config.")
         # Check for SendGrid settings.
         if not self.heroku.config_get("SENDGRID_USERNAME"):
-            self.prompt_for_fix("SendGrid addon missing.", "Provision SendGrid starter addon (free)?")
+            self.prompt_for_fix("SendGrid addon not installed.", "Provision SendGrid starter addon (free)?")
             self.heroku("addons:add", "sendgrid:starter")
             self.stdout.write("SendGrid addon provisioned.")
-        # Check for Heroku postgres.
-        if not self.heroku.postgres_url():
-            self.prompt_for_fix("Heroku Postgres addon missing.", "Provision Heroku Postgres dev addon (free)?")
-            self.heroku("addons:add", "heroku-postgresql")
-            self.heroku("pg:wait")
-            self.stdout.write("Heroku Postgres addon provisioned.")
         # Check for promoted database URL.
         if not self.heroku.config_get("DATABASE_URL"):
             database_url = self.heroku.postgres_url()
+            if not database_url:
+                self.prompt_for_fix("Database URL not present in Heroku config.", "Provision Heroku Postgres dev addon (free)?")
+                self.heroku("addons:add", "heroku-postgresql")
+                self.heroku("pg:wait")
+                self.stdout.write("Heroku Postgres addon provisioned.")
+                # Load the new database URL.
+                database_url = self.heroku.postgres_url()
+            # Promote the database URL.
             self.prompt_for_fix("No primary database URL set.", "Promote {database_url}?".format(database_url=database_url))
             self.heroku("pg:promote", database_url)
             self.stdout.write("Heroku primary database URL set.")
         # Check for secret key.
         if not self.heroku.config_get("SECRET_KEY"):
-            self.prompt_for_fix("Secret key missing from Heroku config.", "Generate now?")
+            self.prompt_for_fix("Secret key not set in Heroku config.", "Generate now?")
             self.heroku.config_set(SECRET_KEY=get_random_string(50, "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"))
             self.stdout.write("Secret key written to Heroku config.")
         # Check for Python hash seed.
         if not self.heroku.config_get("PYTHONHASHSEED"):
-            self.prompt_for_fix("Python hash seed missing from Heroku config.", "Set now?")
+            self.prompt_for_fix("Python hash seed not set in Heroku config.", "Set now?")
             self.heroku.config_set(PYTHONHASHSEED="random")
-            self.stdout.write("Secret key written to Heroku config.")
+            self.stdout.write("Python hash seed written to Heroku config.")
         # Check for Procfile.
         procfile_path = os.path.join(settings.BASE_DIR, "..", "Procfile")
         if not os.path.exists(procfile_path):
-            self.prompt_for_fix("Missing Procfile.", "Create now?")
+            self.prompt_for_fix("Procfile must to be created to deploy to Heroku.", "Create now?")
             with open(procfile_path, "wb") as procfile_handle:
                 procfile_handle.write("web: waitress-serve --port=$PORT {project_name}.wsgi:application\n".format(
                     project_name = os.environ["DJANGO_SETTINGS_MODULE"].split(".", 1)[0],
                 ))
+            self.stdout.write("Default Procfile generated.")
         # Check for requirements.txt.
         requirements_path = os.path.join(settings.BASE_DIR, "..", "requirements.txt")
         if not os.path.exists(requirements_path):
-            self.prompt_for_fix("Missing requirements.txt file.", "Create now?")
+            self.prompt_for_fix("A requirements.txt file must be created to deploy to Heroku.", "Generate now?")
             sh.pip.freeze(_out=requirements_path)
             self.stdout.write("Dependencies frozen to requirements.txt.")
-        # Check for .env file.
-        env_path = os.path.join(settings.BASE_DIR, "..", ".env")
-        if not os.path.exists(env_path):
-            self.prompt_for_fix("Missing .env file.", "Create now?")
-            self.heroku("config", shell=True, _out=env_path)
-            self.stdout.write("Local Heroku environment saved.")
-
