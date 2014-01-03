@@ -46,12 +46,10 @@ def main():
         user = getpass.getuser(),
     )
     # Audit and configure the project for Heroku.
-    audit_args = [os.path.join(args.dest_dir, "manage.sh"), "heroku_audit", "--fix"]
+    audit_args = [os.path.join(args.dest_dir, "manage.py"), "heroku_audit", "--fix"]
     if not args.interactive:
         audit_args.append("--noinput")
     subprocess.call(audit_args)
     # Give some help to the user.
     print "Heroku project created."
-    print "Run Django management commands using `./manage.sh command_name`"
-    print "Run your local server with `./manage.sh runserver`"
     print "Deploy to Heroku with `./deploy.sh`"

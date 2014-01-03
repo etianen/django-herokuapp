@@ -209,14 +209,14 @@ development server, simply run:
 
     $ foreman run python manage.py runserver
 
-django-herokuapp provides a useful `./manage.sh wrapper script <https://github.com/etianen/django-herokuapp/blob/master/herokuapp/project_template/manage.sh>`_
+django-herokuapp provides a useful `./manage.py wrapper script <https://github.com/etianen/django-herokuapp/blob/master/herokuapp/project_template/manage.py>`_
 that you can place in the root of your project. If you've used the ``herokuapp_startproject.py`` script
 to set up your project, then this will have already been taken care of for you. Running Django management commands
 then becomes as simple as:
 
 ::
 
-    $ ./manage.sh runserver
+    $ ./manage.py runserver
 
 Accessing the live Heroku Postgres database is a bad idea. Instead, you should provide a local settings file,
 exclude it from version control, and connect to a local PostgreSQL server. If you're
@@ -231,18 +231,18 @@ Validating your Heroku setup
 ----------------------------
 
 Once you've completed the above steps, and are confident that your site is suitable to deploy to Heroku,
-you can validate against common errors by running the ``./manage.sh heroku_audit`` command.
+you can validate against common errors by running the ``./manage.py heroku_audit`` command.
 
 ::
 
-    $ ./manage.sh heroku_audit
+    $ ./manage.py heroku_audit
 
 Many of the issues detected by ``heroku_audit`` have simple fixes. For a guided walkthrough of solutions, try
 running:
 
 ::
 
-    $ ./manage.sh heroku_audit --fix
+    $ ./manage.py heroku_audit --fix
 
 
 Deploying (and redeploying) your site to Heroku
@@ -252,7 +252,7 @@ When your site is configured and ready to roll, you can deploy it to Heroku usin
 
 ::
 
-    $ DJANGO_SETTINGS_MODULE=your_app.settings.production ./manage.sh heroku_deploy
+    $ DJANGO_SETTINGS_MODULE=your_app.settings.production ./manage.py heroku_deploy
 
 This will carry out the following actions:
 

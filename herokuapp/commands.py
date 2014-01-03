@@ -33,7 +33,7 @@ class HerokuCommand(object):
             in kwargs.items()
         ], _out=None)
 
-    def config_get(self, name):
+    def config_get(self, name=None):
         return str(self("config:get", name, _out=None)).strip()
 
     def ps(self):

@@ -3,6 +3,10 @@ import os
 import sys
 
 if __name__ == "__main__":
+    # Load the Heroku environment from a .env file.
+    from herokuapp.env import load_env
+    load_env(__file__)
+
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "{{ project_name }}.settings")
 
     from django.core.management import execute_from_command_line

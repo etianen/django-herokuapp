@@ -29,9 +29,9 @@ fi
 fi
 
 # Run tests.
-$DIR/manage.sh test --noinput
+$DIR/manage.py test --noinput
 
 # Deploy code.
 DJANGO_SETTINGS_MODULE={{ project_name }}.settings.production
-$DIR/manage.sh heroku_audit --noinput
-$DIR/manage.sh heroku_deploy
+$DIR/manage.py heroku_audit --noinput
+$DIR/manage.py heroku_deploy
