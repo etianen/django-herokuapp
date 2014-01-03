@@ -1,4 +1,4 @@
-import unittest, tempfile, shutil, httplib, os.path, sys, string
+import unittest, tempfile, shutil, httplib, os.path, sys, string, time
 from contextlib import closing
 from functools import partial
 
@@ -52,13 +52,15 @@ class StartProjectTest(unittest.TestCase):
     def test_start_project_no_app(self):
         self.start_project()
         self.sh(os.path.join(self.dir, "deploy.sh"))()
+        time.sleep(10)  # Wait to app to initialize.
         self.assert_app_running()
 
     def tearDown(self):
-        # Delete the app, if it exists.
-        try:
-            self.heroku("apps:delete", self.app, confirm=self.app)
-        except sh.ErrorReturnCode:
-            pass
-        # Remove the temp dir.
-        shutil.rmtree(self.dir)
+        pass
+        # # Delete the app, if it exists.
+        # try:
+        #     self.heroku("apps:delete", self.app, confirm=self.app)
+        # except sh.ErrorReturnCode:
+        #     pass
+        # # Remove the temp dir.
+        # shutil.rmtree(self.dir)

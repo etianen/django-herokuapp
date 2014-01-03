@@ -45,6 +45,13 @@ class Command(HerokuCommandMixin, NoArgsCommand):
 
     def handle(self, **kwargs):
         self.app = kwargs["app"]
+        # Build app code.
+        if kwargs["deploy_app"]:
+            self.stdout.write("Building app...\n")
+            # Install the anvil plugin.
+            self.heroku("plugins:install", "https://github.com/ddollar/heroku-anvil")
+            # Build the slug.
+            app_slug = self.heroku("build", pipeline=True, _out=None)
         # Deploy static asssets.
         if kwargs["deploy_staticfiles"]:
             self.stdout.write("Deploying static files...\n")
@@ -55,20 +62,19 @@ class Command(HerokuCommandMixin, NoArgsCommand):
         # Deploy app code.
         if kwargs["deploy_app"]:
             self.stdout.write("Deploying latest version of app to Heroku...\n")
-            # Install the anvil plugin.
-            self.heroku("plugins:install", "https://github.com/ddollar/heroku-anvil")
             # Deploy app.
-            self.heroku("build", release=True)
+            self.heroku("release", app_slug)
+        # Scale to at least one web worker.
+        if self.heroku_ps().get("web", 0) == 0:
+            self.heroku("scale", "web=1")
         # Deploy migrations.
         if kwargs["deploy_database"]:
             self.stdout.write("Deploying database...\n")
             call_command("syncdb", interactive=False)
             call_command("migrate", interactive=False)
+        # Restart the app if required.
         if (kwargs["deploy_staticfiles"] and not kwargs["deploy_app"]) or kwargs["deploy_database"]:
             self.heroku("restart")
-        # Scale to at least one web worker.
-        if self.heroku_ps().get("web", 0) == 0:
-            self.heroku("scale", "web=1")
         # Exit maintenance mode, if required.
         if kwargs["deploy_database"]:
             self.heroku("maintenance:off")
