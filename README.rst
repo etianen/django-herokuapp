@@ -270,6 +270,24 @@ then this will have already been taken care of for you. Deploying then simply be
     $ ./deploy.sh
 
 
+Common error messages
+---------------------
+
+Things don't always go right first time. Here are some common error messages you may encounter:
+
+
+``No app specified" when running Heroku command
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Heroku CLI looks up your app's name from a git remote named ``heroku``. You can either specify the app
+to manage by adding ``-a your-app-name`` every time you call a Heroku command, or update you git repo with a
+Heroku remote using the following command:
+
+::
+
+    $ git remote add heroku git@heroku.com:your-app-name.git
+
+
 Support and announcements
 -------------------------
 
