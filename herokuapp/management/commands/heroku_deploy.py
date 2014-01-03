@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 
+import re
+from collections import Counter
 from optparse import make_option
 
 from django.core.management.base import NoArgsCommand, BaseCommand
@@ -32,7 +34,15 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             help = "If specified, then running database migrations will be skipped.",
         ),
     ) + HerokuCommandMixin.option_list
-    
+
+    def heroku_ps(self):
+        counter = Counter()
+        for line in self.heroku("ps", _out=None, _iter=True):
+            match = re.match("^(\w+)\.")
+            if match:
+                counter[match.group(1)] += 1
+        return counter
+
     def handle(self, **kwargs):
         self.app = kwargs["app"]
         # Deploy static asssets.
@@ -56,6 +66,9 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             call_command("migrate", interactive=False)
         if (kwargs["deploy_staticfiles"] and not kwargs["deploy_app"]) or kwargs["deploy_database"]:
             self.heroku("restart")
+        # Scale to at least one web worker.
+        if self.heroku_ps().get("web", 0) == 0:
+            self.heroku("scale", "web=1")
         # Exit maintenance mode, if required.
         if kwargs["deploy_database"]:
             self.heroku("maintenance:off")
