@@ -14,6 +14,12 @@ parser.add_argument("dest_dir",
     nargs = "?",
     help = "The destination dir for the created project.",
 )
+parser.add_argument("-a", "--app",
+    default = None,
+    dest = "app",
+    required = False,
+    help = "The name of the Heroku app. Defaults to the project name, with underscores replaced by hyphens.",
+)
 parser.add_argument("--noinput", 
     action = "store_false",
     default = True,
@@ -25,7 +31,7 @@ parser.add_argument("--noinput",
 def main():
     args = parser.parse_args()
     # Generate Heroku app name.
-    app_name = args.project_name.replace("_", "-")
+    app_name = args.app or args.project_name.replace("_", "-")
     # Create the project.
     try:
         os.makedirs(args.dest_dir)

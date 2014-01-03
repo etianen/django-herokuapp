@@ -49,6 +49,7 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             answer_bool = False
         # Exit if no fix provided.
         if not answer_bool:
+            self.stderr.write(error + "\n")
             self.stderr.write("Heroku audit aborted.\n")
             sys.exit(1)
 

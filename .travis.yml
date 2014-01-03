@@ -16,12 +16,6 @@ before_script:
 - printf "$HEROKU_USER\n$HEROKU_PASSWORD" | heroku login 
 - psql -c "create database django_herokuapp_test with owner $USER;" -U postgres
 script:
-- herokuapp_startproject.py django_herokuapp_test herokuapp_test --noinput
-- rm herokuapp_test/requirements.txt
-- herokuapp_test/manage.sh test herokuapp --noinput
-- herokuapp_test/deploy.sh
-- curl --output /dev/null --head --fail http://django-herokuapp-test.herokuapp.com/admin/
-after_script:
-- heroku apps:delete django-herokuapp-test --confirm django-herokuapp-test
+- python setup.py test
 notifications:
   email: false

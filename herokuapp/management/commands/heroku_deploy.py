@@ -38,7 +38,7 @@ class Command(HerokuCommandMixin, NoArgsCommand):
     def heroku_ps(self):
         counter = Counter()
         for line in self.heroku("ps", _out=None, _iter=True):
-            match = re.match("^(\w+)\.")
+            match = re.match("^(\w+)\.", line)
             if match:
                 counter[match.group(1)] += 1
         return counter
