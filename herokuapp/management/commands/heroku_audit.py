@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 
-import os, os.path, sys, re
+import os, os.path, sys
 from optparse import make_option
 
 import sh
