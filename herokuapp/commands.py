@@ -10,15 +10,24 @@ RE_PS = re.compile("^(\w+)\.")
 RE_POSTGRES = re.compile("^HEROKU_POSTGRESQL_\w+?_URL$")
 
 
+def parse_shell(line_iter):
+    return dict(
+        line.strip().split("=", 1)
+        for line
+        in line_iter
+    )
+
+
 class HerokuCommand(object):
 
     def __init__(self, app, cwd, stdout=None, stderr=None):
         self._heroku = partial(sh.heroku,
-            app = app,
             _cwd = cwd,
             _out = stdout,
             _err = stderr,
         )  # Not using bake(), as it gets the command order wrong.
+        if app:
+            self._heroku = partial(self._heroku, app=app)
 
     def __call__(self, *args, **kwargs):
         return self._heroku(*args, **kwargs)
@@ -34,7 +43,9 @@ class HerokuCommand(object):
         ], _out=None)
 
     def config_get(self, name=None):
-        return str(self("config:get", name, _out=None)).strip()
+        if name:
+            return str(self("config:get", name, _out=None)).strip()
+        return parse_shell(self("config", shell=True, _iter=True, _out=None))
 
     def ps(self):
         counter = Counter()

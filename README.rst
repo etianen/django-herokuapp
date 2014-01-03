@@ -195,24 +195,20 @@ Running your site in the Heroku environment
 -------------------------------------------
 
 Because your site is configured to some of it's configuration from environmental variables stored on
-Heroku, running a development server can be tricky. In order to run the development server using
-the Heroku configuration, you must first mirror your Heroku environment to a local ``.env`` file.
+Heroku, running a development server can be tricky. django-herokuapp provides a configuration utility
+that should be added to your project to load the heroku config dynamically. Simply add
+the following lines to your ``manage.py`` script, at the top of the run block:
 
 ::
 
-    $ heroku config --shell > .env
+    if __name__ == "__main__": # << This line will already be present in manage.py
 
-You can then run Django management commands using the Heroku ``foreman`` utility. For example, to start a local
-development server, simply run:
+        # Load the Heroku environment.
+        from herokuapp.env import load_env
+        load_env(__file__, "your-app-name")
 
-::
-
-    $ foreman run python manage.py runserver
-
-django-herokuapp provides a useful `./manage.py wrapper script <https://github.com/etianen/django-herokuapp/blob/master/herokuapp/project_template/manage.py>`_
-that you can place in the root of your project. If you've used the ``herokuapp_startproject.py`` script
-to set up your project, then this will have already been taken care of for you. Running Django management commands
-then becomes as simple as:
+If you've used the ``herokuapp_startproject.py`` script to set up your project, then this will have already
+been taken care of for you. Django management commands can then be run normally:
 
 ::
 

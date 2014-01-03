@@ -64,6 +64,8 @@ class HerokuappTest(unittest.TestCase):
         self.assertEqual(self.heroku.config_get("FOO"), "BAR")
         self.heroku.config_set(FOO="BAR2")
         self.assertEqual(self.heroku.config_get("FOO"), "BAR2")
+        # Test multi-config get.
+        self.assertEqual(self.heroku.config_get()["FOO"], "BAR2")
 
     def test_postgres_command(self):
         self.assertTrue(self.heroku.postgres_url())

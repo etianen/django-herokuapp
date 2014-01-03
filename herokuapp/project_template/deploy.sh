@@ -21,11 +21,6 @@ then
 command -v heroku >/dev/null 2>&1 || { 
     wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
 }
-# Download the Heroku config, if no .env file is present.
-if [ ! -f $DIR/.env ]
-then
-heroku config --shell -a {{ app_name }} > $DIR/.env
-fi
 fi
 
 # Run tests.

@@ -3,9 +3,10 @@ import os
 import sys
 
 if __name__ == "__main__":
-    # Load the Heroku environment from a .env file.
+    
+    # Load the Heroku environment.
     from herokuapp.env import load_env
-    load_env(__file__)
+    load_env(__file__, "{{ app_name }}")
 
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "{{ project_name }}.settings")
 
