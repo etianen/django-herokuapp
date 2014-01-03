@@ -9,19 +9,19 @@ Why not just use Heroku's Django guide?
 ---------------------------------------
 
 Heroku provides a guide called `Getting Started with Django on Heroku <https://devcenter.heroku.com/articles/getting-started-with-django>`_,
-that differs slightly in the advice offered here. As a basic guide to developing with Django and Heroku, it's a
-good place to learn the ropes.
+that offers a reasonable Django project setup. The django-herokuapp project suggests a more advanced setup,
+with the following benefits:
 
-The django-herokuapp project provides a more advanced setup with the following benefits:
-
-- Uses `waitress <https://pypi.python.org/pypi/waitress/>`_ as an app server instead of
-  `gunicorn <http://gunicorn.org/>`_. (Gunicorn is not recommended for use as a public-facing server,
-  whereas waitress is hardened for production use.)
-- Uses Amazon S3 to serve static files. (Django `does not recommend <https://docs.djangoproject.com/en/dev/howto/static-files/#deployment>`_
-  serving static files using a Python app server.)
-- Uses `anvil <https://github.com/ddollar/heroku-anvil>`_ for deployments. This allows the build to
-  be carried out easily on headless CI servers, as well as reducing downtime during by performing
-  slug compilation outside of the normal Heroku deployment cycle.
+- `waitress <https://pypi.python.org/pypi/waitress/>`_ is used as an app server instead of
+  `gunicorn <http://gunicorn.org/>`_. Gunicorn is not recommended for use as a public-facing server,
+  whereas waitress is hardened for production use.
+- Amazon S3 is used to serve static files instead of `django-static <https://github.com/kennethreitz/dj-static>`_.
+  Django `does not recommend <https://docs.djangoproject.com/en/dev/howto/static-files/#deployment>`_
+  serving static files using a Python app server.
+- Uses `anvil <https://github.com/ddollar/heroku-anvil>`_ for deployments instead of git. This allows the build to
+  be carried out easily on a headless CI server (such as `Travis CI <http://travis-ci.org/>`_ or
+  `Drone.io <http://drone.io/>`_), as well as reducing downtime during by performing slug compilation
+  outside of the normal Heroku deployment cycle.
 
 
 Installation
