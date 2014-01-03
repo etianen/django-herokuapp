@@ -134,11 +134,6 @@ The recommended settings for hosting your static content with Amazon S3 is as fo
         },
     }
 
-This configuration relies on the `django-require-s3 <https://github.com/etianen/django-require-s3>`_ package, which
-is included in the dependencies for django-herokuapp. In particular, the use of `django-require <https://github.com/etianen/django-require>`_
-to compress and serve your assets is recommended, since it allows assets to be precompiled during the project's
-build step, rather than on-the-fly as the site is running.
-
 You can set your AWS account details by running the following command:
 
 ::
@@ -146,6 +141,11 @@ You can set your AWS account details by running the following command:
     $ heroku config:set AWS_ACCESS_KEY_ID=your_key_id \
       AWS_SECRET_ACCESS_KEY=your_secret_access_key \
       AWS_STORAGE_BUCKET_NAME=your_bucket_name
+
+This configuration relies on the `django-require-s3 <https://github.com/etianen/django-require-s3>`_ package, which
+is included in the dependencies for django-herokuapp. In particular, the use of `django-require <https://github.com/etianen/django-require>`_
+to compress and serve your assets is recommended, since it allows assets to be precompiled during the project's
+build step, rather than on-the-fly as the site is running.
 
 
 Email hosting - SendGrid
@@ -285,7 +285,7 @@ Common error messages
 Things don't always go right first time. Here are some common error messages you may encounter:
 
 
-``No app specified`` when running Heroku commands
+"No app specified" when running Heroku commands
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Heroku CLI looks up your app's name from a git remote named ``heroku``. You can either specify the app
