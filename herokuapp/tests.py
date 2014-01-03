@@ -7,7 +7,7 @@ import sh
 from django.utils.crypto import get_random_string
 
 
-class StartProjectTest(unittest.TestCase):
+class HerokuappTest(unittest.TestCase):
 
     def setUp(self):
         self.app = "django-herokuapp-{random}".format(
@@ -42,6 +42,7 @@ class StartProjectTest(unittest.TestCase):
         return partial(self.sh("herokuapp_startproject.py"), "django_herokuapp_test", noinput=True, app=self.app)
 
     def assert_app_running(self):
+        time.sleep(10)  # Wait to app to initialize.
         domain = "{app}.herokuapp.com".format(app=self.app)
         with closing(httplib.HTTPConnection(domain)) as connection:
             connection.request("HEAD", "/admin/")
@@ -53,9 +54,11 @@ class StartProjectTest(unittest.TestCase):
         self.start_project()
         # Deploy the site.
         self.sh(os.path.join(self.dir, "deploy.sh"))()
-        # Wait to app to initialize.
-        time.sleep(10)
         # Ensure that the app is running.
+        self.assert_app_running()
+        # Test redeploy.
+        self.sh(os.path.join(self.dir, "deploy.sh"))()
+        # Ensure that the app is still running.
         self.assert_app_running()
 
     def tearDown(self):
