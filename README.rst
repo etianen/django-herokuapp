@@ -9,7 +9,7 @@ Why not just use Heroku's Django guide?
 ---------------------------------------
 
 Heroku provides `a guide <https://devcenter.heroku.com/articles/getting-started-with-django>`_
-that describes a reasonable Django project setup. The django-herokuapp project suggests a more advanced setup,
+that describes a reasonable Django project setup. The django-herokuapp project suggests a more advanced approach
 with the following benefits:
 
 - `waitress <https://pypi.python.org/pypi/waitress/>`_ is used as an app server instead of
@@ -46,8 +46,8 @@ you've started from scratch using ``herokuapp_startproject.py``, it's still wort
 give you a better understanding of the way your site has been configured.
 
 
-Installation in an existing Django project
-------------------------------------------
+Installing in an existing project
+---------------------------------
 
 1. Install django-herokuapp using pip ``pip install django-herokuapp``.
 2. Add ``'herokuapp'`` to your ``INSTALLED_APPS`` setting.
@@ -147,9 +147,6 @@ You can set your AWS account details by running the following command:
       AWS_SECRET_ACCESS_KEY=your_secret_access_key \
       AWS_STORAGE_BUCKET_NAME=your_bucket_name
 
-These settings will already be present in your django settings file if you created your project using
-the ``herokuapp_startproject.py`` script.
-
 
 Email hosting - SendGrid
 ------------------------
@@ -165,9 +162,6 @@ the `SendGrid Add-on <https://addons.heroku.com/sendgrid>`_ to send your site's 
     EMAIL_HOST_PASSWORD = os.environ.get("SENDGRID_PASSWORD", "")
     EMAIL_PORT = 25
     EMAIL_USE_TLS = False
-
-These settings will already be present in your django settings file if you created your project using
-the ``herokuapp_startproject.py`` script.
 
 You can provision a starter package with SendGrid using the following Heroku command:
 
@@ -189,14 +183,14 @@ Improving site security
 -----------------------
 
 Ideally, you should not store your site's ``SECRET_KEY`` setting in version control. Instead, it should be read
-from the Heroku config.
+from the Heroku config as follows:
 
 ::
 
     from django.utils.crypto import get_random_string
     SECRET_KEY = os.environ.get("SECRET_KEY", get_random_string(50, "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"))
 
-You can then generate a secret key in your Heroku config with the following command.
+You can then generate a secret key in your Heroku config with the following command:
 
 ::
 
@@ -212,7 +206,7 @@ It's also recommended that you configure Python to generate a new random seed ev
 Running your site in the Heroku environment
 -------------------------------------------
 
-Because your site is configured to some of it's configuration from environmental variables stored on
+Because your site is setup to read some of it's configuration from environmental variables stored on
 Heroku, running a development server can be tricky. django-herokuapp provides a configuration utility
 that should be added to your project to load the heroku config dynamically. Simply add
 the following lines to your ``manage.py`` script, at the top of the run block:
@@ -225,8 +219,7 @@ the following lines to your ``manage.py`` script, at the top of the run block:
         from herokuapp.env import load_env
         load_env(__file__, "your-app-name")
 
-If you've used the ``herokuapp_startproject.py`` script to set up your project, then this will have already
-been taken care of for you. Django management commands can then be run normally:
+Django management commands can then be run normally:
 
 ::
 
@@ -238,7 +231,6 @@ on OSX, then the excellent `Postgres.app <http://postgresapp.com/>`_ will make t
 
 A suggested settings file layout, including the appropriate local settings, can be found in the `django-herokuapp
 template project settings directory <https://github.com/etianen/django-herokuapp/tree/master/herokuapp/project_template/project_name/settings>`_.
-If you've used the ``herokuapp_startproject.py`` script to set up your project, then this will have already been taken care of for you.
 
 
 Validating your Heroku setup
@@ -280,8 +272,7 @@ required.
 
 For a simple one-liner deploy that works in a headless CI environments (such as `Travis CI <http://travis-ci.org/>`_ or
 `Drone.io <http://drone.io/>`_), django-herokuapp provides a useful `deploy.sh script <https://github.com/etianen/django-herokuapp/blob/master/herokuapp/project_template/deploy.sh>`_
-that can be copied to the root of your project. If you've used the ``herokuapp_startproject.py`` script to set up your project,
-then this will have already been taken care of for you. Deploying then simply becomes:
+that can be copied to the root of your project. Deploying then simply becomes:
 
 ::
 
@@ -294,11 +285,11 @@ Common error messages
 Things don't always go right first time. Here are some common error messages you may encounter:
 
 
-``No app specified" when running Heroku command
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``No app specified`` when running Heroku commands
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Heroku CLI looks up your app's name from a git remote named ``heroku``. You can either specify the app
-to manage by adding ``-a your-app-name`` every time you call a Heroku command, or update you git repo with a
+to manage by adding ``-a your-app-name`` every time you call a Heroku command, or update your git repo with a
 Heroku remote using the following command:
 
 ::
