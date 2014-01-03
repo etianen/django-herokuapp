@@ -2,8 +2,8 @@ django-herokuapp changelog
 ==========================
 
 
-0.9.12 - MASTER
----------------
+0.9.12 - 03/01/2013
+-------------------
 
 - Adding in Heroku-compatible logging configuration to project template settings.
 - Updated project template to match Django 1.6 default settings.
