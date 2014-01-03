@@ -329,13 +329,13 @@ Heroku remote using the following command:
 
 Many django-herokuapp commands need to know the root of the project's file stucture. Django 1.6 provides
 this setting automatically as ``settings.BASE_DIR``. If this setting is not present in your settings file,
-it should be added as an absolute path. You can look it up dynamically from the settings file using something
-similar to:
+it should be added as an absolute path. You can look it up dynamically from the settings file using like this:
 
 ::
 
     import os.path
-    BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+    # Assumes settings file is located in a your_project.settings package.
+    BASE_DIR = os.path.abspath(os.path.join(__file__, "..", ".."))
 
 
 Support and announcements
