@@ -25,7 +25,7 @@ STATICFILES_STORAGE = "require.storage.OptimizedCachedStaticFilesStorage"
 
 STATIC_URL = "/static/"
 
-STATIC_ROOT = os.path.join(BASE_DIR, "..", "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 
 # Use local server.

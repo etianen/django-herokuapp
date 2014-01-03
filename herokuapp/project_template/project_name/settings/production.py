@@ -15,7 +15,9 @@ from django.utils.crypto import get_random_string
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+SITE_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+BASE_DIR = os.path.abspath(os.path.join(SITE_ROOT, ".."))
 
 
 # The name of the app on the Heroku platform.
@@ -147,7 +149,7 @@ INSTALLED_APPS = (
 # Additional static file locations.
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(SITE_ROOT, "static"),
 )
 
 
@@ -178,7 +180,7 @@ SITE_ID = 1
 # Absolute path to the directory where templates are stored.
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, "templates"),
+    os.path.join(SITE_ROOT, "templates"),
 )
 
 TEMPLATE_LOADERS = (

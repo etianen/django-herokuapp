@@ -324,6 +324,20 @@ Heroku remote using the following command:
     $ git remote add heroku git@heroku.com:your-app-name.git
 
 
+"AttributeError: 'Settings' object has no attribute 'BASE_DIR'"
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Many django-herokuapp commands need to know the root of the project's file stucture. Django 1.6 provides
+this setting automatically as ``settings.BASE_DIR``. If this setting is not present in your settings file,
+it should be added as an absolute path. You can look it up dynamically from the settings file using something
+similar to:
+
+::
+
+    import os.path
+    BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+
 Support and announcements
 -------------------------
 

@@ -2,6 +2,12 @@ django-herokuapp changelog
 ==========================
 
 
+0.9.13 - 03/01/2013
+-------------------
+
+- Correctly interpreting Django BASE_DIR setting.
+
+
 0.9.12 - 03/01/2013
 -------------------
 

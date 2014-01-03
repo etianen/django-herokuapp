@@ -118,7 +118,7 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             self.heroku.config_set(PYTHONHASHSEED="random")
             self.stdout.write("Python hash seed written to Heroku config.")
         # Check for Procfile.
-        procfile_path = os.path.join(settings.BASE_DIR, "..", "Procfile")
+        procfile_path = os.path.join(settings.BASE_DIR, "Procfile")
         if not os.path.exists(procfile_path):
             self.prompt_for_fix("Procfile must to be created to deploy to Heroku.", "Create now?")
             with open(procfile_path, "wb") as procfile_handle:
@@ -127,7 +127,7 @@ class Command(HerokuCommandMixin, NoArgsCommand):
                 ))
             self.stdout.write("Default Procfile generated.")
         # Check for requirements.txt.
-        requirements_path = os.path.join(settings.BASE_DIR, "..", "requirements.txt")
+        requirements_path = os.path.join(settings.BASE_DIR, "requirements.txt")
         if not os.path.exists(requirements_path):
             self.prompt_for_fix("A requirements.txt file must be created to deploy to Heroku.", "Generate now?")
             sh.pip.freeze(_out=requirements_path)

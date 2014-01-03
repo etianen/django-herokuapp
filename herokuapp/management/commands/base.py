@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 
-import os.path
 from optparse import make_option
 
 from django.utils.functional import cached_property
@@ -24,7 +23,7 @@ class HerokuCommandMixin(object):
     def heroku(self):
         return HerokuCommand(
             app = self.app,
-            cwd = os.path.join(settings.BASE_DIR, ".."),
+            cwd = settings.BASE_DIR,
             stdout = self.stdout,
             stderr = self.stderr,
         )
