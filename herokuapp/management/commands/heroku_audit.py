@@ -8,6 +8,10 @@ import sh
 from django.conf import settings
 from django.core.management.base import NoArgsCommand, BaseCommand
 from django.utils.crypto import get_random_string
+from django.core.files.storage import default_storage
+from django.contrib.staticfiles.storage import staticfiles_storage
+
+from storages.backends.s3boto import S3BotoStorage
 
 from herokuapp.commands import HerokuCommandError
 from herokuapp.management.commands.base import HerokuCommandMixin
@@ -32,6 +36,12 @@ class Command(HerokuCommandMixin, NoArgsCommand):
         ),
     ) + HerokuCommandMixin.option_list
     
+    def exit_with_error(self, error):
+        self.stderr.write(error + "\n")
+        self.stderr.write("Heroku audit aborted.\n")
+        self.stderr.write("Run `./manage.py heroku_audit --fix` to fix problems.\n")
+        sys.exit(1)
+
     def prompt_for_fix(self, error, message):
         if self.fix:
             self.stdout.write(error + "\n")
@@ -50,10 +60,7 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             answer_bool = False
         # Exit if no fix provided.
         if not answer_bool:
-            self.stderr.write(error + "\n")
-            self.stderr.write("Heroku audit aborted.\n")
-            self.stderr.write("Run `./manage.py heroku_audit --fix` to fix problems.\n")
-            sys.exit(1)
+            self.exit_with_error(error)
 
     def read_string(self, message, default):
         if self.interactive:
@@ -80,6 +87,12 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             self.prompt_for_fix("No Heroku app named '{app}' detected.".format(app=self.app), "Create app?")
             self.heroku("apps:create", self.app)
             self.stdout.write("Heroku app created.")
+        # Check that Amazon S3 is being used for media.
+        if not isinstance(staticfiles_storage._wrapped, S3BotoStorage):
+            self.exit_with_error("settings.DEFAULT_FILE_STORAGE should be set to a subclass of `storages.backends.s3boto.S3BotoStorage`. `require_s3.storage.OptimizedCachedStaticFilesStorage` is recommended.")
+        # Check that Amazon S3 is being used for staticfiles.
+        if not isinstance(default_storage._wrapped, S3BotoStorage):
+            self.exit_with_error("settings.STATICFILES_STORAGE should be set to a subclass of `storages.backends.s3boto.S3BotoStorage`.")
         # Check for AWS access details.
         if not self.heroku.config_get("AWS_ACCESS_KEY_ID"):
             self.prompt_for_fix("Amazon S3 access details not present in Heroku config.", "Setup now?")
