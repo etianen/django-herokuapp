@@ -9,6 +9,7 @@ from django.conf import settings
 from django.core.management.base import NoArgsCommand, BaseCommand
 from django.utils.crypto import get_random_string
 
+from herokuapp.commands import HerokuCommandError
 from herokuapp.management.commands.base import HerokuCommandMixin
 
 
@@ -75,7 +76,7 @@ class Command(HerokuCommandMixin, NoArgsCommand):
         # Check app exists.
         try:
             self.heroku("apps:info")
-        except sh.ErrorReturnCode:
+        except HerokuCommandError:
             self.prompt_for_fix("No Heroku app named '{app}' detected.".format(app=self.app), "Create app?")
             self.heroku("apps:create", self.app)
             self.stdout.write("Heroku app created.")

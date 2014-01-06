@@ -6,7 +6,7 @@ import sh
 
 from django.utils.crypto import get_random_string
 
-from herokuapp.commands import HerokuCommand
+from herokuapp.commands import HerokuCommand, HerokuCommandError
 
 
 class HerokuappTest(unittest.TestCase):
@@ -85,7 +85,7 @@ class HerokuappTest(unittest.TestCase):
         # Delete the app, if it exists.
         try:
             self.heroku("apps:delete", self.app, confirm=self.app)
-        except sh.ErrorReturnCode:
+        except HerokuCommandError:
             pass
         # Remove the temp dir.
         shutil.rmtree(self.dir)

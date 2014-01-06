@@ -50,7 +50,7 @@ def main():
     if not args.interactive:
         audit_args.append("--noinput")
     audit_returncode = subprocess.call(audit_args)
-    if audit_returncode != 1:
+    if audit_returncode != 0:
         sys.exit(audit_returncode)
     # Give some help to the user.
     print "Heroku project created."

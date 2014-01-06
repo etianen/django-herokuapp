@@ -1,8 +1,6 @@
 import os, os.path
 
-import sh
-
-from herokuapp.commands import HerokuCommand
+from herokuapp.commands import HerokuCommand, HerokuCommandError
 
 
 def load_env(entrypoint, app=None):
@@ -12,7 +10,7 @@ def load_env(entrypoint, app=None):
     )
     try:
         heroku_config = heroku.config_get()
-    except sh.ErrorReturnCode:
+    except HerokuCommandError:
         pass
     else:
         for key, value in heroku_config.items():
