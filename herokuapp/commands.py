@@ -4,6 +4,8 @@ from functools import partial
 
 import sh
 
+from django.core.management import command
+
 
 RE_PS = re.compile("^(\w+)\.")
 
@@ -18,9 +20,18 @@ def parse_shell(line_iter):
     )
 
 
+class HerokuCommandError(command.CommandError):
+
+    pass
+
+
 class HerokuCommand(object):
 
     def __init__(self, app, cwd, stdout=None, stderr=None):
+        # Check that Heroku is logged in.
+        if not hasattr(sh, "heroku"):
+            raise HerokuCommandError("Herku toolbelt is not installed. Install from https://toolbelt.heroku.com/")
+        # Create the Heroku command wrapper.
         self._heroku = partial(sh.heroku,
             _cwd = cwd,
             _out = stdout,
