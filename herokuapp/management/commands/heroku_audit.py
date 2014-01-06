@@ -51,6 +51,7 @@ class Command(HerokuCommandMixin, NoArgsCommand):
         if not answer_bool:
             self.stderr.write(error + "\n")
             self.stderr.write("Heroku audit aborted.\n")
+            self.stderr.write("Run `./manage.py heroku_audit --fix` to fix problems.\n")
             sys.exit(1)
 
     def read_string(self, message, default):
@@ -89,7 +90,7 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             self.heroku.config_set(**aws_env)
             self.stdout.write("Amazon S3 config written to Heroku config.")
         # Check for SendGrid settings.
-        if not self.heroku.config_get("SENDGRID_USERNAME"):
+        if settings.EMAIL_HOST == "smtp.sendgrid.net" and not self.heroku.config_get("SENDGRID_USERNAME"):
             self.prompt_for_fix("SendGrid addon not installed.", "Provision SendGrid starter addon (free)?")
             self.heroku("addons:add", "sendgrid:starter")
             self.stdout.write("SendGrid addon provisioned.")
