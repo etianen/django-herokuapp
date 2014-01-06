@@ -218,7 +218,7 @@ you should add the following setting to your app:
 
 If you intend to serve your entire app over SSL, then it's a good idea to force all requests to use SSL. The
 `django-sslify <https://github.com/rdegges/django-sslify>`_ app provides a middleware for this. Simply `pip install django-sslify`,
-then add `"sslify.middleware.SSLifyMiddleware"` to the start of your `MIDDLEWARE_CLASSES`.
+then add ``"sslify.middleware.SSLifyMiddleware"`` to the start of your ``MIDDLEWARE_CLASSES``.
 
 
 Outputting logs to Heroku logplex
