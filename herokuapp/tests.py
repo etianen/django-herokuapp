@@ -1,4 +1,4 @@
-import unittest, tempfile, shutil, httplib, os.path, sys, string, time
+import unittest, tempfile, shutil, httplib, os.path, string, time
 from contextlib import closing
 from functools import partial
 
@@ -33,17 +33,18 @@ class HerokuappTest(unittest.TestCase):
             ]))
         # Create the test project.
         self.start_project()
+        # Enable verbose output.
+        self.error_return_code_truncate_cap = sh.ErrorReturnCode.truncate_cap
+        sh.ErrorReturnCode.truncate_cap = 999999
 
     def sh(self, name):
-        return partial(getattr(sh, name), _cwd=self.dir, _out=sys.stdout, _err=sys.stderr)
+        return partial(getattr(sh, name), _cwd=self.dir)
 
     @property
     def heroku(self):
         return HerokuCommand(
             app = self.app,
             cwd = self.dir,
-            stdout = sys.stdout,
-            stderr = sys.stderr,
         )
 
     @property
@@ -89,3 +90,5 @@ class HerokuappTest(unittest.TestCase):
             pass
         # Remove the temp dir.
         shutil.rmtree(self.dir)
+        # Disable verbose output.
+        sh.ErrorReturnCode.truncate_cap = self.error_return_code_truncate_cap
