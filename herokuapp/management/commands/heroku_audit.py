@@ -120,10 +120,11 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             self.heroku("pg:promote", database_url)
             self.stdout.write("Heroku primary database URL set.")
         # Check for secret key.
-        if not self.heroku.config_get("SECRET_KEY"):
+        heroku_secret_key = self.heroku.config_get("SECRET_KEY")
+        if not heroku_secret_key:
             self.prompt_for_fix("Secret key not set in Heroku config.", "Generate now?")
             self.heroku.config_set(SECRET_KEY=get_random_string(50, "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"))
-            self.stdout.write("Secret key written to Heroku config.")
+            self.stdout.write("Secret key written to Heroku config. Ensure your settings file is configured to read the secret key: https://github.com/etianen/django-herokuapp#improving-site-security")
         # Check for Python hash seed.
         if not self.heroku.config_get("PYTHONHASHSEED"):
             self.prompt_for_fix("Python hash seed not set in Heroku config.", "Set now?")
