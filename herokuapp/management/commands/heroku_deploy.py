@@ -66,7 +66,7 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             call_command("syncdb", interactive=False)
             call_command("migrate", interactive=False)
         # Restart the app if required.
-        if (kwargs["deploy_staticfiles"] and not kwargs["deploy_app"]):
+        if kwargs["deploy_staticfiles"] and not kwargs["deploy_app"]:
             self.heroku("restart")
         # Ensure at least one web dyno will be started.
         heroku_ps.setdefault("web", 1)

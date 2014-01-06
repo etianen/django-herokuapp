@@ -130,6 +130,9 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             self.prompt_for_fix("Python hash seed not set in Heroku config.", "Set now?")
             self.heroku.config_set(PYTHONHASHSEED="random")
             self.stdout.write("Python hash seed written to Heroku config.")
+        # Check for SSL header settings.
+        if not getattr(settings, "SECURE_PROXY_SSL_HEADER", None) == ("HTTP_X_FORWARDED_PROTO", "https"):
+            self.exit_with_error("Missing SECURE_PROXY_SSL_HEADER settings. Please add `SECURE_PROXY_SSL_HEADER = (\"HTTP_X_FORWARDED_PROTO\", \"https\")` to your settings.py file.")
         # Check for Procfile.
         procfile_path = os.path.join(settings.BASE_DIR, "Procfile")
         if not os.path.exists(procfile_path):

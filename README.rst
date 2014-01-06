@@ -204,6 +204,19 @@ It's also recommended that you configure Python to generate a new random seed ev
     $ heroku config:set PYTHONHASHSEED=random
 
 
+Adding support for Heroku SSL
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Heroku provides a free `piggyback SSL <https://blog.heroku.com/archives/2012/5/3/announcing_better_ssl_for_your_app>`_
+service for all of it's apps, as well as a `SSL endpoint addon <https://devcenter.heroku.com/articles/ssl-endpoint>`_
+for custom domains. It order to detect when a request is made via SSL in Django (for use in `request.is_secure()`),
+you should add the following setting to your app:
+
+::
+
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+
 Outputting logs to Heroku logplex
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
