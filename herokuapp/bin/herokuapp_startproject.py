@@ -1,4 +1,4 @@
-import os, os.path, getpass, subprocess, argparse
+import sys, os, os.path, getpass, subprocess, argparse
 
 from django.core import management
 
@@ -49,7 +49,9 @@ def main():
     audit_args = [os.path.join(args.dest_dir, "manage.py"), "heroku_audit", "--fix"]
     if not args.interactive:
         audit_args.append("--noinput")
-    subprocess.call(audit_args)
+    audit_returncode = subprocess.call(audit_args)
+    if audit_returncode != 1:
+        sys.exit(audit_returncode)
     # Give some help to the user.
     print "Heroku project created."
     print "Deploy to Heroku with `./deploy.sh`"
