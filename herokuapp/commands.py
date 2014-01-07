@@ -74,7 +74,9 @@ class HerokuCommand(object):
         for line in self("ps", _out=None, _iter=True):
             match = RE_PS.match(line)
             if match:
-                counter[match.group(1)] += 1
+                process_name = match.group(1)
+                if process_name not in ("run"):
+                    counter[process_name] += 1
         return counter
 
     def scale(self, **kwargs):
