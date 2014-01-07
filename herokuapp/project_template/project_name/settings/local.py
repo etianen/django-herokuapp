@@ -9,7 +9,7 @@ This file should be excluded from version control to keep the settings local.
 
 import os.path
 
-from production import DATABASES, BASE_DIR
+from production import BASE_DIR
 
 
 # Run in debug mode.
@@ -47,10 +47,12 @@ TEMPLATE_LOADERS = (
 
 # Local database settings. These should work well with http://postgresapp.com/.
 
-DATABASES["default"]["HOST"] = ""
-
-DATABASES["default"]["NAME"] = "{{ project_name }}"
-
-DATABASES["default"]["USER"] = "{{ user }}"
-
-DATABASES["default"]["PASSWORD"] = ""
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "HOST": "localhost",
+        "NAME": "{{ project_name }}",
+        "USER": "{{ user }}",
+        "PASSWORD": "",
+    },
+}

@@ -28,7 +28,7 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # The name of the production Django settings module.
-PRODUCTION_SETTINGS_MODULE={{ project_name }}.settings.production
+PRODUCTION_SETTINGS_MODULE=mohawk_moodboard.settings.production
 
 ##
 # Installs the application's dependencies in a clean environment.
@@ -65,8 +65,7 @@ test () {
     fi
     # Run the Heroku audit with production settings.
     unset DATABASE_URL
-    local DJANGO_SETTINGS_MODULE=PRODUCTION_SETTINGS_MODULE
-    $DIR/manage.py heroku_audit --noinput
+    DJANGO_SETTINGS_MODULE=$PRODUCTION_SETTINGS_MODULE $DIR/manage.py heroku_audit --noinput
 }
 
 ##
@@ -79,8 +78,7 @@ test () {
 deploy () {
     # Run the Heroku deploy with production settings.
     unset DATABASE_URL
-    local DJANGO_SETTINGS_MODULE=PRODUCTION_SETTINGS_MODULE
-    $DIR/manage.py heroku_deploy $1
+    DJANGO_SETTINGS_MODULE=$PRODUCTION_SETTINGS_MODULE $DIR/manage.py heroku_deploy $1
 }
 
 ##
