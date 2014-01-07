@@ -51,7 +51,7 @@ Installing in an existing project
 ---------------------------------
 
 1. Install django-herokuapp using pip ``pip install django-herokuapp``.
-2. Add ``'herokuapp'`` to your ``INSTALLED_APPS`` setting.
+2. Add ``'herokuapp'`` and ``'south'`` to your ``INSTALLED_APPS`` setting.
 3. Read the rest of this README for pointers on setting up your Heroku site.  
 
 
