@@ -4,11 +4,11 @@ from herokuapp.commands import HerokuCommand, HerokuCommandError
 
 
 def load_env(entrypoint, app=None):
-    heroku = HerokuCommand(
-        app = app,
-        cwd = os.path.dirname(entrypoint),
-    )
     try:
+        heroku = HerokuCommand(
+            app = app,
+            cwd = os.path.dirname(entrypoint),
+        )
         heroku_config = heroku.config_get()
     except HerokuCommandError:
         pass
