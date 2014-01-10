@@ -24,6 +24,6 @@ class HerokuCommandMixin(object):
         return HerokuCommand(
             app = self.app,
             cwd = settings.BASE_DIR,
-            stdout = self.stdout,
-            stderr = self.stderr,
+            stdout = self.stdout._out,
+            stderr = self.stderr._out,
         )
