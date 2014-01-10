@@ -2,6 +2,16 @@ django-herokuapp changelog
 ==========================
 
 
+0.9.14 - 10/01/2013
+-------------------
+
+- Better detection and fallback for scripts that require the Heroku toolbelt, but cannot locate it.
+- Default deploy script is aware of popular CI build systems, and only builds on the master branch by default.
+- Information about forcing SSL on an app.
+- Improving heroku_audit command with detection for more potential problems.
+- Allowing email providers other than SendGrid to be used without breaking heroku_audit.
+
+
 0.9.13 - 03/01/2013
 -------------------
 
