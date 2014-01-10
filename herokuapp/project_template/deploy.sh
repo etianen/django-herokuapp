@@ -28,7 +28,7 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # The name of the production Django settings module.
-PRODUCTION_SETTINGS_MODULE=mohawk_moodboard.settings.production
+PRODUCTION_SETTINGS_MODULE={{ project_name }}.settings.production
 
 ##
 # Installs the application's dependencies in a clean environment.
