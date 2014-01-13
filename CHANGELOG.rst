@@ -2,6 +2,12 @@ django-herokuapp changelog
 ==========================
 
 
+0.9.15 - 13/01/2013
+-------------------
+
+- Unwrapping Django management commands output and error streams for correct unicode handling.
+
+
 0.9.14 - 10/01/2013
 -------------------
 
