@@ -42,9 +42,8 @@ PRODUCTION_SETTINGS_MODULE={{ project_name }}.settings.production
 install () {
     # If the Heroku toolbelt is not installed, install it.
     command -v heroku >/dev/null 2>&1 || {
-        cd /tmp
-        wget -qO- https://s3.amazonaws.com/assets.heroku.com/heroku-client/heroku-client.tgz | tar xz
-        export HEROKU_COMMAND="/tmp/heroku-client/bin/heroku"
+        wget -qO- https://s3.amazonaws.com/assets.heroku.com/heroku-client/heroku-client.tgz | tar xz -C /tmp
+        export HEROKU_COMMAND=/tmp/heroku-client/bin/heroku
     }
     # Install python dependencies.
     pip install -r requirements.txt --use-mirrors
