@@ -2,6 +2,12 @@ django-herokuapp changelog
 ==========================
 
 
+MASTER
+------
+
+- Intelligently determining if syncdb or migrate has to be run during a deploy, and not running if not needed.
+
+
 0.9.15 - 13/01/2013
 -------------------
 

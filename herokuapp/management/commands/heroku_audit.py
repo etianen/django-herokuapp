@@ -36,14 +36,14 @@ class Command(HerokuCommandMixin, NoArgsCommand):
     ) + HerokuCommandMixin.option_list
     
     def exit_with_error(self, error):
-        self.stderr.write(error + "\n")
-        self.stderr.write("Heroku audit aborted.\n")
-        self.stderr.write("Run `./manage.py heroku_audit --fix` to fix problems.\n")
+        self.stderr.write(error)
+        self.stderr.write("Heroku audit aborted.")
+        self.stderr.write("Run `./manage.py heroku_audit --fix` to fix problems.")
         sys.exit(1)
 
     def prompt_for_fix(self, error, message):
         if self.fix:
-            self.stdout.write(error + "\n")
+            self.stdout.write(error)
             if self.interactive:
                 # Ask to fix the issue.
                 answer = ""
@@ -77,6 +77,7 @@ class Command(HerokuCommandMixin, NoArgsCommand):
 
     def handle(self, **kwargs):
         self.app = kwargs["app"]
+        self.dry_run = kwargs["dry_run"]
         self.interactive = kwargs["interactive"]
         self.fix = kwargs["fix"]
         # Check app exists.

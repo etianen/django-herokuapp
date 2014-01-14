@@ -311,8 +311,9 @@ This will carry out the following actions:
 - Run ``syncdb`` and ``migrate`` for your live database (disable with the ``--no-db`` switch).
 
 This command can be run whenever you need to redeploy your app. For faster redeploys, and to minimise
-downtime, it's a good idea to disable static file syncing and/or database syncing when they're not
-required.
+downtime, django-herokuapp only runs ``syncdb`` and ``migrate`` when it determines that model changes
+are missing from the database. To force a database redeploy, run ``heroku_deploy`` with the ``--force-db``
+switch.
 
 For a simple one-liner deploy that works in a headless CI environments (such as `Travis CI <http://travis-ci.org/>`_ or
 `Drone.io <http://drone.io/>`_), django-herokuapp provides a useful `deploy.sh script <https://github.com/etianen/django-herokuapp/blob/master/herokuapp/project_template/deploy.sh>`_

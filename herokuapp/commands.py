@@ -5,6 +5,7 @@ from functools import partial
 import sh
 
 from django.core.management import CommandError
+from django.utils.encoding import force_text
 
 
 RE_PS = re.compile("^(\w+)\.")
@@ -20,6 +21,21 @@ def parse_shell(lines):
     )
 
 
+def format_command(prefix, args, kwargs):
+    return u"COMMAND: {prefix} {args} {kwargs}".format(
+        prefix = prefix,
+        args = u" ".join(map(force_text, args)),
+        kwargs = u" ".join(
+            u"--{key}={value}".format(
+                key = key.replace("_", "-"),
+                value = value,
+            )
+            for key, value
+            in kwargs.items()
+        )
+    )
+
+
 class HerokuCommandError(CommandError):
 
     pass
@@ -27,7 +43,10 @@ class HerokuCommandError(CommandError):
 
 class HerokuCommand(object):
 
-    def __init__(self, app, cwd, stdout=None, stderr=None):
+    def __init__(self, app, cwd, stdout=None, stderr=None, dry_run=False):
+        # Store the dry run state.
+        self.dry_run = dry_run
+        self._stdout = stdout
         # Check that Heroku is logged in.
         if not hasattr(sh, "heroku"):
             raise HerokuCommandError("Heroku toolbelt is not installed. Install from https://toolbelt.heroku.com/")
@@ -44,15 +63,23 @@ class HerokuCommand(object):
             if line == "\n":
                 stdin.put("\n")
         try:
-            self("auth:token", _in=None, _tty_in=True, _out=auth_token_interact, _out_bufsize=0).wait()
+            self("auth:token", _force_live_run=True, _in=None, _tty_in=True, _out=auth_token_interact, _out_bufsize=0).wait()
         except sh.ErrorReturnCode:
             raise HerokuCommandError("Please log in to the Heroku Toolbelt using `heroku auth:login`.")
 
     def __call__(self, *args, **kwargs):
-        try:
-            return self._heroku(*args, **kwargs)
-        except sh.ErrorReturnCode as ex:
-            raise HerokuCommandError(str(ex))
+        # Allow dry run to be overridden for selective (non-mutating) commands.
+        force_live_run = kwargs.pop("_force_live_run", False)
+        # Run the command.
+        if self.dry_run and not force_live_run:
+            # Allow a dry run to be processed.
+            self._stdout.write(format_command("heroku", args, kwargs) + "\n")
+        else:
+            # Call a live command.
+            try:
+                return self._heroku(*args, **kwargs)
+            except sh.ErrorReturnCode as ex:
+                raise HerokuCommandError(str(ex))
 
     def config_set(self, **kwargs):
         return self("config:set", *[
@@ -66,12 +93,12 @@ class HerokuCommand(object):
 
     def config_get(self, name=None):
         if name:
-            return str(self("config:get", name, _out=None)).strip()
+            return str(self("config:get", name, _out=None, _force_live_run=True)).strip()
         return parse_shell(self("config", shell=True, _out=None))
 
     def ps(self):
         counter = Counter()
-        for line in self("ps", _out=None, _iter=True):
+        for line in self("ps", _out=None, _iter=True, _force_live_run=True):
             match = RE_PS.match(line)
             if match:
                 process_name = match.group(1)
@@ -90,7 +117,7 @@ class HerokuCommand(object):
         ])
 
     def postgres_url(self):
-        for line in self("config", shell=True, _out=None):
+        for line in self("config", shell=True, _out=None, _force_live_run=True):
             key = line.split("=", 1)[0]
             if RE_POSTGRES.match(key):
                 return key
