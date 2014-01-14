@@ -1,4 +1,4 @@
-import re
+import re, os
 from collections import Counter
 from functools import partial
 
@@ -47,11 +47,18 @@ class HerokuCommand(object):
         # Store the dry run state.
         self.dry_run = dry_run
         self._stdout = stdout
-        # Check that Heroku is logged in.
-        if not hasattr(sh, "heroku"):
+        # Check that the heroku command is available.
+        # It's possible to load the heroku command path from an environmental variable, which allows
+        # for headless CI temporary heroku installs to be created.
+        heroku_command_path = os.environ.get("HEROKU_COMMAND")
+        if heroku_command_path:
+            heroku_command = sh.Command(heroku_command_path)
+        elif hasattr(sh, "heroku"):
+            heroku_command = sh.heroku
+        else:
             raise HerokuCommandError("Heroku toolbelt is not installed. Install from https://toolbelt.heroku.com/")
         # Create the Heroku command wrapper.
-        self._heroku = partial(sh.heroku,
+        self._heroku = partial(heroku_command,
             _cwd = cwd,
             _out = stdout,
             _err = stderr,
