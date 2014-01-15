@@ -4,10 +4,10 @@ from itertools import repeat
 from optparse import make_option
 
 from django.core.management.base import NoArgsCommand, BaseCommand
-from django.conf import settings
 
 from herokuapp.management.commands.base import HerokuCommandMixin
 from herokuapp.introspection import has_pending_syncdb, has_pending_migrations
+from herokuapp import settings
 
 
 class Command(HerokuCommandMixin, NoArgsCommand):
