@@ -1,6 +1,6 @@
 from django.db.models import get_models
 from django.db import connections
-from django.db.utils import ProgrammingError
+from django.db.utils import DatabaseError
 
 from south import migration
 from south.models import MigrationHistory
@@ -55,7 +55,7 @@ def has_pending_migrations():
     apps  = list(migration.all_migrations())
     try:
         applied_migrations = list(MigrationHistory.objects.filter(app_name__in=[app.app_label() for app in apps]))
-    except ProgrammingError:
+    except DatabaseError:
         return True  # The table has not been created yet.
     applied_migrations = ['%s.%s' % (mi.app_name,mi.migration) for mi in applied_migrations]
     for app in apps:
