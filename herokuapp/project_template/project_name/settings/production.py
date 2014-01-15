@@ -20,9 +20,11 @@ SITE_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 BASE_DIR = os.path.abspath(os.path.join(SITE_ROOT, ".."))
 
 
-# The name of the app on the Heroku platform.
+# Heroku platform settings.
 
 HEROKU_APP_NAME = "{{ app_name }}"
+
+HEROKU_BUILDPACK_URL = "https://github.com/heroku/heroku-buildpack-python.git"
 
 
 # The name and domain of this site.
