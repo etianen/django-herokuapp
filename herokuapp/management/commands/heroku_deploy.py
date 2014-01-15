@@ -4,6 +4,7 @@ from itertools import repeat
 from optparse import make_option
 
 from django.core.management.base import NoArgsCommand, BaseCommand
+from django.conf import settings
 
 from herokuapp.management.commands.base import HerokuCommandMixin
 from herokuapp.introspection import has_pending_syncdb, has_pending_migrations
@@ -53,7 +54,13 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             # Install the anvil plugin.
             self.heroku("plugins:install", "https://github.com/ddollar/heroku-anvil")
             # Build the slug.
-            app_slug = self.heroku("build", pipeline=True, _out=None)
+            heroku_build_kwargs = {
+                "pipeline": True,
+                "_out": None,
+            }
+            if settings.HEROKU_BUILDPACK_URL:
+                heroku_build_kwargs["buildpack"] = settings.HEROKU_BUILDPACK_URL
+            app_slug = self.heroku("build", **heroku_build_kwargs)
         # Deploy static asssets.
         if kwargs["deploy_staticfiles"]:
             self.stdout.write("Deploying static files...")
