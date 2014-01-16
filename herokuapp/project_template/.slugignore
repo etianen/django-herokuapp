@@ -1,3 +1,7 @@
 tests
 tests.py
+tests.pyc
 static
+local.py
+local.pyc
+node_modules
