@@ -43,7 +43,7 @@ install () {
     # If the Heroku toolbelt is not installed, install it.
     command -v heroku >/dev/null 2>&1 || {
         wget -qO- https://s3.amazonaws.com/assets.heroku.com/heroku-client/heroku-client.tgz | tar xz -C /tmp
-        export HEROKU_COMMAND=/tmp/heroku-client/bin/heroku
+        export PATH=/tmp/heroku-client/bin:$PATH
     }
     # Install python dependencies.
     pip install -r requirements.txt --use-mirrors

@@ -48,12 +48,7 @@ class HerokuCommand(object):
         self.dry_run = dry_run
         self._stdout = stdout
         # Check that the heroku command is available.
-        # It's possible to load the heroku command path from an environmental variable, which allows
-        # for headless CI temporary heroku installs to be created.
-        heroku_command_path = os.environ.get("HEROKU_COMMAND")
-        if heroku_command_path:
-            heroku_command = sh.Command(heroku_command_path)
-        elif hasattr(sh, "heroku"):
+        if hasattr(sh, "heroku"):
             heroku_command = sh.heroku
         else:
             raise HerokuCommandError("Heroku toolbelt is not installed. Install from https://toolbelt.heroku.com/")
