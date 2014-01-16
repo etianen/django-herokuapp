@@ -16,6 +16,10 @@ class CanonicalDomainMiddleware(object):
     def process_request(self, request):
         """If the request domain is not the canonical domain, redirect."""
         hostname = request.get_host().split(":", 1)[0]
+        # Don't perform redirection for testing or local development.
+        if hostname in ("testserver", "localhost", "127.0.0.1"):
+            return
+        # Check against the site domain.
         canonical_hostname = SITE_DOMAIN.split(":", 1)[0]
         if hostname != canonical_hostname:
             if request.is_secure():
