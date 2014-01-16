@@ -121,7 +121,7 @@ The recommended settings for hosting your static content with Amazon S3 is as fo
     }
     AWS_S3_FILE_OVERWRITE = False
     AWS_QUERYSTRING_AUTH = False
-    AWS_S3_SECURE_URLS = False
+    AWS_S3_SECURE_URLS = True
     AWS_REDUCED_REDUNDANCY = False
     AWS_IS_GZIPPED = False
 
