@@ -211,7 +211,6 @@ class HerokuappTest(unittest.TestCase):
             "heroku ps:scale web=0",
             "heroku release",
             "./manage.py migrate",
-            "heroku ps:scale web=1",
             "heroku maintenance:off",
         ))
         # Test redeploy.

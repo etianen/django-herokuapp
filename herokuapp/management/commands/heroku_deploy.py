@@ -88,10 +88,12 @@ class Command(HerokuCommandMixin, NoArgsCommand):
         # Restart the app if required.
         if kwargs["deploy_staticfiles"] and not (kwargs["deploy_app"] or deploy_database):
             self.heroku("restart")
-        # Ensure at least one web dyno will be started.
-        heroku_ps.setdefault("web", 1)
-        # Restore running dyno state.
-        self.heroku.scale(**heroku_ps)
+        # Prepare to scale the app back to the original state.
+        if deploy_database or not heroku_ps:
+            # Ensure at least one web dyno will be started.
+            heroku_ps.setdefault("web", 1)
+            # Restore running dyno state.
+            self.heroku.scale(**heroku_ps)
         # Exit maintenance mode, if required.
         if deploy_database:
             # Disable maintenance mode.
