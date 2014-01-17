@@ -79,7 +79,7 @@ test () {
 deploy () {
     # Run the Heroku deploy with production settings.
     unset DATABASE_URL
-    DJANGO_SETTINGS_MODULE=$PRODUCTION_SETTINGS_MODULE $DIR/manage.py heroku_deploy $1
+    DJANGO_SETTINGS_MODULE=$PRODUCTION_SETTINGS_MODULE $DIR/manage.py heroku_deploy $@
 }
 
 ##
@@ -105,7 +105,7 @@ then
     # feature branches to be created. Add more branch/app combinations
     # below in the form:
     #
-    # "branch_name") deploy app-name ;;
+    # "branch_name") deploy --app app-name ;;
     ##
     case "$GIT_BRANCH" in
         # Deploy the master branch to the default app.
