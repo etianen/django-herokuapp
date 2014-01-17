@@ -220,6 +220,13 @@ class HerokuappTest(unittest.TestCase):
         self.assert_app_running()
         # Make sure that the database was synced.
         self.assert_no_db_deploy_workflow()
+        # Check that the shortcut deploy with no scaling happens.
+        self.assert_deploy_workflow((
+            "heroku plugins:install",
+            "heroku build",
+            "./manage.py collectstatic",
+            "heroku release",
+        ))
 
     def tearDown(self):
         pass
