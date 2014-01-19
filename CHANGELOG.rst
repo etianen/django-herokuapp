@@ -2,8 +2,8 @@ django-herokuapp changelog
 ==========================
 
 
-0.9.17 - 19/01/2014
--------------------
+0.9.17 - MASTER
+---------------
 
 - An improved Heroku toolbelt installation should work on all Linux distros (not just on Ubuntu).
 - Django 1.5 compatibility.
