@@ -2,19 +2,28 @@ django-herokuapp changelog
 ==========================
 
 
-0.9.16 - 14/01/2013
+0.9.17 - 19/01/2014
+-------------------
+
+- An improved Heroku toolbelt installation should work on all Linux distros (not just on Ubuntu).
+- Django 1.5 compatibility.
+- Ability to specify a Heroku buildpack using the ``HEROKU_BUILDPACK_URL`` setting.
+- Faster deploys by bypassing Dyno scaling when possible.
+
+
+0.9.16 - 14/01/2014
 -------------------
 
 - Intelligently determining if syncdb or migrate has to be run during a deploy, and not running if not needed.
 
 
-0.9.15 - 13/01/2013
+0.9.15 - 13/01/2014
 -------------------
 
 - Unwrapping Django management commands output and error streams for correct unicode handling.
 
 
-0.9.14 - 10/01/2013
+0.9.14 - 10/01/2014
 -------------------
 
 - Better detection and fallback for scripts that require the Heroku toolbelt, but cannot locate it.
@@ -24,13 +33,13 @@ django-herokuapp changelog
 - Allowing email providers other than SendGrid to be used without breaking heroku_audit.
 
 
-0.9.13 - 03/01/2013
+0.9.13 - 03/01/2014
 -------------------
 
 - Correctly interpreting Django BASE_DIR setting.
 
 
-0.9.12 - 03/01/2013
+0.9.12 - 03/01/2014
 -------------------
 
 - Adding in Heroku-compatible logging configuration to project template settings.
