@@ -46,7 +46,7 @@ def main():
         user = getpass.getuser(),
     )
     # Audit and configure the project for Heroku.
-    audit_args = [os.path.join(args.dest_dir, "manage.py"), "heroku_audit", "--fix"]
+    audit_args = ["python", os.path.join(args.dest_dir, "manage.py"), "heroku_audit", "--fix"]
     if not args.interactive:
         audit_args.append("--noinput")
     audit_returncode = subprocess.call(audit_args)
