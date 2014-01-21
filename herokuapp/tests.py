@@ -63,7 +63,7 @@ class HerokuappTest(unittest.TestCase):
         self.sh(os.path.join(self.dir, "manage.py"))("schemamigration", "django_herokuapp_test_app", initial=True)
 
     def assert_app_running(self):
-        time.sleep(10)  # Wait to app to initialize.
+        time.sleep(30)  # Wait to app to initialize.
         domain = "{app}.herokuapp.com".format(app=self.app)
         with closing(httplib.HTTPConnection(domain)) as connection:
             connection.request("HEAD", "/admin/")
