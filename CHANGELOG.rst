@@ -2,6 +2,12 @@ django-herokuapp changelog
 ==========================
 
 
+0.9.18 - 21/01/2014
+-------------------
+
+- Fixing issues with executable permissions on scripts installed via herokuapp_startproject.
+
+
 0.9.17 - 19/01/2014
 -------------------
 
