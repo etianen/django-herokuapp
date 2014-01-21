@@ -114,11 +114,11 @@ class HerokuappTest(unittest.TestCase):
             self.assert_deploy_workflow((
                 "heroku plugins:install",
                 "heroku build",
-                "./manage.py collectstatic",
+                "python manage.py collectstatic",
                 "heroku maintenance:on",
                 "heroku release",
-                "./manage.py syncdb",
-                "./manage.py migrate",
+                "python manage.py syncdb",
+                "python manage.py migrate",
                 "heroku ps:scale web=1",
                 "heroku maintenance:off",
             ), **kwargs)
@@ -128,7 +128,7 @@ class HerokuappTest(unittest.TestCase):
             self.assert_deploy_workflow((
                 "heroku plugins:install",
                 "heroku build",
-                "./manage.py collectstatic",
+                "python manage.py collectstatic",
                 "heroku release",
                 "heroku ps:scale web=1",
             ), **kwargs)
@@ -145,18 +145,18 @@ class HerokuappTest(unittest.TestCase):
             "heroku build",
             "heroku maintenance:on",
             "heroku release",
-            "./manage.py syncdb",
-            "./manage.py migrate",
+            "python manage.py syncdb",
+            "python manage.py migrate",
             "heroku ps:scale web=1",
             "heroku maintenance:off",
         ), no_staticfiles=True)
 
     def test_no_app_deploy_workflow(self):
         self.assert_deploy_workflow((
-            "./manage.py collectstatic",
+            "python manage.py collectstatic",
             "heroku maintenance:on",
-            "./manage.py syncdb",
-            "./manage.py migrate",
+            "python manage.py syncdb",
+            "python manage.py migrate",
             "heroku ps:scale web=1",
             "heroku maintenance:off",
         ), no_app=True)
@@ -171,7 +171,7 @@ class HerokuappTest(unittest.TestCase):
 
     def test_no_db_no_app_deploy_workflow(self):
         self.assert_deploy_workflow((
-            "./manage.py collectstatic",
+            "python manage.py collectstatic",
             "heroku restart",
             "heroku ps:scale web=1",
         ), no_db=True, no_app=True)
@@ -179,8 +179,8 @@ class HerokuappTest(unittest.TestCase):
     def test_no_staticfiles_no_app_deploy_workflow(self):
         self.assert_deploy_workflow((
             "heroku maintenance:on",
-            "./manage.py syncdb",
-            "./manage.py migrate",
+            "python manage.py syncdb",
+            "python manage.py migrate",
             "heroku ps:scale web=1",
             "heroku maintenance:off",
         ), no_staticfiles=True, no_app=True)
@@ -206,11 +206,11 @@ class HerokuappTest(unittest.TestCase):
         self.assert_deploy_workflow((
             "heroku plugins:install",
             "heroku build",
-            "./manage.py collectstatic",
+            "python manage.py collectstatic",
             "heroku maintenance:on",
             "heroku ps:scale web=0",
             "heroku release",
-            "./manage.py migrate",
+            "python manage.py migrate",
             "heroku ps:scale web=1",
             "heroku maintenance:off",
         ))
@@ -224,7 +224,7 @@ class HerokuappTest(unittest.TestCase):
         self.assert_deploy_workflow((
             "heroku plugins:install",
             "heroku build",
-            "./manage.py collectstatic",
+            "python manage.py collectstatic",
             "heroku release",
         ))
 

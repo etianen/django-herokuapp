@@ -38,7 +38,7 @@ class Command(HerokuCommandMixin, NoArgsCommand):
     def exit_with_error(self, error):
         self.stderr.write(error)
         self.stderr.write("Heroku audit aborted.")
-        self.stderr.write("Run `./manage.py heroku_audit --fix` to fix problems.")
+        self.stderr.write("Run `python manage.py heroku_audit --fix` to fix problems.")
         sys.exit(1)
 
     def prompt_for_fix(self, error, message):

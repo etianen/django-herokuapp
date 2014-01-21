@@ -62,11 +62,11 @@ test () {
     # It's only safe to run tests if a local DATABASE_URL is provided.
     if [[ ! "$DATABASE_URL" == "" ]]
     then
-        $DIR/manage.py test --noinput
+        python $DIR/manage.py test --noinput
     fi
     # Run the Heroku audit with production settings.
     unset DATABASE_URL
-    DJANGO_SETTINGS_MODULE=$PRODUCTION_SETTINGS_MODULE $DIR/manage.py heroku_audit --noinput
+    DJANGO_SETTINGS_MODULE=$PRODUCTION_SETTINGS_MODULE python $DIR/manage.py heroku_audit --noinput
 }
 
 ##
@@ -79,7 +79,7 @@ test () {
 deploy () {
     # Run the Heroku deploy with production settings.
     unset DATABASE_URL
-    DJANGO_SETTINGS_MODULE=$PRODUCTION_SETTINGS_MODULE $DIR/manage.py heroku_deploy $@
+    DJANGO_SETTINGS_MODULE=$PRODUCTION_SETTINGS_MODULE python $DIR/manage.py heroku_deploy $@
 }
 
 ##

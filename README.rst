@@ -267,7 +267,7 @@ Django management commands can then be run normally:
 
 ::
 
-    $ ./manage.py runserver
+    $ python manage.py runserver
 
 Accessing the live Heroku Postgres database is a bad idea. Instead, you should provide a local settings file,
 exclude it from version control, and connect to a local PostgreSQL server. If you're
@@ -285,14 +285,14 @@ you can validate against common errors by running the ``heroku_audit`` managemen
 
 ::
 
-    $ ./manage.py heroku_audit
+    $ python manage.py heroku_audit
 
 Many of the issues detected by ``heroku_audit`` have simple fixes. For a guided walkthrough of solutions, try
 running:
 
 ::
 
-    $ ./manage.py heroku_audit --fix
+    $ python manage.py heroku_audit --fix
 
 
 Deploying (and redeploying) your site to Heroku
@@ -302,7 +302,7 @@ When your site is configured and ready to roll, you can deploy it to Heroku usin
 
 ::
 
-    $ DJANGO_SETTINGS_MODULE=your_app.settings.production ./manage.py heroku_deploy
+    $ DJANGO_SETTINGS_MODULE=your_app.settings.production python manage.py heroku_deploy
 
 This will carry out the following actions:
 

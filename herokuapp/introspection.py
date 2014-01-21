@@ -21,7 +21,7 @@ def model_installed(connection, tables, model):
 
 def has_pending_syncdb():
     """
-    Returns whether any models need to be created via ./manage.py syncdb.
+    Returns whether any models need to be created via python manage.py syncdb.
 
     This will be the case if any of the models tables are not present
     in any of the database connections.
@@ -45,7 +45,7 @@ def has_pending_syncdb():
 
 def has_pending_migrations():
     """
-    Returns whether any models need to be migrated via ./manage.py migrate.
+    Returns whether any models need to be migrated via python manage.py migrate.
 
     This will be the case if any migrations are present in apps, but not
     in the database.

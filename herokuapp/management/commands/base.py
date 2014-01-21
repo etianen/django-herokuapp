@@ -33,7 +33,7 @@ class HerokuCommandMixin(object):
         If it's a dry run, then a notice about the command will be printed.
         """
         if self.dry_run:
-            self.stdout.write(format_command("./manage.py", args, kwargs))
+            self.stdout.write(format_command("python manage.py", args, kwargs))
         else:
             call_command(*args, **kwargs)
 
