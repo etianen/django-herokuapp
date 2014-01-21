@@ -1,4 +1,4 @@
-import sys, os, os.path, getpass, subprocess, argparse
+import sys, os, stat, os.path, getpass, subprocess, argparse
 
 from django.core import management
 
@@ -28,6 +28,11 @@ parser.add_argument("--noinput",
 )
 
 
+def make_executable(path):
+    st = os.stat(path)
+    os.chmod(path, st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+
+
 def main():
     args = parser.parse_args()
     # Generate Heroku app name.
@@ -45,6 +50,9 @@ def main():
         app_name = app_name,
         user = getpass.getuser(),
     )
+    # Make management scripts executable.
+    make_executable(os.path.join(args.dest_dir, "manage.py"))
+    make_executable(os.path.join(args.dest_dir, "deploy.sh"))
     # Audit and configure the project for Heroku.
     audit_args = [os.path.join(args.dest_dir, "manage.py"), "heroku_audit", "--fix"]
     if not args.interactive:
