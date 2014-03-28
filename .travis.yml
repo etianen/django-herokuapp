@@ -5,15 +5,16 @@ services:
 - postgresql
 env:
   global:
-  - secure: Cq8PKfG8malw+smIZtQdjHP95XRQipN6WTGaXYE0ZVsaWaNYRuISlvXa402N9SdwAc1b5LdtsR/ROaxjMIzJFRQoHVaUePPKQb17IIf2LruIoHqdWA1yALfDmiOBIAG8dP/d4cdZfTiNbnfnaU36e/r1mCeqmAG5lb/4KxayeNg=
-  - secure: N7mvxM8Bb8FG4G9Ae9/gsKw2d1KxqmDBXH1uT+XWslEGkUGbOmraYhEcNSgmrMK0b9ESggkznSkbr04U0RLHkk/nofJz80RmWlY3rBvG/a30qIKgcs/4aG5bycl/oJ8btgvxeMQ61LgKYryhhVfawNcEtnzjG/xlh33ZQcy2KQk=
   - secure: IN9ORGxKYTQQQae5YK9LRfpCBKmvQzARcOAX/XXfQHfyTYEBht6LmWA0boViLQO4On6k8LvPiB9PKCycD6rtTtbPQ97R61asdnvFGwxod72QTdu+NKbtwVgGuRttH769byGUiiY2gXVenbeTKtn1XnD9StWTZj5ghJLUuvbk5cI=
+  - secure: CjyWjKfWc73iKmHKIibACC0HnULNZTpFY55elz04lq5NVvBC23gCcBNUhG2+dzF9phdCrhyXyyDb81jDxvSDd3y0/ppOEJsa9iTup+z/LFeY2NGLM5GFiMcdMSHfz7At+usqMwLkJ57T7j+UI0Rp4f9DryIJfyI+M4HLIhQ9b00=
+  - secure: HIyF9PPriBNF5wBFZzbUdy+rYIHvZ03kQDjnatx85yJfqiJtiavQAi7COOIZQsTwVQBBM8f567bEHdABbI/gZRSMID9U++kE1IXeKwW6Mi9C2lhAetV0yunyaPIHRA9FfuNlvOOibHYkEEaBhIh9waembi62sMPRsbiL4n+wOLo=
   - PATH=/tmp/heroku-client/bin:$PATH
   matrix:
   - DJANGO=django==1.5.4
   - DJANGO=django==1.6.1
 install:
-- wget -qO- https://s3.amazonaws.com/assets.heroku.com/heroku-client/heroku-client.tgz | tar xz -C /tmp
+- wget -qO- https://s3.amazonaws.com/assets.heroku.com/heroku-client/heroku-client.tgz
+  | tar xz -C /tmp
 - pip install $DJANGO --use-mirrors
 - pip install . --use-mirrors
 before_script:
