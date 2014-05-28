@@ -152,7 +152,7 @@ build step, rather than on-the-fly as the site is running.
 Email hosting - SendGrid
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Heroku does not provide an SMTP server in it's default package. Instead, it's recommended that you use
+Heroku does not provide an SMTP server in its default package. Instead, it's recommended that you use
 the `SendGrid Add-on <https://addons.heroku.com/sendgrid>`_ to send your site's emails.
 
 ::
@@ -208,7 +208,7 @@ Adding support for Heroku SSL
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Heroku provides a free `piggyback SSL <https://blog.heroku.com/archives/2012/5/3/announcing_better_ssl_for_your_app>`_
-service for all of it's apps, as well as a `SSL endpoint addon <https://devcenter.heroku.com/articles/ssl-endpoint>`_
+service for all of its apps, as well as a `SSL endpoint addon <https://devcenter.heroku.com/articles/ssl-endpoint>`_
 for custom domains. It order to detect when a request is made via SSL in Django (for use in `request.is_secure()`),
 you should add the following setting to your app:
 
@@ -250,7 +250,7 @@ You can take advantage of this by updating your logging configuration to the fol
 Running your site in the Heroku environment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Because your site is setup to read some of it's configuration from environmental variables stored on
+Because your site is setup to read some of its configuration from environmental variables stored on
 Heroku, running a development server can be tricky. django-herokuapp provides a configuration utility
 that should be added to your project to load the heroku config dynamically. Simply add
 the following lines to your ``manage.py`` script, at the top of the run block:
