@@ -1,7 +1,7 @@
 """
 Settings used by {{ project_name }} project.
 
-This consists of the general produciton settings, with an optional import of any local
+This consists of the general production settings, with an optional import of any local
 settings.
 """
 
