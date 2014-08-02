@@ -14,6 +14,11 @@ RE_POSTGRES = re.compile("^HEROKU_POSTGRESQL_\w+?_URL$")
 
 
 def parse_shell(lines):
+    """ Parse config variables from the lines """
+
+    # If there are no config variables, return an empty dict
+    if lines.find(' has no config vars.') > -1:
+        return dict()
     return dict(
         line.strip().split("=", 1)
         for line
