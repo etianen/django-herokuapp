@@ -8,6 +8,8 @@ from django.core.management import CommandError
 from django.utils.encoding import force_text
 
 
+RE_PARSE_SHELL = re.compile("^.*=.*$", re.MULTILINE)
+
 RE_PS = re.compile("^(\w+)\.")
 
 RE_POSTGRES = re.compile("^HEROKU_POSTGRESQL_\w+?_URL$")
@@ -17,7 +19,7 @@ def parse_shell(lines):
     """ Parse config variables from the lines """
 
     # If there are no config variables, return an empty dict
-    if lines.find(' has no config vars.') > -1:
+    if RE_PARSE_SHELL.search(str(lines)):
         return dict()
     return dict(
         line.strip().split("=", 1)
