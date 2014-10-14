@@ -23,12 +23,11 @@ setup(
     include_package_data = True,
     test_suite = "herokuapp.tests",
     install_requires = [
-        "django",
+        "django>=1.7",
         "pytz",
         "waitress",
         "dj-database-url",
         "psycopg2",
-        "south",
         "django-require-s3",
         "boto",
         "sh",

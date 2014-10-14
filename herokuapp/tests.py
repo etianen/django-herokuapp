@@ -30,7 +30,6 @@ class HerokuappTest(unittest.TestCase):
                 "waitress",
                 "dj-database-url",
                 "psycopg2",
-                "south",
                 "django-require-s3",
                 "boto",
                 "sh",

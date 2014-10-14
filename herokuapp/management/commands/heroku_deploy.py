@@ -6,7 +6,6 @@ from optparse import make_option
 from django.core.management.base import NoArgsCommand, BaseCommand
 
 from herokuapp.management.commands.base import HerokuCommandMixin
-from herokuapp.introspection import has_pending_syncdb, has_pending_migrations
 from herokuapp import settings
 
 
@@ -33,21 +32,13 @@ class Command(HerokuCommandMixin, NoArgsCommand):
             dest = "deploy_database",
             help = "If specified, then running database migrations will be skipped.",
         ),
-        make_option("--force-db",
-            action = "store_true",
-            default = False,
-            dest = "force_database",
-            help = "If specified, then database migrations will be run, even if django-herokuapp doesn't think they need running.",
-        ),
     ) + HerokuCommandMixin.option_list
 
     def handle(self, **kwargs):
         self.app = kwargs["app"]
         self.dry_run = kwargs["dry_run"]
         # Do we need to syncdb?
-        requires_syncdb = kwargs["force_database"] or has_pending_syncdb()
-        requires_migrate = kwargs["force_database"] or has_pending_migrations()
-        deploy_database = (requires_syncdb or requires_migrate) and kwargs["deploy_database"]
+        deploy_database = kwargs["deploy_database"]
         # Build app code.
         if kwargs["deploy_app"]:
             self.stdout.write("Building app...")
@@ -81,10 +72,8 @@ class Command(HerokuCommandMixin, NoArgsCommand):
         # Deploy migrations.
         if deploy_database:
             self.stdout.write("Deploying database...")
-            if requires_syncdb:
-                self.call_command("syncdb", interactive=False)
-            if requires_migrate:
-                self.call_command("migrate", interactive=False)
+            self.call_command("syncdb", interactive=False)
+            self.call_command("migrate", interactive=False)
         # Restart the app if required.
         if kwargs["deploy_staticfiles"] and not (kwargs["deploy_app"] or deploy_database):
             self.heroku("restart")
