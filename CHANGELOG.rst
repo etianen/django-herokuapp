@@ -2,6 +2,13 @@ django-herokuapp changelog
 ==========================
 
 
+0.9.19 - 05/12/2014
+-------------------
+
+- Fixing error if heroku config command returns no config vars. (@brad)
+- Removing dependency on South.
+
+
 0.9.18 - 21/01/2014
 -------------------
 
