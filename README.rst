@@ -18,10 +18,6 @@ with the following benefits:
 - Amazon S3 is used to serve static files instead of `django-static <https://github.com/kennethreitz/dj-static>`_.
   Django `does not recommend <https://docs.djangoproject.com/en/dev/howto/static-files/#deployment>`_
   serving static files using a Python app server.
-- `anvil <https://github.com/ddollar/heroku-anvil>`_ is used for deployments instead of git. This allows the build to
-  be carried out easily on a headless CI server (such as `Travis CI <http://travis-ci.org/>`_ or
-  `Drone.io <http://drone.io/>`_), as well as reducing downtime during by performing slug compilation
-  outside of the normal Heroku deployment cycle.
 - Various minor security and logging improvements.
 
 
@@ -293,35 +289,6 @@ running:
 ::
 
     $ python manage.py heroku_audit --fix
-
-
-Deploying (and redeploying) your site to Heroku
------------------------------------------------
-
-When your site is configured and ready to roll, you can deploy it to Heroku using the following command.
-
-::
-
-    $ DJANGO_SETTINGS_MODULE=your_app.settings.production python manage.py heroku_deploy
-
-This will carry out the following actions:
-
-- Sync static files to Amazon S3 (disable with the ``--no-staticfiles`` switch).
-- Deploy your app to the Heroku platform using `anvil <https://github.com/ddollar/heroku-anvil>`_ (disable with the ``--no-app`` switch).
-- Run ``syncdb`` and ``migrate`` for your live database (disable with the ``--no-db`` switch).
-
-This command can be run whenever you need to redeploy your app. For faster redeploys, and to minimise
-downtime, django-herokuapp only runs ``syncdb`` and ``migrate`` when it determines that model changes
-are missing from the database. To force a database redeploy, run ``heroku_deploy`` with the ``--force-db``
-switch.
-
-For a simple one-liner deploy that works in a headless CI environments (such as `Travis CI <http://travis-ci.org/>`_ or
-`Drone.io <http://drone.io/>`_), django-herokuapp provides a useful `deploy.sh script <https://github.com/etianen/django-herokuapp/blob/master/herokuapp/project_template/deploy.sh>`_
-that can be copied to the root of your project. Deploying then simply becomes:
-
-::
-
-    $ ./deploy.sh
 
 
 Common error messages
