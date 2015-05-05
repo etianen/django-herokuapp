@@ -2,6 +2,12 @@ django-herokuapp changelog
 ==========================
 
 
+0.9.20 - 05/05/2014
+-------------------
+
+- Fixing error if heroku config command returns no config vars. (@ducheneaut)
+
+
 0.9.19 - 05/12/2014
 -------------------
 
