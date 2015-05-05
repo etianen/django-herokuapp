@@ -19,7 +19,7 @@ def parse_shell(lines):
     """ Parse config variables from the lines """
 
     # If there are no config variables, return an empty dict
-    if RE_PARSE_SHELL.search(str(lines)):
+    if not RE_PARSE_SHELL.search(str(lines)):
         return dict()
     return dict(
         line.strip().split("=", 1)
