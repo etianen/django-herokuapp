@@ -6,6 +6,7 @@ django-herokuapp changelog
 -------------------
 
 - Fixing error if heroku config command returns no config vars. (@ducheneaut)
+- Removed heroku deploy command, since it's now broken with the removal of Anvil.
 
 
 0.9.19 - 05/12/2014
