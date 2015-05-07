@@ -24,7 +24,7 @@ def parse_shell(lines):
     return dict(
         line.strip().split("=", 1)
         for line
-        in lines.split()
+        in lines
     )
 
 
