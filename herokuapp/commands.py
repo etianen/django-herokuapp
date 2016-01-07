@@ -65,8 +65,6 @@ class HerokuCommand(object):
             _out = stdout,
             _err = stderr,
         )  # Not using bake(), as it gets the command order wrong.
-        if app:
-            self._heroku = partial(self._heroku, app=app)
         # Ensure that the user is logged in.
         def auth_token_interact(line, stdin, process):
             if line == "\n":
@@ -75,6 +73,9 @@ class HerokuCommand(object):
             self("auth:token", _force_live_run=True, _in=None, _tty_in=True, _out=auth_token_interact, _out_bufsize=0).wait()
         except sh.ErrorReturnCode:
             raise HerokuCommandError("Please log in to the Heroku Toolbelt using `heroku auth:login`.")
+        # Apply the app argument.
+        if app:
+            self._heroku = partial(self._heroku, app=app)
 
     def __call__(self, *args, **kwargs):
         # Allow dry run to be overridden for selective (non-mutating) commands.
