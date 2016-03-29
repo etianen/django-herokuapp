@@ -88,7 +88,7 @@ You can provision a starter package with Heroku Postgres using the following Her
 
 ::
 
-    $ heroku addons:add heroku-postgresql:dev
+    $ heroku addons:create heroku-postgresql:dev
 
 
 Static file hosting - Amazon S3
@@ -164,7 +164,7 @@ You can provision a starter package with SendGrid using the following Heroku com
 
 ::
 
-    $ heroku addons:add sendgrid:starter
+    $ heroku addons:create sendgrid:starter
 
 
 Optimizing compiled slug size
