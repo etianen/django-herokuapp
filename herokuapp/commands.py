@@ -89,7 +89,7 @@ class HerokuCommand(object):
             try:
                 return self._heroku(*args, **kwargs)
             except sh.ErrorReturnCode as ex:
-                raise HerokuCommandError(str(ex))
+                raise HerokuCommandError(force_text(ex))
 
     def config_set(self, **kwargs):
         return self("config:set", *[
